@@ -11,15 +11,15 @@ else
     exit 1
 fi 
 
-if [! "$(which git)"]; then
-        apt-get install git-all --yes
+if [ ! "$(which git)" ]; then
+        apt-get install -q git-all --yes
 else
     echo "Git already installed"
 fi 
 if [ ! "$(which ansible-playbook)" ]; then
-    apt install software-properties-common
+    apt install -q software-properties-common
     apt-add-repository --yes --update ppa:ansible/ansible
-    apt install ansible --yes
+    apt install -q ansible --yes
 else
     echo "Ansible already installed"
 fi
