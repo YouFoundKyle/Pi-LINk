@@ -43,7 +43,7 @@
 
     - name: Copy ufw config file and backup old one
       ansible.builtin.copy:
-        src: /etc/pilink/configs/ufw/ufw
+        src:  ../../configs/ufw/ufw
         dest: /etc/ufw
         owner: root
         group: root

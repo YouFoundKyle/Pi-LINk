@@ -11,16 +11,6 @@
         state: present
         update_cache: yes
 
-    # - name: Enable IP Masquerading on outbound eth0 
-    #   become: true
-    #   become_user: root
-    #   shell: sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-    # - name: Save iptables rules 
-    #   become: true
-    #   become_user: root
-    #   shell: sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
-
     - name: Create a new bridge 
       become: true
       become_user: root
@@ -33,7 +23,7 @@
 
     - name: Copy network interfaces file and backup old one
       ansible.builtin.copy:
-        src: /etc/pilink/configs/network/interfaces
+        src:  ../../configs/network/interfaces
         dest: /etc/network/interfaces
         owner: root
         group: root

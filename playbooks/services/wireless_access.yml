@@ -19,7 +19,7 @@
 
     - name: Copy hostapd config file and backup old one
       ansible.builtin.copy:
-        src: /etc/pilink/configs/hostapd/hostapd.conf
+        src:  ../../configs/hostapd/hostapd.conf
         dest: /etc/hostapd/hostapd.conf
         owner: root
         group: root
@@ -28,7 +28,7 @@
 
     - name: Copy hostapd default file and backup old one
       ansible.builtin.copy:
-        src: /etc/pilink/configs/hostapd/hostapd
+        src:  ../../configs/hostapd/hostapd
         dest: /etc/default/hostapd
         owner: root
         group: root
