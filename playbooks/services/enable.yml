@@ -19,10 +19,7 @@
           - 'dnsmasq'
           - 'hostapd'
 
-    - name: Enable dnsmasq and hostapd
-      service:
-        name: "{{ item }}"
-        enabled: true
-      with_items:
-          - 'dnsmasq'
-          - 'hostapd'
+    - name: Force reenable hostapd
+      become: true
+      become_user: root
+      shell: service hostapd restart
