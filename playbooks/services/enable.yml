@@ -18,3 +18,11 @@
       with_items:
           - 'dnsmasq'
           - 'hostapd'
+
+    - name: Enable dnsmasq and hostapd
+      service:
+        name: "{{ item }}"
+        enabled: true
+      with_items:
+          - 'dnsmasq'
+          - 'hostapd'
