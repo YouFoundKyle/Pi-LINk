@@ -24,7 +24,7 @@
         rule: allow
         interface: wlan0
         direction: in
-        proto: 'udp'
+        proto: udp
         src: any
         from_port: '68'
         dest: any
@@ -35,9 +35,9 @@
         rule: allow
         interface: wlan0
         direction: in
-        proto: 'udp'
+        # proto: udp
         src: 10.1.1.10/24
-        from_port: 'any'
+        from_port: any
         dest: any
         to_port: '53'
 
