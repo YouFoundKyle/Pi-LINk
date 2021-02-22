@@ -19,7 +19,7 @@
   import_playbook: ./common/docker.yml
 
 - name: Setup Wireless Access
-  import_playbook: ./common/wireless_access.yml
+  import_playbook: ./services/wireless_access.yml
 
 - name: Setup DNS and DHCP
   import_playbook: ./services/dns_dhcp.yml
