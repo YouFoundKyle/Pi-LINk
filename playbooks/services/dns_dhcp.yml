@@ -17,7 +17,7 @@
         enabled: false
 
     - name: Copy dhcpd config file and backup old one
-      ansible.builtin.copy:
+      copy:
         src:  ../../configs/dhcpcd/dhcpcd.conf
         dest: /etc/hostapd.conf
         owner: root
@@ -26,8 +26,8 @@
         backup: yes
 
     - name: Copy dnsmasq config file and backup old one
-      ansible.builtin.copy:
-        src:  ../../configs/dnsmasq/dnsmasq.conf
+      copy:
+        src:  ../../../configs/dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
         owner: root
         group: root
