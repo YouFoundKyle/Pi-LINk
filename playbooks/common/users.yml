@@ -1,7 +1,8 @@
-- name: create user
-  user:
-    name: "ha"
-    comment: "Home Assistant"
-    createhome: no
-    system: yes
-    shell: "/sbin/nologin"
+tasks: 
+  - name: create user
+    user:
+      name: "ha"
+      comment: "Home Assistant"
+      createhome: no
+      system: yes
+      shell: "/sbin/nologin"
