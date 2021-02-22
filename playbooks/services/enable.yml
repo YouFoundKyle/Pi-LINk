@@ -1,10 +1,17 @@
-- name: Enable UFW
-  systemd:
-    name: ['ufw']
-    enabled: true
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
 
-- name: Enable dnsmasq and hostpad
-  systemd:
-    name: ['dnsmasq', 'hostapd']
-    enabled: true
-  
+  tasks: 
+    - name: Enable UFW
+      systemd:
+        name: ['ufw']
+        enabled: true
+
+    - name: Enable dnsmasq and hostpad
+      systemd:
+        name: ['dnsmasq', 'hostapd']
+        enabled: true
+      

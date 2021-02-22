@@ -1,34 +1,41 @@
-- name: Install packages
-  package:
-    name: ['dns-root-data', dnsmasq-base', 'dnsmasq']
-    state: installed
-    update_cache: yes
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
 
-- name: Disable Existing DNS and make sure dnsmasq is off
-  systemd:
-    name: ['dnsmasq', 'systemd-resolve', 'hostapd']
-    enabled: false
+  tasks: 
+    - name: Install packages
+      package:
+        name: ['dns-root-data', dnsmasq-base', 'dnsmasq']
+        state: installed
+        update_cache: yes
 
-- name: Copy dhcpd config file and backup old one
-  ansible.builtin.copy:
-    src: /etc/pilink/configs/dhcpcd/dhcpcd.conf
-    dest: /etc/hostapd.conf
-    owner: root
-    group: root
-    mode: '0644'
-    backup: yes
+    - name: Disable Existing DNS and make sure dnsmasq is off
+      systemd:
+        name: ['dnsmasq', 'systemd-resolve', 'hostapd']
+        enabled: false
 
-- name: Copy dnsmasq config file and backup old one
-  ansible.builtin.copy:
-    src: /etc/pilink/configs/dnsmasq/dnsmasq.conf
-    dest: /etc/dnsmasq.conf
-    owner: root
-    group: root
-    mode: '0644'
-    backup: yes
+    - name: Copy dhcpd config file and backup old one
+      ansible.builtin.copy:
+        src: /etc/pilink/configs/dhcpcd/dhcpcd.conf
+        dest: /etc/hostapd.conf
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
 
-- name: Remove old DNS package
-  package:
-    name: ['systemd-resolve']
-    state: absent
-    update_cache: yes
+    - name: Copy dnsmasq config file and backup old one
+      ansible.builtin.copy:
+        src: /etc/pilink/configs/dnsmasq/dnsmasq.conf
+        dest: /etc/dnsmasq.conf
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+
+    - name: Remove old DNS package
+      package:
+        name: ['systemd-resolve']
+        state: absent
+        update_cache: yes

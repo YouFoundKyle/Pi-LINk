@@ -1,34 +1,41 @@
-- name: Install packages
-  package:
-    name: ['bridge-utils']
-    state: installed
-    update_cache: yes
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
 
-- name: Enable IP Masquerading on outbound eth0 
-  become: true
-  become_user: root
-  shell: sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+  tasks: 
+    - name: Install packages
+      package:
+        name: ['bridge-utils']
+        state: installed
+        update_cache: yes
 
-- name: Save iptables rules 
-  become: true
-  become_user: root
-  shell: sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+    - name: Enable IP Masquerading on outbound eth0 
+      become: true
+      become_user: root
+      shell: sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-- name: Create a new bridge 
-  become: true
-  become_user: root
-  shell: brctl addbr br0
+    - name: Save iptables rules 
+      become: true
+      become_user: root
+      shell: sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
-- name: Connect etho0 to bridge 
-  become: true
-  become_user: root
-  shell: brctl addif br0 eth0
+    - name: Create a new bridge 
+      become: true
+      become_user: root
+      shell: brctl addbr br0
 
-- name: Copy network interfaces file and backup old one
-  ansible.builtin.copy:
-    src: /etc/pilink/configs/network/interfaces
-    dest: /etc/network/interfaces
-    owner: root
-    group: root
-    mode: '0644'
-    backup: yes
+    - name: Connect etho0 to bridge 
+      become: true
+      become_user: root
+      shell: brctl addif br0 eth0
+
+    - name: Copy network interfaces file and backup old one
+      ansible.builtin.copy:
+        src: /etc/pilink/configs/network/interfaces
+        dest: /etc/network/interfaces
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
