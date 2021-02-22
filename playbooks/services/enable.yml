@@ -10,10 +10,11 @@
         name: 'ufw'
         enabled: true
 
-    - name: Enable dnsmasq and hostpad
-      service:
+    - name: Enable dnsmasq and hostapd
+      systemd:
         name: "{{ item }}"
         enabled: true
+        masked: no
       with_items:
           - 'dnsmasq'
           - 'hostapd'
