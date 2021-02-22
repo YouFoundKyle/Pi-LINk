@@ -30,7 +30,7 @@ mkdir -p '/etc/pilink'
 git clone -q https://github.com/YouFoundKyle/Pi-LINk.git /etc/pilink/
 
 #Install required collections
-ansible-galaxy collection install -r requirements.yml 
+ansible-galaxy collection install -r /etc/pilink/playbooks/requirements.yml 
 
 #Begin ansible run
 ansible-playbook /etc/pilink/playbooks/main.yml

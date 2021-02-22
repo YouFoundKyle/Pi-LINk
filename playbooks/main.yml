@@ -13,19 +13,19 @@
         update_cache: yes
 
 - name: Create Users
-  import_playbook: /common/users.yml
+  import_playbook: ./common/users.yml
 
 - name: Setup Docker
-  import_playbook: /common/docker.yml
+  import_playbook: ./common/docker.yml
 
 - name: Setup Wireless Access
-  import_playbook: /common/wireless_access.yml
+  import_playbook: ./common/wireless_access.yml
 
 - name: Setup DNS and DHCP
-  import_playbook: /services/dns_dhcp.yml
+  import_playbook: ./services/dns_dhcp.yml
 
 - name: Setup Firewall
-  import_playbook: /services/firewall.yml
+  import_playbook: ./services/firewall.yml
 
 - name: Enable Services
-  import_playbook: /services/enable.yml
+  import_playbook: ./services/enable.yml
