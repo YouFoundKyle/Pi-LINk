@@ -8,7 +8,7 @@
     - name: Install packages
       package:
         name: ['dns-root-data', dnsmasq-base', 'dnsmasq']
-        state: installed
+        state: present
         update_cache: yes
 
     - name: Disable Existing DNS and make sure dnsmasq is off

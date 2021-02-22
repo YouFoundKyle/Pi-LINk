@@ -5,21 +5,21 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Install packages
+    - name: Install Traffic Bridge packages
       package:
         name: ['bridge-utils']
-        state: installed
+        state: present
         update_cache: yes
 
-    - name: Enable IP Masquerading on outbound eth0 
-      become: true
-      become_user: root
-      shell: sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    # - name: Enable IP Masquerading on outbound eth0 
+    #   become: true
+    #   become_user: root
+    #   shell: sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-    - name: Save iptables rules 
-      become: true
-      become_user: root
-      shell: sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
+    # - name: Save iptables rules 
+    #   become: true
+    #   become_user: root
+    #   shell: sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
     - name: Create a new bridge 
       become: true

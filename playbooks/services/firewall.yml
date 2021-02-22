@@ -15,7 +15,7 @@
         state: enabled
         policy: deny
 
-    - name: Set logging
+    - name: Set Firewall Logging
       community.general.ufw:
         logging: 'on'
 

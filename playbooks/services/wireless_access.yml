@@ -6,13 +6,13 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Install packages
+    - name: Install Wireless Access packages
       package:
         name: ['hostapd']
-        state: installed
+        state: present
         update_cache: yes
 
-    - name: Disable Service
+    - name: Disable Wireless Access Service
       systemd:
         name: 'hostapd'
         enabled: false

@@ -6,7 +6,7 @@
   any_errors_fatal: true
 
   tasks:
-    - name: Update all packages
+    - name: Update All packages
       package:
         name: '*'
         state: latest

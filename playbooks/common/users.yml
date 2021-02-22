@@ -5,7 +5,7 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: create user
+    - name: Create HA User
       user:
         name: "ha"
         comment: "Home Assistant"

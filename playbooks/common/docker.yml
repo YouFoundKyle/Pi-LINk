@@ -5,10 +5,10 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Install packages
+    - name: Install Docker packages
       package:
         name: ['docker','python3','python3-devel','python3-pip']
-        state: installed
+        state: present
         update_cache: yes
         
     - name: Install docker-compose
