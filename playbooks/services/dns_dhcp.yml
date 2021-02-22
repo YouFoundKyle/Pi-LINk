@@ -17,7 +17,7 @@
         enabled: false
       with_items:
           - 'dnsmasq'
-          - 'systemd-resolve'
+          #- 'systemd-resolve'
           - 'hostapd'
       
 
