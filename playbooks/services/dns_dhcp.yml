@@ -32,7 +32,7 @@
 
     - name: Copy dnsmasq config file and backup old one
       copy:
-        src:  ../../../configs/dnsmasq/dnsmasq.conf
+        src:  ../../configs/dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
         owner: root
         group: root
