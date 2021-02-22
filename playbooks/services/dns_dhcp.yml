@@ -5,9 +5,9 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Install packages
+    - name: Install dnsmasq packages
       package:
-        name: ['dns-root-data', dnsmasq-base', 'dnsmasq']
+        name: ['dnsmasq']
         state: present
         update_cache: yes
 
