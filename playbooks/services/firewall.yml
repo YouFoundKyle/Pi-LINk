@@ -1,0 +1,44 @@
+# Playbook for configuring UFW firewall
+# Documentation: https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+
+#TODO: In UFW after.rules source is 192.168.1.0/24. Will need to be changed
+
+- name: Enable UFW and Deny everything
+  community.general.ufw:
+    state: enabled
+    policy: deny
+
+- name: Set logging
+  community.general.ufw:
+    logging: 'on'
+
+- name: Allow DHCP traffic on wlan0 (Wireless)
+  community.general.ufw:
+    rule: allow
+    interface: wlan0
+    direction: in
+    proto: udp
+    src: any
+    from_port: '68'
+    dest: any
+    to_port: '67'
+
+- name: Allow DNS traffic on wlan0 (Wireless)
+  community.general.ufw:
+    rule: allow
+    interface: wlan0
+    direction: in
+    proto: udp
+    src: 10.1.1.10/24
+    from_port: 'any'
+    dest: any
+    to_port: '53'
+
+- name: Copy ufw config file and backup old one
+  ansible.builtin.copy:
+    src: /etc/pilink/configs/ufw/ufw
+    dest: /etc/ufw
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes

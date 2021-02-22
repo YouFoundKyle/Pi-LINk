@@ -1,0 +1,30 @@
+## Wireless Network Interface: wlan0
+
+- name: Install packages
+  package:
+    name: ['hostapd']
+    state: installed
+    update_cache: yes
+
+- name: Disable Service
+  systemd:
+    name: 'hostapd'
+    enabled: false
+
+- name: Copy hostapd config file and backup old one
+  ansible.builtin.copy:
+    src: /etc/pilink/configs/hostapd/hostapd.conf
+    dest: /etc/hostapd/hostapd.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+- name: Copy hostapd default file and backup old one
+  ansible.builtin.copy:
+    src: /etc/pilink/configs/hostapd/hostapd
+    dest: /etc/default/hostapd
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes

@@ -1,0 +1,10 @@
+- name: Enable UFW
+  systemd:
+    name: ['ufw']
+    enabled: true
+
+- name: Enable dnsmasq and hostpad
+  systemd:
+    name: ['dnsmasq', 'hostapd']
+    enabled: true
+  
