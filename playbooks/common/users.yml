@@ -3,7 +3,7 @@
   become: yes
   become_method: sudo
   any_errors_fatal: true
-  
+
   tasks: 
     - name: create user
       user:
