@@ -12,9 +12,14 @@
         update_cache: yes
 
     - name: Disable Existing DNS and make sure dnsmasq is off
-      systemd:
-        name: ['dnsmasq', 'systemd-resolve', 'hostapd']
+      service:
+        name: "{{ item }}"
         enabled: false
+      with_items:
+          - 'dnsmasq'
+          - 'systemd-resolve'
+          - 'hostapd'
+      
 
     - name: Copy dhcpd config file and backup old one
       copy:

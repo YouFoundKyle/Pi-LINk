@@ -22,7 +22,7 @@
       shell: brctl addif br0 eth0
 
     - name: Copy network interfaces file and backup old one
-      ansible.builtin.copy:
+      copy:
         src:  ../../configs/network/interfaces
         dest: /etc/network/interfaces
         owner: root

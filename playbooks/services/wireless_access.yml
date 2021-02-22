@@ -13,12 +13,12 @@
         update_cache: yes
 
     - name: Disable Wireless Access Service
-      systemd:
+      service:
         name: 'hostapd'
         enabled: false
 
     - name: Copy hostapd config file and backup old one
-      ansible.builtin.copy:
+      copy:
         src:  ../../configs/hostapd/hostapd.conf
         dest: /etc/hostapd/hostapd.conf
         owner: root
@@ -27,7 +27,7 @@
         backup: yes
 
     - name: Copy hostapd default file and backup old one
-      ansible.builtin.copy:
+      copy:
         src:  ../../configs/hostapd/hostapd
         dest: /etc/default/hostapd
         owner: root

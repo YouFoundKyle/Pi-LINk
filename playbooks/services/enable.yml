@@ -6,12 +6,14 @@
 
   tasks: 
     - name: Enable UFW
-      systemd:
-        name: ['ufw']
+      service:
+        name: 'ufw'
         enabled: true
 
     - name: Enable dnsmasq and hostpad
-      systemd:
-        name: ['dnsmasq', 'hostapd']
+      service:
+        name: "{{ item }}"
         enabled: true
-      
+      with_items:
+          - 'dnsmasq'
+          - 'hostapd'
