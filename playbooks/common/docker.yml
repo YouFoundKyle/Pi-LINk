@@ -1,0 +1,45 @@
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
+
+  tasks: 
+    - name: Install Docker-CE packages
+      package:
+        name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common']
+        state: present
+        update_cache: yes
+    
+    - name: Add Docker-CE GPG Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu groovy stable
+        state: present
+
+    - name: Install Docker-CE packages
+      package:
+        name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+        state: present
+        update_cache: yes
+
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.28.4/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 0755
+
+    - name: Add user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Enable services
+      systemd:
+        name: 'docker.service'
+        enabled: yes

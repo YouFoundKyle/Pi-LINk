@@ -1,0 +1,14 @@
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
+
+  tasks: 
+    - name: Create HA User
+      user:
+        name: "ha"
+        comment: "Home Assistant"
+        createhome: no
+        system: yes
+        shell: "/sbin/nologin"

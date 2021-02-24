@@ -18,12 +18,19 @@ else
 fi 
 if [ ! "$(which ansible-playbook)" ]; then
     apt install -q software-properties-common
-    apt-add-repository --yes --update ppa:ansible/ansible
+    apt-add-repository -q --yes --update ppa:ansible/ansible
     apt install -q ansible --yes
 else
     echo "Ansible already installed"
 fi
 
+## Create Pi-LINk directroy 
 mkdir -p '/etc/pilink'
+
 git clone -q https://github.com/YouFoundKyle/Pi-LINk.git /etc/pilink/
-ansible-playbook /etc/pilink/ansible/initial.yml
+
+#Install required collections
+ansible-galaxy collection install -r /etc/pilink/playbooks/requirements.yml 
+
+#Begin ansible run
+ansible-playbook /etc/pilink/playbooks/main.yml

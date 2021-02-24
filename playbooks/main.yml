@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
+
+  tasks:
+    - name: Update All packages
+      package:
+        name: '*'
+        state: latest
+        update_cache: yes
+
+- name: Create Users
+  import_playbook: ./common/users.yml
+
+- name: Setup Docker
+  import_playbook: ./common/docker.yml
+
+- name: Setup Wireless Access
+  import_playbook: ./services/wireless_access.yml
+
+- name: Setup DNS and DHCP
+  import_playbook: ./services/dns_dhcp.yml
+
+- name: Setup Firewall
+  import_playbook: ./services/firewall.yml
+
+- name: Enable Services
+  import_playbook: ./services/enable.yml
