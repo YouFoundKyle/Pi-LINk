@@ -23,8 +23,8 @@
 
     - name: Copy dhcpd config file and backup old one
       copy:
-        src:  ../../configs/dhcp/dhcpcd.conf
-        dest: /etc/dhcpcd.conf
+        src:  ../../configs/dhcp/dhcpd.conf
+        dest: /etc/dhcp/dhcpd.conf
         owner: root
         group: root
         mode: '0644'
