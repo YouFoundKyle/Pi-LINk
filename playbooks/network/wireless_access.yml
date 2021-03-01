@@ -8,7 +8,7 @@
   tasks: 
     - name: Install Wireless Access packages
       package:
-        name: ['hostapd']
+        name: ['hostapd', 'net-tools']
         state: present
         update_cache: yes
 
@@ -17,7 +17,19 @@
         name: 'hostapd'
         enabled: false
 
-    - name: Copy hostapd config file and backup old one
+    - name: Disable wlan0 interface
+      command: ifconfig wlan0 down
+
+    - name: Copy network interfaces file
+      copy:
+        src:  ../../configs/network/interfaces
+        dest: /etc/network/interfaces
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+
+    - name: Copy hostapd config file
       copy:
         src:  ../../configs/hostapd/hostapd.conf
         dest: /etc/hostapd/hostapd.conf
@@ -26,7 +38,7 @@
         mode: '0644'
         backup: yes
 
-    - name: Copy hostapd default file and backup old one
+    - name: Copy hostapd default file 
       copy:
         src:  ../../configs/hostapd/hostapd
         dest: /etc/default/hostapd
@@ -34,3 +46,28 @@
         group: root
         mode: '0644'
         backup: yes
+
+    - name: Copy sysctl default file 
+      copy:
+        src:  ../../configs/sysctl/sysctl.conf
+        dest: /etc/sysctl.conf
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+
+    - name: Enable wlan0 interface
+      command: ifconfig wlan0 up
+
+    - name: Configure wlan0 ip
+      command:  ifconfig wlan0 10.1.1.1
+   
+    - name: Force reenable hostapd
+      become: true
+      become_user: root
+      shell: service hostapd restart
+
+    - name: Enable hostapd on boot
+      command: update-rc.d {{item}} enable
+      with_items:
+          - hostapd

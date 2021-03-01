@@ -1,3 +1,9 @@
-auto br0
-iface br0 inet manual
-bridge_ports eth0 wlan0
+auto lo
+iface lo inet loopback
+iface etho0 inet dhcp
+
+allow-hotplug wlan0
+
+iface wlan0 inet static
+    address 10.1.1.1
+    netmask 255.255.255.0

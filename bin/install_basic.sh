@@ -5,27 +5,31 @@ if [ $EUID -ne 0 ]; then
 fi
 
 if grep -qi ubuntu /etc/os-release; then
-    apt-get update -q
+    apt-get -q update 
 else
     echo 'WARN: Could not detect Ubuntu Distro'
     exit 1
 fi 
 
 if [ ! "$(which git)" ]; then
-        apt-get install -q git-all --yes
+        apt-get -q --yes install git-all 
 else
     echo "Git already installed"
 fi 
 if [ ! "$(which ansible-playbook)" ]; then
-    apt install -q software-properties-common
+    apt install -q software-properties-common --yes
     apt-add-repository -q --yes --update ppa:ansible/ansible
     apt install -q ansible --yes
 else
     echo "Ansible already installed"
 fi
 
-## Create Pi-LINk directroy 
-mkdir -p '/etc/pilink'
+if [ d foo ]; then
+    mkdir -p '/etc/pilink'
+else
+    echo "/etc/pilink already exists, deleting contents"
+    rm -rf /etc/pilink/*
+fi
 
 git clone -q https://github.com/YouFoundKyle/Pi-LINk.git /etc/pilink/
 
