@@ -5,9 +5,9 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Install dnsmasq packages
+    - name: Install DNS and DHCP packages
       package:
-        name: ['dnsmasq']
+        name: ['dnsmasq', 'isc-dhcp-server']
         state: present
         update_cache: yes
 
@@ -24,7 +24,7 @@
     - name: Copy dhcpd config file and backup old one
       copy:
         src:  ../../configs/dhcpcd/dhcpcd.conf
-        dest: /etc/hostapd.conf
+        dest: /etc/dhcpcd.conf
         owner: root
         group: root
         mode: '0644'
