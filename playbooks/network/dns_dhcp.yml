@@ -1,0 +1,85 @@
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
+
+  tasks: 
+    - name: Install DNS and DHCP packages
+      package:
+        name: ['dnsmasq', 'isc-dhcp-server']
+        state: present
+        update_cache: yes
+
+    - name: Disable Existing DNS and make sure dnsmasq is off
+      service:
+        name: "{{ item }}"
+        enabled: false
+      with_items:
+          - 'dnsmasq'
+          #- 'systemd-resolve'
+      
+
+    - name: Copy dhcpd config file and backup old one
+      copy:
+        src:  ../../configs/dhcp/dhcpd.conf
+        dest: /etc/dhcp/dhcpd.conf
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+
+    - name: Copy dnsmasq config file and backup old one
+      copy:
+        src:  ../../configs/dnsmasq/dnsmasq.conf
+        dest: /etc/dnsmasq.conf
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+
+    - name: Copy isc-dhcp config file and backup old one
+      copy:
+        src:  ../../configs/dhcp/isc-dhcp-server
+        dest: /etc/default/isc-dhcp-server
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+    
+    - name: Make sure /var/db folder exists
+      file: 
+          path: /var/db
+          owner: root 
+          group: root 
+          mode: 0755 
+          state: directory
+
+    - name: Make sure DHCP Lease file exists
+      copy:
+          content: ""
+          dest: /var/db/dhcp.leases
+          owner: root
+          group: root
+          mode: '0644'
+          force: no  
+        
+    - name: Remove old DNS package
+      package:
+        name: ['systemd-resolve']
+        state: absent
+        update_cache: yes
+
+    - name: Enable dnsmasq and hostapd
+      systemd:
+        name: "{{ item }}"
+        enabled: true
+        masked: no
+      with_items:
+          - 'dnsmasq'
+          - 'isc-dhcp-server'
+
+    - name: Enable dhcp on boot
+      command: update-rc.d {{item}} enable
+      with_items:
+          - isc-dhcp-server
