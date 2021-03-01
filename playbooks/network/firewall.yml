@@ -10,11 +10,6 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Enable UFW and Allow everything
-      community.general.ufw:
-        state: enabled
-        policy: allow
-
     - name: Set Firewall Logging
       community.general.ufw:
         logging: 'on'
@@ -58,6 +53,7 @@
         mode: '0644'
         backup: yes
 
-    - name: Reload UFW
+    - name: Reload UFW and Allow everything
       community.general.ufw:
         state: reloaded
+        policy: allow
