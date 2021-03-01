@@ -1,5 +1,6 @@
 auto lo
-iface lo inet loopbackiface etho0 inet dhcp
+iface lo inet loopback
+iface etho0 inet dhcp
 
 allow-hotplug wlan0
 

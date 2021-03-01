@@ -47,8 +47,23 @@
         group: root
         mode: '0644'
         backup: yes
+
     - name: Remove old DNS package
       package:
         name: ['systemd-resolve']
         state: absent
         update_cache: yes
+
+    - name: Enable dnsmasq and hostapd
+      systemd:
+        name: "{{ item }}"
+        enabled: true
+        masked: no
+      with_items:
+          - 'dnsmasq'
+          - 'isc-dhcp-server'
+
+    - name: Enable dhcp on boot
+      command: update-rc.d {{item}} enable
+      with_items:
+          - isc-dhcp-server

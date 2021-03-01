@@ -57,3 +57,7 @@
         group: root
         mode: '0644'
         backup: yes
+
+    - name: Reload UFW
+      community.general.ufw:
+        state: reloaded
