@@ -23,7 +23,7 @@
 
     - name: Copy dhcpd config file and backup old one
       copy:
-        src:  ../../configs/dhcpcd/dhcpcd.conf
+        src:  ../../configs/dhcp/dhcpcd.conf
         dest: /etc/dhcpcd.conf
         owner: root
         group: root
@@ -39,6 +39,14 @@
         mode: '0644'
         backup: yes
 
+    - name: Copy isc-dhcp config file and backup old one
+      copy:
+        src:  ../../configs/dhcp/isc-dhcp-server
+        dest: /etc/default/isc-dhcp-server
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
     - name: Remove old DNS package
       package:
         name: ['systemd-resolve']
