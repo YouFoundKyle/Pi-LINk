@@ -59,6 +59,9 @@
     - name: Enable wlan0 interface
       command: ifconfig wlan0 up
 
+    - name: Configure wlan0 ip
+      command:  ifconfig wlan0 10.1.1.1
+   
     - name: Force reenable hostapd
       become: true
       become_user: root

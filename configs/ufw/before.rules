@@ -15,8 +15,9 @@
 *nat
 :POSTROUTING ACCEPT [0:0]
 
-# Forward traffic through eth0 
--A POSTROUTING -s 10.1.1.1/24 -o eth0 -j MASQUERADE
+# Forward traffic through eth0
+# Might Need -s 10.1.1.0/24 
+-A POSTROUTING -o eth0 -j MASQUERADE
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT

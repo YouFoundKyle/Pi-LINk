@@ -19,3 +19,9 @@ Password: ThisIsAPi4
  - `/playbooks` : Includes any playbooks needed to configure services
  - `/services/` : Includes any files required to get services running  
 
+
+
+## Ports Used
+|Port|Service|Description | External
+|---|---|---|---|
+|53| DNS  | DNS Server endpoint | N
