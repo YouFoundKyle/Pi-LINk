@@ -48,12 +48,20 @@
         mode: '0644'
         backup: yes
     
+    - name: Create /var/db folder
+      file: 
+          path: /var/db
+          owner: root 
+          group: root 
+          mode: 0755 
+          state: directory
+
     - name: Make sure DHCP Lease file exists
       copy:
           content: ""
           dest: /var/db/dhcp.leases
           owner: root
-          group: sys
+          group: root
           mode: '0644'
           force: no  
         
