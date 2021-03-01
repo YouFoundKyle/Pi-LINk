@@ -17,7 +17,7 @@ else
     echo "Git already installed"
 fi 
 if [ ! "$(which ansible-playbook)" ]; then
-    apt install -q software-properties-common
+    apt install -q software-properties-common --yes
     apt-add-repository -q --yes --update ppa:ansible/ansible
     apt install -q ansible --yes
 else

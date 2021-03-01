@@ -24,8 +24,8 @@
 *nat
 :POSTROUTING ACCEPT [0:0]
 # Forward traffic through eth0
--A POSTROUTING -s 10.1.1.10/24 -o eth0 -j MASQUERADE
-
+# -A POSTROUTING -s 10.1.1.10/24 -o eth0 -j MASQUERADE
+-t nat -A POSTROUTING -o eth0 -j MASQUERADE
 #### END CUSTOM RULES ####
 
 # allow all on loopback

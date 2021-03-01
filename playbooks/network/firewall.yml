@@ -48,3 +48,12 @@
         group: root
         mode: '0644'
         backup: yes
+
+    - name: Copy ufw before rules and backup old one
+      ansible.builtin.copy:
+        src:  ../../configs/ufw/ufw/before.rules
+        dest: /etc/ufw/before.rules
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
