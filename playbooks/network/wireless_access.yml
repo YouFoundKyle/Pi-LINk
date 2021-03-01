@@ -56,6 +56,9 @@
         mode: '0644'
         backup: yes
 
+    - name: Enable wlan0 interface
+      command: ifconfig wlan0 up
+
     - name: Force reenable hostapd
       become: true
       become_user: root
