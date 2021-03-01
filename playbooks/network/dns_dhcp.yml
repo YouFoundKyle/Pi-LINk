@@ -26,7 +26,7 @@
         src:  ../../configs/dhcp/dhcpd.conf
         dest: /etc/dhcp/dhcpd.conf
         owner: root
-        group: root
+        group: sys
         mode: '0644'
         backup: yes
 
@@ -35,7 +35,7 @@
         src:  ../../configs/dnsmasq/dnsmasq.conf
         dest: /etc/dnsmasq.conf
         owner: root
-        group: root
+        group: sys
         mode: '0644'
         backup: yes
 
@@ -44,10 +44,19 @@
         src:  ../../configs/dhcp/isc-dhcp-server
         dest: /etc/default/isc-dhcp-server
         owner: root
-        group: root
+        group: sys
         mode: '0644'
         backup: yes
-
+    
+    - name: Make sure DHCP Lease file exists
+      copy:
+          content: ""
+          dest: /var/db/dhcp.leases
+          owner: root
+          group: sys
+          mode: '0644'
+          force: no  
+        
     - name: Remove old DNS package
       package:
         name: ['systemd-resolve']
