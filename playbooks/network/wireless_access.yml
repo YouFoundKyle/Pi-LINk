@@ -47,6 +47,15 @@
         mode: '0644'
         backup: yes
 
+    - name: Copy sysctl default file 
+      copy:
+        src:  ../../configs/sysctl/sysctl.conf
+        dest: /etc/sysctl.conf
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+
     - name: Force reenable hostapd
       become: true
       become_user: root
