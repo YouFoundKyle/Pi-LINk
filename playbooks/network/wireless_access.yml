@@ -65,7 +65,7 @@
     - name: Unmask hostapd
       become: true
       become_user: root
-      shell : systemctl unmask hostapd 
+      shell : systemctl unmask hostapd
 
     - name: Force reenable hostapd
       become: true
