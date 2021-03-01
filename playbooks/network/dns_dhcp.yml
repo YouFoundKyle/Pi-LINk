@@ -48,7 +48,7 @@
         mode: '0644'
         backup: yes
     
-    - name: Create /var/db folder
+    - name: Make sure /var/db folder exists
       file: 
           path: /var/db
           owner: root 
