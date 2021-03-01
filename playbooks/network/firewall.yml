@@ -51,7 +51,7 @@
 
     - name: Copy ufw before rules and backup old one
       ansible.builtin.copy:
-        src:  ../../configs/ufw/ufw/before.rules
+        src:  ../../configs/ufw/before.rules
         dest: /etc/ufw/before.rules
         owner: root
         group: root

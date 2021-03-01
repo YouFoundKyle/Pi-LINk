@@ -5,14 +5,14 @@ if [ $EUID -ne 0 ]; then
 fi
 
 if grep -qi ubuntu /etc/os-release; then
-    apt-get update -q
+    apt-get -q update 
 else
     echo 'WARN: Could not detect Ubuntu Distro'
     exit 1
 fi 
 
 if [ ! "$(which git)" ]; then
-        apt-get install -q git-all --yes
+        apt-get -q install  git-all --yes
 else
     echo "Git already installed"
 fi 
