@@ -12,7 +12,7 @@ else
 fi 
 
 if [ ! "$(which git)" ]; then
-        apt-get -q install  git-all --yes
+        apt-get -q --yes install git-all 
 else
     echo "Git already installed"
 fi 
