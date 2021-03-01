@@ -8,7 +8,7 @@
   tasks: 
     - name: Install Wireless Access packages
       package:
-        name: ['hostapd']
+        name: ['hostapd', 'net-tools']
         state: present
         update_cache: yes
 
@@ -47,22 +47,12 @@
         mode: '0644'
         backup: yes
 
-    - name: Enable dnsmasq and hostapd
-      systemd:
-        name: "{{ item }}"
-        enabled: true
-        masked: no
-      with_items:
-          - 'dnsmasq'
-          - 'hostapd'
-
     - name: Force reenable hostapd
       become: true
       become_user: root
       shell: service hostapd restart
 
-    - name: Enable hostapd and dhcp on boot
+    - name: Enable hostapd on boot
       command: update-rc.d {{item}} enable
       with_items:
           - hostapd
-          - isc-dhcp-server
