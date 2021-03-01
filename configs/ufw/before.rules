@@ -8,6 +8,22 @@
 #   ufw-before-forward
 #
 
+
+#### CUSTOM RULES ####
+
+#NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+
+# Forward traffic through eth0 
+-A POSTROUTING -s 10.1.1.1/24 -o eth0 -j MASQUERADE
+
+# don't delete the 'COMMIT' line or these rules won't be processed
+COMMIT
+
+#### END CUSTOM RULES ####
+
+
 # Don't delete these required lines, otherwise there will be errors
 *filter
 :ufw-before-input - [0:0]
@@ -72,18 +88,3 @@
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT
-
-
-#### CUSTOM RULES ####
-
-# NAT Table Rules
-*nat
-:POSTROUTING ACCEPT [0:0]
--F
-#-A POSTROUTING -s 10.1.1.1/24 -o eth0 -j MASQUERADE
--A POSTROUTING -o eth0 -j MASQUERADE
-
-# don't delete the 'COMMIT' line or these rules won't be processed
-COMMIT 
-
-#### END CUSTOM RULES ####
