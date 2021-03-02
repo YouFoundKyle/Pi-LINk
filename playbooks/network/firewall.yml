@@ -14,6 +14,11 @@
       community.general.ufw:
         logging: 'on'
 
+    - name: Disable UFW
+      community.general.ufw:
+        state: disable
+        policy: allow
+
     - name: Allow DHCP traffic on wlan0 (Wireless)
       community.general.ufw:
         rule: allow
@@ -55,8 +60,8 @@
       with_items:
           - 'before'
           - 'after'
-
+    
     - name: Reload UFW and Allow everything
       community.general.ufw:
-        state: reloaded
+        state: enable
         policy: allow

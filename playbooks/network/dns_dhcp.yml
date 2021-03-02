@@ -17,8 +17,7 @@
         enabled: false
       with_items:
           - 'dnsmasq'
-          #- 'systemd-resolve'
-      
+          - 'isc-dhcp-server'
 
     - name: Copy dhcpd config file and backup old one
       copy:
