@@ -1,0 +1,25 @@
+version: '3'
+services:
+  tuyagateway:
+    image: "tuyagateway:latest"
+    hostname: tuyagateway 
+    container_name: tuyagateway   
+    working_dir: /usr/src/app    
+    volumes:
+      - ./tuyamqtt/config:/usr/src/app/etc    
+    command: "tuyagateway"
+    restart: always
+    network_mode: host
+  gismocaster:
+    ports:
+      - "8000:8000"
+    image: "gismocaster:latest"
+    hostname: gismocaster
+    container_name: gismocaster
+    working_dir: /usr/src/app
+    volumes:
+      - ./gismocaster/etc:/usr/src/app/etc
+      - ./gismocaster/var:/usr/src/app/var
+    command: "python3 web/manage.py runserver 0.0.0.0:8000 --noreload"
+    restart: always
+    network_mode: host
