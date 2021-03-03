@@ -10,7 +10,7 @@
         name: ['{{ item }}']
         state: present
         update_cache: yes
-        with_items:
+      with_items:
           - 'apt-transport-https'
           - 'ca-certificates'
           - 'curl'
