@@ -8,8 +8,6 @@ services:
       image: homeassistant/raspberrypi4-homeassistant:stable
       privileged: true
       network_mode: host
-      ports:
-        - '8123:8123/tcp'
       environment:
         - PUID=1001
         - PGID=1001
