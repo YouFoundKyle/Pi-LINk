@@ -22,7 +22,7 @@
 
     - name: Copy network interfaces file
       copy:
-        src:  ../../configs/network/interfaces
+        src:  ../../configs/system/interfaces
         dest: /etc/network/interfaces
         owner: root
         group: root
@@ -31,7 +31,7 @@
 
     - name: Copy hostapd config file
       copy:
-        src:  ../../configs/hostapd/hostapd.conf
+        src:  ../../configs/system/hostapd.conf
         dest: /etc/hostapd/hostapd.conf
         owner: root
         group: root
@@ -40,7 +40,7 @@
 
     - name: Copy hostapd default file 
       copy:
-        src:  ../../configs/hostapd/hostapd
+        src:  ../../configs/system/hostapd
         dest: /etc/default/hostapd
         owner: root
         group: root
@@ -49,7 +49,7 @@
 
     - name: Copy sysctl default file 
       copy:
-        src:  ../../configs/sysctl/sysctl.conf
+        src:  ../../configs/system/sysctl.conf
         dest: /etc/sysctl.conf
         owner: root
         group: root
