@@ -16,7 +16,7 @@
 
     - name: Disable UFW
       community.general.ufw:
-        state: disable
+        state: disabled
         policy: allow
 
     - name: Allow DHCP traffic on wlan0 (Wireless)
@@ -63,5 +63,5 @@
     
     - name: Reload UFW and Allow everything
       community.general.ufw:
-        state: enable
+        state: enabled
         policy: allow
