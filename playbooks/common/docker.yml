@@ -23,7 +23,7 @@
     
     - name: Make sure python-configparser is removed
       package:
-        name: ['{{ python-configparser }}']
+        name: ['python-configparser']
         state: absent
         update_cache: yes
     
