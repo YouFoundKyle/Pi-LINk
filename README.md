@@ -25,4 +25,5 @@ Password: ThisIsAPi4
 |Port|Service|Description | External
 |---|---|---|---|
 |53| DNS  | DNS Server endpoint | N
+|1883| Mosquitto  | MQTT Broker | Y
 |8123| HomeAssistant  | HomeAssistant WebUI | Y
