@@ -25,3 +25,4 @@ Password: ThisIsAPi4
 |Port|Service|Description | External
 |---|---|---|---|
 |53| DNS  | DNS Server endpoint | N
+|8123| HomeAssistant  | HomeAssistant WebUI | Y
