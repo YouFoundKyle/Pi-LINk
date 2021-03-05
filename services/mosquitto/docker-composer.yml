@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+      mosquitto:
+        container_name: mosquitto
+        restart: always
+        image: eclipse-mosquitto:latest
+        ports:
+          - 1883:1883
+        volumes:
+          - /etc/pilink/services/mosquitto/config:/mosquitto/config/
+          - /etc/pilink/services/mosquitto/data:/mosquitto/data/
+          - /etc/pilink/services/mosquitto/log:/mosquitto/log/
