@@ -6,7 +6,7 @@ services:
         image: eclipse-mosquitto:latest
         ports:
           - "1883:1883"
-	  - "9001:9001"
+          - "9001:9001"
         volumes:
           - /etc/pilink/services/mosquitto/config:/mosquitto/config/
           - /etc/pilink/services/mosquitto/data:/mosquitto/data/
