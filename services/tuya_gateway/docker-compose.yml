@@ -1,7 +1,7 @@
 version: '3'
 services:
   tuyagateway:
-    image: "tuyagateway:latest"
+    image: tradeface/tuyagateway:latest
     hostname: tuyagateway 
     container_name: tuyagateway   
     working_dir: /usr/src/app
@@ -9,11 +9,10 @@ services:
       - /etc/pilink/services/tuya_gateway/config:/usr/src/app/etc    
     command: "tuyagateway"
     restart: always
-    network_mode: host
   gismocaster:
     ports:
       - "8000:8000"
-    image: "gismocaster:latest"
+    image: mcblitz/gismocaster:latest
     hostname: gismocaster
     container_name: gismocaster
     working_dir: /usr/src/app
@@ -22,4 +21,3 @@ services:
       - /etc/pilink/services/tuya_gatway/var:/usr/src/app/var
     command: "python3 web/manage.py runserver 0.0.0.0:8000 --noreload"
     restart: always
-    network_mode: host
