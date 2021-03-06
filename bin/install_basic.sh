@@ -28,7 +28,7 @@ if [ d foo ]; then
     mkdir -p '/etc/pilink'
 else
     echo "/etc/pilink already exists, deleting contents"
-    rm -rf /etc/pilink/*
+    rm -r /etc/pilink
 fi
 
 git clone -q https://github.com/YouFoundKyle/Pi-LINk.git /etc/pilink/
