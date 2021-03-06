@@ -51,6 +51,12 @@
         name: ubuntu
         groups: docker
         append: yes
+    
+    - name: Add ha to docker group
+      user:
+        name: ha
+        groups: docker
+        append: yes
 
     - name: Enable services
       systemd:
