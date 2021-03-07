@@ -9,6 +9,7 @@
       user:
         name: "ha"
         comment: "Home Assistant"
-        createhome: no
+        createhome: yes # TODO: make no once dev is done
         system: yes
-        shell: "/sbin/nologin"
+        shell: /bin/bash
+        # shell: "/sbin/nologin" TODO: Change it back once perms get nicer
