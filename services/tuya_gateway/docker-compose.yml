@@ -3,7 +3,7 @@ services:
   tuyagateway:
     image: tradeface/tuyagateway:latest
     hostname: tuyagateway 
-    container_name: tuyagateway   
+    build: .   
     working_dir: /usr/src/app
     volumes:
       - /etc/pilink/services/tuya_gateway/config:/usr/src/app/etc    
