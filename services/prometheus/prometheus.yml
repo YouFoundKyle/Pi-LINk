@@ -15,5 +15,10 @@ scrape_configs:
     scrape_interval: 60s
     metrics_path: /api/prometheus
     scheme: http
+    bearer_token: 'ADD_TOKEN_HERE'
     static_configs:
-      - targets: ['homeassistant:8123']
+      - targets: ['ADD_PI_IP_HERE:8123']
+      
+  - job_name: dnsmasq
+    static_configs:
+      - targets: ['localhost:9153']
