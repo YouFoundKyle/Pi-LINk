@@ -19,6 +19,6 @@ scrape_configs:
     static_configs:
       - targets: ['ADD_PI_IP_HERE:8123']
       
-  - job_name: dnsmasq
-    static_configs:
-      - targets: ['localhost:9153']
+  # - job_name: dnsmasq
+  #   static_configs:
+  #     - targets: ['localhost:9153']
