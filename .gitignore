@@ -133,3 +133,4 @@ configs/*/.*
 configs/homeassistant/blueprints/
 configs/homeassistant/home-assistant_v2.db
 configs/homeassistant/custom_components/
+.vscode/
