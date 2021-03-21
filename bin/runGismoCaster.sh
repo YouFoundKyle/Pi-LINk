@@ -1,0 +1,1 @@
+screen -d -m -S "gismocaster"  python3 web/manage.py runserver 0.0.0.0:8111 --noreload
