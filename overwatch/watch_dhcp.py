@@ -5,10 +5,14 @@ import logging
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 
+class EventLisenter(LoggingEventHandler):
+    def dispatch(self, event):
+        print("Change Detected: {e}".format(e=event))
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
     path = '/var/lib/dhcp/dhcpd.leases'
-    event_handler = LoggingEventHandler()
+    event_handler = EventLisenter()
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
