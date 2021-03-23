@@ -28,5 +28,6 @@ Password: ThisIsAPi4
 |---|---|---|---|
 |53| DNS  | DNS Server endpoint | N
 |1883| Mosquitto  | MQTT Broker | Y
+|8000| Django  | Django WebUI | Y
 |8123| HomeAssistant  | HomeAssistant WebUI | Y
 |9090| Prometheus | Prometheus WebUI | Y
