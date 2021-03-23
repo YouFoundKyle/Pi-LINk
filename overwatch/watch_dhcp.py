@@ -14,7 +14,7 @@ class EventLisenter(LoggingEventHandler):
    
     def dispatch(self, event):
         print("Change Detected: type: {e} path: {p}".format(e=event.event_type, p = event.src_path))
-        if (event.event_type is 'modified' and event.src_path is '/var/lib/dhcp/dhcpd.leases'):
+        if (event.event_type == 'modified' and event.src_path == '/var/lib/dhcp/dhcpd.leases'):
             print('DHCP Lease Change Detected...')
             old_leases = self.get_old_leases()
             self.get_current_leases()
