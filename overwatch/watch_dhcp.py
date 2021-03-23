@@ -4,10 +4,9 @@ import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
-
 class EventLisenter(LoggingEventHandler):
     def dispatch(self, event):
-        print("Change Detected: {e}".format(e=event))
+        print("Change Detected: type: {e} path: {p}".format(e=event.event_type p = event.src_path))
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
