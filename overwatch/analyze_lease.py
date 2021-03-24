@@ -6,6 +6,9 @@ immediately after detection of an update or new lease.
 from isc_dhcp_leases import IscDhcpLeases
 from mac_vendor_lookup import MacLookup
 import sys
+import json
+from datetime import datetime
+
 
 def check_new_lease(path):
     """
@@ -20,45 +23,52 @@ def check_new_lease(path):
     lease_list = leases.get()
 
     if not lease_list:
-        """ Need to raise error or exception """
-        return
+        return ""
 
     lease_data = process_lease_data(lease_list)
-    scan_data = scan(lease_data["IP Address"])
+    portscan_results = scan(lease_data["IP Address"])
+    scan_data = process_portscan(portscan_results, lease_data["IP Address"])
+    file_contents = {"Device Info": lease_data, "Port Usage": scan_data}
+    filename = "/home/ubuntu/NewDeviceInfo-" + datetime.now().strftime("%I_%M_%S") + ".json"
+    fi = open(filename, "a")
 
-    fi = open("/home/ubuntu/lease_info.txt", "a")
-    for key in lease_data:
-        fi.write(key + ": " + lease_data[key] + "\n")
-    print(scan_data)
-    fi.write(scan_data + "\n")
+    json_data = json.dumps(file_contents)
+    fi.write(json_data + "\n")
     fi.close()
-
-    return 0
+    return filename
 
 
 def scan(ip_addr):
     import nmap3
-    # scan_data = []
     nmap = nmap3.NmapHostDiscovery()
     results = nmap.nmap_portscan_only(ip_addr)
+    return results
+
+
+def process_portscan(portscan_results, ip_addr):
+    ports = portscan_results[ip_addr]["ports"]
+    results = []
+    for port in ports:
+        port_dict = {"Port ID": port["portid"],
+                     "Protocol": port["protocol"],
+                     "State": port["state"],
+                     "Service": port["service"]["name"]}
+        results.append(port_dict)
 
     return results
 
 
 def process_lease_data(lease_list):
     new_lease = lease_list[-1]
-    data = {"IP Address" : new_lease.ip,
-            "MAC Address" : new_lease.ethernet, 
-            "Lease State" : new_lease.binding_state}
-
+    data = {"IP Address": new_lease.ip,
+            "MAC Address": new_lease.ethernet,
+            "Lease State": new_lease.binding_state}
     host = new_lease.hostname
     if host:
         data["Hostname"] = host
     else:
         data["Hostname"] = "Not provided."
-
     data["Device Vendor"] = find_mac(data["MAC Address"])
-
     return data
 
 
@@ -70,9 +80,19 @@ def find_mac(mac_addr):
     except KeyError:
         return "Not found."
 
+
 def main():
-    path = sys.argv[1]
-    check_new_lease(path)
+    if len(sys.argv) >= 2:
+        path = sys.argv[1]
+        results = check_new_lease(path)
+        if results:
+            print("Device analysis successful - results are located in " + results)
+        else:
+            print("Error: device analysis unsuccessful. Ensure a valid lease file was provided.")
+    else:
+        print("Please provide the filepath to a copy of dhcpd.leases.")
+
 
 if __name__ == "__main__":
     main()
+
