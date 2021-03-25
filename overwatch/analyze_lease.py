@@ -8,7 +8,8 @@ from mac_vendor_lookup import MacLookup
 import sys
 import json
 from datetime import datetime
-
+from env_config import *
+import pickle
 
 def check_new_lease(path):
     """
@@ -19,8 +20,8 @@ def check_new_lease(path):
 
     :return:
     """
-    leases = IscDhcpLeases(path)
-    lease_list = leases.get()
+    with open(path) as f:
+            lease_list = pickle.load(f)
 
     if not lease_list:
         return ""
@@ -29,7 +30,7 @@ def check_new_lease(path):
     portscan_results = scan(lease_data["IP Address"])
     scan_data = process_portscan(portscan_results, lease_data["IP Address"])
     file_contents = {"Device Info": lease_data, "Port Usage": scan_data}
-    filename = "/home/ubuntu/NewDeviceInfo-" + datetime.now().strftime("%I_%M_%S") + ".json"
+    filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + datetime.now().strftime("%I_%M_%S") + ".json"
     fi = open(filename, "a")
 
     json_data = json.dumps(file_contents)
@@ -85,12 +86,13 @@ def main():
     if len(sys.argv) >= 2:
         path = sys.argv[1]
         results = check_new_lease(path)
-        if results:
-            print("Device analysis successful - results are located in " + results)
-        else:
-            print("Error: device analysis unsuccessful. Ensure a valid lease file was provided.")
     else:
-        print("Please provide the filepath to a copy of dhcpd.leases.")
+        print("Using default new lease filepath")
+        results = check_new_lease(NEW_LEASES_FILE)
+    if results:
+        print("Device analysis successful - results are located in " + results)
+    else:
+        print("Error: device analysis unsuccessful. Ensure a valid lease file was provided.")
 
 
 if __name__ == "__main__":
