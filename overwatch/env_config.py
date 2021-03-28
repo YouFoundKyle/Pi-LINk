@@ -1,4 +1,4 @@
-PILINK_PATH='/etc/pilink'
+PILINK_PATH='/home/ubuntu'
 OVERWATCH_FOLDER='/overwatch/'
 SERVICE_PATH= PILINK_PATH + OVERWATCH_FOLDER
 LEASES_PATH= '/var/lib/dhcp/dhcpd.leases'
