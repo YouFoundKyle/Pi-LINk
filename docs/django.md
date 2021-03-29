@@ -13,12 +13,14 @@
         - `pip3 install -r requirements.txt`
 2. To set up application:
     - For initial run or if there are changes:
-        - python manage.py makemigrations
-        - python manage.py migrate
+        - `python manage.py makemigrations`
+        - `python manage.py migrate`
     - Starts app on port 8000
-        - python manage.py runserver
+        - `python manage.py runserver 0.0.0.0:8000`
 3. Access web app in browser
 4. Sign up for account & login
+5. If you want to exit virtualenv:
+    - `deactivate`
 
 ### Documentation to check out:
 - https://github.com/app-generator/django-gradient-able
