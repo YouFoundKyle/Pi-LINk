@@ -9,11 +9,30 @@ rule_files:
 scrape_configs:
   - job_name: prometheus
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['prometheus:9090']
   
   - job_name: "ha"
     scrape_interval: 60s
     metrics_path: /api/prometheus
-    scheme: https
+    scheme: http
+    bearer_token: 'ADD_TOKEN_HERE'
     static_configs:
-      - targets: ['localhost:8123']
+      - targets: ['ADD_PI_IP_HERE:8123']
+  
+  - job_name: "dnsmasq_exporter"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['0.0.0.0:9153']  
+
+  - job_name: "mqtt2prometheus"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['ADD_PI_IP_HERE:9641']
+
+  - job_name: "iptables"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['10.0.0.67:5432'] 
