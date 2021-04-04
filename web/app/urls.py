@@ -11,16 +11,8 @@ urlpatterns = [
     # The home page
     path('', views.index, name='home'),
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     path('test', views.test, name='test'),
 
->>>>>>> daa2dc75db70d263e520af5f6066ef8f442c1638
-=======
-    path('test', views.test, name='test'),
-
->>>>>>> daa2dc75db70d263e520af5f6066ef8f442c1638
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
 
