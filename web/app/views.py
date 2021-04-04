@@ -19,11 +19,6 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> daa2dc75db70d263e520af5f6066ef8f442c1638
 def test(request):
     
     context = {}
@@ -33,10 +28,6 @@ def test(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
-<<<<<<< HEAD
->>>>>>> daa2dc75db70d263e520af5f6066ef8f442c1638
-=======
->>>>>>> daa2dc75db70d263e520af5f6066ef8f442c1638
 def pages(request):
     context = {}
     # All resource paths end in .html.
