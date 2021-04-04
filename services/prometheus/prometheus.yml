@@ -29,7 +29,7 @@ scrape_configs:
     metrics_path: /metrics
     scheme: http
     static_configs:
-      - targets: ['ADD_PI_IP_HERE:9641']
+      - targets: ['10.0.0.67:9641']
 
   - job_name: "iptables"
     metrics_path: /metrics

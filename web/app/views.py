@@ -19,6 +19,18 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
+<<<<<<< HEAD
+=======
+def test(request):
+    
+    context = {}
+    context['segment'] = 'test'
+
+    html_template = loader.get_template( 'chart-apex.html' )
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+>>>>>>> daa2dc75db70d263e520af5f6066ef8f442c1638
 def pages(request):
     context = {}
     # All resource paths end in .html.

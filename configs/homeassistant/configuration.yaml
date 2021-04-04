@@ -1,3 +1,4 @@
+
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
@@ -9,14 +10,3 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-
-prometheus:
-  namespace: ha
-
-localtuya:
-
-auth_providers:
-  - type: trusted_networks
-    trusted_networks:
-      - 192.168.0.0/16
-      - 10.0.0.0/8
