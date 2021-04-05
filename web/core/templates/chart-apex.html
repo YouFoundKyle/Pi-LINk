@@ -1,7 +1,7 @@
 {% extends "layouts/base.html" %}
 
 {% block title %} Apex Charts {% endblock %} 
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
 
@@ -34,13 +34,41 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Basic line chart</h5>
+                            <h5>Temperature Chart</h5>
                         </div>
                         <div class="card-body">
                             <div id="line-chart-1"></div>
                         </div>
                     </div>
                 </div>
+
+		
+		<div class="col-md-6 col-xl-3">
+                    <div class="card bg-c-blue order-card">
+                        <div class="card-body" id="test">
+                            <h6 class="text-white">Total Messages Received</h6>
+                        </div>
+                    </div>
+                </div>
+
+		<div class="col-md-6 col-xl-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-body">
+                            <h6 class="text-white">Bytes Read</h6>
+                        </div>
+                    </div>
+                </div>
+
+		<div class="col-md-6 col-xl-3">
+                    <div class="card bg-c-yellow order-card">
+                        <div class="card-body">
+                            <h6 class="text-white">MQTT Sessions</h6>
+                        </div>
+                    </div>
+                </div>
+
+
+<!--
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
@@ -285,7 +313,11 @@
         </div>
     </div>
     <!-- [ Main Content ] end -->
+<<<<<<< HEAD
 
+=======
+    -->
+>>>>>>> 9a36fc652587d5438477deb88bee894c46421389
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
@@ -293,5 +325,9 @@
 
     <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
     <script src="/static/assets/js/pages/chart-apex.js"></script>
+<<<<<<< HEAD
+=======
+    <script src="/static/assets/js/pages/cards.js"></script>
+>>>>>>> 9a36fc652587d5438477deb88bee894c46421389
 
 {% endblock javascripts %}

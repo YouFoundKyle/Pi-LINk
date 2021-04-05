@@ -10,7 +10,9 @@ urlpatterns = [
 
     # The home page
     path('', views.index, name='home'),
-    path('dns', views.dns_dashboard, name='dns'),
+
+    path('test', views.test, name='test'),
+
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
 
