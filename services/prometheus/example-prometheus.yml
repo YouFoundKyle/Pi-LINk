@@ -18,7 +18,20 @@ scrape_configs:
     bearer_token: 'ADD_TOKEN_HERE'
     static_configs:
       - targets: ['ADD_PI_IP_HERE:8123']
-      
-  # - job_name: dnsmasq
-  #   static_configs:
-  #     - targets: ['localhost:9153']
+  - job_name: "dnsmasq_exporter"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['0.0.0.0:9153']  
+
+  - job_name: "mqtt2prometheus"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['ADD_PI_IP_HERE:9641']
+
+  - job_name: "iptables"
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['ADD_PI_IP_HERE:5432']
