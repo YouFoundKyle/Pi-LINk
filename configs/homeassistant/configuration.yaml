@@ -10,8 +10,6 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-<<<<<<< HEAD
-=======
 
 prometheus:
   namespace: ha
@@ -23,4 +21,3 @@ auth_providers:
     trusted_networks:
       - 192.168.0.0/16
       - 10.0.0.0/8
->>>>>>> main
