@@ -137,3 +137,4 @@ configs/homeassistant/custom_components/
 mosquitto.db
 prometheus.yml
 services/mqtt2prometheus/config.yaml
+.vscode/

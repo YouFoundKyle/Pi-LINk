@@ -18,7 +18,6 @@ scrape_configs:
     bearer_token: 'ADD_TOKEN_HERE'
     static_configs:
       - targets: ['ADD_PI_IP_HERE:8123']
-  
   - job_name: "dnsmasq_exporter"
     metrics_path: /metrics
     scheme: http
