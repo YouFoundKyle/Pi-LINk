@@ -1,0 +1,17 @@
+{
+	"ulid": "01F2HXBXKFPCK79B2XX5P37DTV",
+	"minTime": 1617645600641,
+	"maxTime": 1617652800000,
+	"stats": {
+		"numSamples": 282360,
+		"numSeries": 592,
+		"numChunks": 2353
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01F2HXBXKFPCK79B2XX5P37DTV"
+		]
+	},
+	"version": 1
+}

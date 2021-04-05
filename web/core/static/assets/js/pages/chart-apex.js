@@ -12,7 +12,7 @@ $(document).ready(function() {
             enabled: false
           },
           title: {
-            text: 'Ajax Example',
+            text: 'Temperature Trends',
           },
           noData: {
             text: 'Loading...'
@@ -32,7 +32,7 @@ $(document).ready(function() {
 	 
 	  $.getJSON('http://10.0.0.67:9090/api/v1/query_range?query=temperature&start=1616993300&end=1617166100&step=20s', function(response) {
           chart.updateSeries([{
-              name: 'Sales',
+              name: 'Temperature',
               data: response['data']['result'][0]['values']
             }])
           });

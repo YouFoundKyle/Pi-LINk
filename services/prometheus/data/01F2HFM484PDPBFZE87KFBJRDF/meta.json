@@ -1,0 +1,17 @@
+{
+	"ulid": "01F2HFM484PDPBFZE87KFBJRDF",
+	"minTime": 1617631200000,
+	"maxTime": 1617638400000,
+	"stats": {
+		"numSamples": 336969,
+		"numSeries": 736,
+		"numChunks": 2929
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01F2HFM484PDPBFZE87KFBJRDF"
+		]
+	},
+	"version": 1
+}
