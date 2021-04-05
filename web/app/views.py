@@ -8,6 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
+import requests
+import json
 
 @login_required(login_url="/login/")
 def index(request):
@@ -20,9 +22,9 @@ def index(request):
 
 @login_required(login_url="/login/")
 def test(request):
-    
+
     context = {}
-    context['segment'] = 'test'
+    context['segment'] = 'index'
 
     html_template = loader.get_template( 'chart-apex.html' )
     return HttpResponse(html_template.render(context, request))
