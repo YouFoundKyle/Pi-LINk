@@ -4,7 +4,7 @@
 ## Installation
 
  - Requires prerequirsites
-  - install with `sudo apt-get -y install python3-pip python3-virtualenv`
+  - install with `sudo apt-get -y install python3-pip python3-virtualenv nmap`
 - Create venv
     - `virtualenv venv`
 - activate venv
