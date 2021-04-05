@@ -22,7 +22,14 @@ def index(request):
 
 @login_required(login_url="/login/")
 def test(request):
+    context = {}
+    context['segment'] = 'index'
 
+    html_template = loader.get_template( 'chart-apex.html' )
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def dns_dashboard(request):
     context = {}
     context['segment'] = 'index'
 
