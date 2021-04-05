@@ -1,0 +1,131 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <section class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Bootstrap Basic Tables</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="#!">Bootstrap Table </a></li>
+                                <li class="breadcrumb-item"><a href="#!">Basic Tables </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row ">
+                <!-- [ basic-table ] start -->
+                <div class="col-md-6 ">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 >IoT Air Controller Temperature Metrics</h5>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>Temperature</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for time in temperature %}
+                                        <tr>
+                                            <td>{{time.0}}</td>
+                                            <td>{{time.1}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ basic-table ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </section>
+    <!-- [ Main Content ] end -->
+    
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+        {% if temperature.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" >&laquo;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ temperature.previous_page_number }}" >Previous</a>
+        </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+        {% endif %}
+
+        {% if temperature.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ temperature.number|add:'-5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in temperature.paginator.page_range %}
+            {% if temperature.number == i %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">
+                        {{ i }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                </li>
+            {% elif i > temperature.number|add:'-5' and i < temperature.number|add:'5' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if temperature.paginator.num_pages > temperature.number|add:'4' %}
+            <li class="page-item"><a class="page-link" href="?page={{ temperature.number|add:'5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if temperature.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ temperature.next_page_number }}" >Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ temperature.paginator.num_pages }}" >&raquo;</a>
+            </li>
+            
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <!--end of Pagination-->
+{% endblock content %}
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

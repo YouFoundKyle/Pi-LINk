@@ -8,6 +8,8 @@ from app import views
 
 urlpatterns = [
 
+    path('explorer', views.explorer, name='explorer'),
+
     # The home page
     path('', views.index, name='home'),
 
