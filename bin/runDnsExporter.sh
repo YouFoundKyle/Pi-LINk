@@ -1,0 +1,1 @@
+go run /etc/pilink/services/dns_exporter/dnsmasq.go
