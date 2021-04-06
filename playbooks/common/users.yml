@@ -13,3 +13,9 @@
         system: yes
         shell: /bin/bash
         # shell: "/sbin/nologin" TODO: Change it back once perms get nicer
+    
+    - name: Add ha to docker group
+      user:
+        name: ha
+        groups: sudo 
+        append: yes

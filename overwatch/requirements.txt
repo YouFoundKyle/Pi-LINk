@@ -1,0 +1,5 @@
+python3_nmap==1.5.0
+isc_dhcp_leases==0.9.1
+mac_vendor_lookup==0.1.11
+watchdog==2.0.2
+isc-dhcp-leases==0.9.1

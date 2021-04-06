@@ -46,6 +46,15 @@
         mode: '0644'
         backup: yes
     
+  - name: Copy resolve config file and backup old one
+      copy:
+        src:  ../../configs/system/resolv.conf
+        dest:  /etc/resolv.conf
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+
     - name: Make sure /var/db folder exists
       file: 
           path: /var/db
@@ -65,7 +74,7 @@
         
     - name: Remove old DNS package
       package:
-        name: ['systemd-resolve']
+        name: ['systemd-resolved']
         state: absent
         update_cache: yes
 
@@ -73,12 +82,13 @@
       systemd:
         name: "{{ item }}"
         enabled: true
-        masked: no
+        masked: 
       with_items:
           - 'dnsmasq'
-          - 'isc-dhcp-server'
 
-    - name: Enable dhcp on boot
-      command: update-rc.d {{item}} enable
+    - name: Disable Existing DNS and make sure dnsmasq is off
+      service:
+        name: "{{ item }}"
+        enabled: false
       with_items:
-          - isc-dhcp-server
+          - 'systemd-resolved'
