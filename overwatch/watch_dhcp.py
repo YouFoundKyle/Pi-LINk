@@ -15,26 +15,34 @@ import analyze_lease
 class EventLisenter(LoggingEventHandler):
 
     def dispatch(self, event):
-        print("Change Detected: type: {e} path: {p}".format(e=event.event_type, p = event.src_path))
         if (event.event_type == 'modified' and event.src_path == '/var/lib/dhcp/dhcpd.leases'):
-            print("DHCP Lease Change Detected...\n")
+            print("DHCP Lease Change Detected...")
             cur_leases = self.get_current_leases()
             old_leases = self.get_old_leases()
             new_leases = []
             for lease in cur_leases:
-                if lease not in old_leases:
+                if self.is_new_lease(lease, old_leases, new_leases) :
                     print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease.ethernet))
                     print("{mac} details: {dets}\n".format(mac=lease.ethernet, dets=str(lease)))
                     new_leases.append(lease)
             if len(new_leases) > 0:
-                print("Dumping {n} new leases...\n".format(n=len(new_leases)))
+                print("Dumping {n} new leases...".format(n=len(new_leases)))
                 self.dump_new_leases(new_leases)
                 analyze_lease.main()
+                print("Saving old leases to file...")
                 with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
                     pickle.dump(cur_leases, update_old, pickle.HIGHEST_PROTOCOL)
             else:
                 print("No new leases detected...\n")
 
+    def is_new_lease(self, lease, old, new):
+        for old_lease in old:
+            if old_lease.ethernet == lease.ethernet:
+                return False
+        for new_lease in new:
+            if new_lease.ethernet == lease.ethernet:
+                return False
+        return True
 
     def get_old_leases(self):
         if os.path.exists(SERVICE_PATH + OLD_LEASES_FILE):
@@ -56,6 +64,7 @@ class EventLisenter(LoggingEventHandler):
     
     def dump_new_leases(self, new_leases):
         with open(SERVICE_PATH + NEW_LEASES_FILE, 'wb') as output:
+            print("Saving new leases to file...")
             pickle.dump(new_leases, output, pickle.HIGHEST_PROTOCOL)
 
 if __name__ == "__main__":
@@ -64,9 +73,10 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, LEASES_PATH, recursive=True)
     observer.start()
+    print("DHCP Watchdog started...")
     try:
         while True:
-            time.sleep(1)
+            time.sleep(15)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
