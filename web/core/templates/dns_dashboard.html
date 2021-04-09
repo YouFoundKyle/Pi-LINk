@@ -1,0 +1,165 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} DNS Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">DNS Dashboard</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="#!">Dashboards</a></li>
+                                <li class="breadcrumb-item"><a href="#!">DNS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h5>DNS Dashboard</h5>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+										<li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<p>"DNS Is important. Here is a basic description of what it does. DNS is how u get urls. yadayadayadada. "
+							</p>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+            <div class="row">
+                <!-- [ variant-chart ] start -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Basic line chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="line-chart-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Realtime Chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="line-chart-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Different line chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="line-chart-3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Area chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="area-chart-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Area chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="toolbar btn-group">
+                                <button id="one_month" class="btn btn-sm btn-outline-primary">1M</button>
+                                <button id="six_months" class="btn btn-sm btn-outline-primary">6M</button>
+                                <button id="one_year" class="btn btn-sm btn-outline-primary active">1Y</button>
+                                <button id="ytd" class="btn btn-sm btn-outline-primary">YTD</button>
+                                <button id="all" class="btn btn-sm btn-outline-primary">ALL</button>
+                            </div>
+                            <div id="area-chart-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Scatter Chart</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="scatter-chart-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Pie Charts</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="pie-chart-1" style="width:100%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Pie Charts donut</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="pie-chart-2" style="width:100%"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ variant-chart ] end -->
+
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/static/assets/js/pages/chart-apex.js"></script>
+
+{% endblock javascripts %}
