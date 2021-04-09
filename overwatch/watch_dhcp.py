@@ -9,7 +9,7 @@ import pickle
 from isc_dhcp_leases import Lease, IscDhcpLeases
 from env_config import *
 import os.path
-import analyze_lease
+import analyze_leases
 
 #TODO: Dont get All leases all the time 
 class EventLisenter(LoggingEventHandler):
@@ -21,7 +21,7 @@ class EventLisenter(LoggingEventHandler):
             cur_leases = self.get_current_leases()
             old_leases = self.get_old_leases()
             new_leases = []
-            for lease in cur_leases:
+            for lease in cur_leases.values():
                 if lease not in old_leases:
                     print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease.ethernet))
                     print("{mac} details: {dets}\n".format(mac=lease.ethernet, dets=str(lease)))
@@ -29,9 +29,9 @@ class EventLisenter(LoggingEventHandler):
             if len(new_leases) > 0:
                 print("Dumping {n} new leases...\n".format(n=len(new_leases)))
                 self.dump_new_leases(new_leases)
-                analyze_lease.main()
+                analyze_leases.main()
                 with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
-                    pickle.dump(cur_leases, update_old, pickle.HIGHEST_PROTOCOL)
+                    pickle.dump(cur_leases.values(), update_old, pickle.HIGHEST_PROTOCOL)
             else:
                 print("No new leases detected...\n")
 
@@ -52,7 +52,7 @@ class EventLisenter(LoggingEventHandler):
         current_leases = leases.get_current()
         print("All Leases: {all}\n".format(all=all_leases) )
         print("Current Leases: {curr}\n".format(curr=current_leases) )
-        return all_leases
+        return current_leases
     
     def dump_new_leases(self, new_leases):
         with open(SERVICE_PATH + NEW_LEASES_FILE, 'wb') as output:

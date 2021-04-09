@@ -21,6 +21,23 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
+def overview(request):
+
+    context = {}
+    context['segment'] = 'index'
+
+    html_template = loader.get_template('dev_overview.html')
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
+def dns(request):
+    context = {}
+    context['segment'] = 'index'
+
+    html_template = loader.get_template('dns_dashboard.html')
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
 def test(request):
 
     context = {}

@@ -11,7 +11,7 @@ import json
 from env_config import *
 from datetime import datetime
 import pickle
-
+import os
 
 def check_new_lease(path):
     """
@@ -28,16 +28,21 @@ def check_new_lease(path):
     if not lease_list:
         return ""
 
+    # lease_data is a list
     lease_data = process_lease_data(lease_list)
-    portscan_results = scan(lease_data["IP Address"])
-    scan_data = process_portscan(portscan_results, lease_data["IP Address"])
-    file_contents = {"Analysis Date": datetime.now().strftime("%I_%M_%S"),
-                     "Device Info": lease_data, "Port Usage": scan_data}
-    filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
-    with open(filename, "a") as fi:
-        json_data = json.dumps(file_contents)
-        fi.write(json_data)
+    dev_analysis = []
+    file_contents = {"Analysis Date": datetime.now().strftime("%H_%M_%S")}
+    for lease in lease_data:
+        portscan_results = scan(lease["IP Address"])
+        scan_data = process_portscan(portscan_results, lease["IP Address"])
+        lease["Port Usage"] = scan_data
+        file_contents["Device Info"] = lease
+        dev_analysis.append(file_contents)
 
+    filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
+    with open(filename, "w") as fi:
+        json_data = json.dumps(dev_analysis)
+        fi.write(json_data)
     return filename
 
 
@@ -57,22 +62,24 @@ def process_portscan(portscan_results, ip_addr):
                      "State": port["state"],
                      "Service": port["service"]["name"]}
         results.append(port_dict)
-
     return results
 
 
 def process_lease_data(lease_list):
-    new_lease = lease_list[-1]
-    data = {"IP Address": new_lease.ip,
-            "MAC Address": new_lease.ethernet,
-            "Lease State": new_lease.binding_state}
-    host = new_lease.hostname
-    if host:
-        data["Hostname"] = host
-    else:
-        data["Hostname"] = "Not provided."
-    data["Device Vendor"] = find_mac(data["MAC Address"])
-    return data
+    # new_lease = lease_list[-1]
+    results = []
+    for lease in lease_list:
+        data = {"IP Address": lease.ip,
+                "MAC Address": lease.ethernet,
+                "Lease State": lease.binding_state}
+        host = lease.hostname
+        if host:
+            data["Hostname"] = host
+        else:
+            data["Hostname"] = "Not provided."
+        data["Device Vendor"] = find_mac(data["MAC Address"])
+        results.append(data)
+    return results
 
 
 def find_mac(mac_addr):
