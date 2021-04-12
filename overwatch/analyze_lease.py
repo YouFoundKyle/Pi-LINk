@@ -45,7 +45,7 @@ def check_new_lease(path):
         json_data = json.dumps(json_contents)
         fi.write(json_data)
 
-    return filename
+    return filename, json_contents
 
 
 def scan(ip_addr):
@@ -93,12 +93,12 @@ def find_mac(mac_addr):
 
 
 def main(path=SERVICE_PATH + NEW_LEASES_FILE):
-    result_path = check_new_lease(path)
+    result_path, new_leases = check_new_lease(path)
     if result_path:
         print("Device analysis successful - results are located in " + result_path)
     else:
         print("Error: device analysis unsuccessful. Ensure a valid lease file was provided.")
-
+    return new_leases
 
 if __name__ == "__main__":
     main()
