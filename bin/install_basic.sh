@@ -24,8 +24,8 @@ else
     echo "Ansible already installed"
 fi
 
-if [ d foo ]; then
-    mkdir -p '/etc/pilink'
+if [ ! -d '/etc/pilink' ]; then
+    mkdir -p '/etc/pilink' 2> /dev/null
 else
     echo "/etc/pilink already exists, deleting contents"
     rm -r /etc/pilink
