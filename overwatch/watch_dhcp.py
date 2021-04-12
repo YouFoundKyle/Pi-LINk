@@ -31,7 +31,7 @@ class EventLisenter(LoggingEventHandler):
                 self.dump_new_leases(new_leases)
                 analyze_leases.main()
                 with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
-                    pickle.dump(cur_leases.values(), update_old, pickle.HIGHEST_PROTOCOL)
+                    pickle.dump(list(cur_leases.values()), update_old, pickle.HIGHEST_PROTOCOL)
             else:
                 print("No new leases detected...\n")
 
