@@ -16,7 +16,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10">Bootstrap Basic Tables</h5>
+                                <h5 class="m-b-10">Bootstrap Basic Tables </h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
@@ -34,22 +34,74 @@
                 <div class="col-md-6 ">
                     <div class="card">
                         <div class="card-header">
-                            <h5 >IoT Air Controller Temperature Metrics</h5>
+                            <h5 >IoT MQTT Messages</h5>
                         </div>
                         <div class="card-body table-border-style">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Timestamp</th>
-                                            <th>Temperature</th>
+                                            <form class="" action="" method="POST">
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                <th>Timestamp
+                                                    {% if time_sort == 'time_sort_down' %}
+                                                        <button input type="submit" name="time_sort_down" value="time_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif time_sort == 'time_sort_up' %}
+                                                        <button input type="submit" name="time_sort_up" value="time_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span> 
+                                                    {% else %}
+                                                        <button input type="submit" name="time_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span>
+                                                    {% endif %}
+                                                </th>
+                                                <th>Topic
+                                                    {% if topic_sort == 'topic_sort_down' %}
+                                                        <button input type="submit" name="topic_sort_down" value="topic_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif topic_sort == 'topic_sort_up' %}
+                                                        <button input type="submit" name="topic_sort_up" value="topic_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span>
+                                                    {% else %} 
+                                                        <button input type="submit" name="topic_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% endif %}
+                                                </th>
+                                                <th>Metric
+                                                    {% if metric_sort == 'metric_sort_down' %}
+                                                        <button input type="submit" name="metric_sort_down" value="metric_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif metric_sort == 'metric_sort_up' %}
+                                                        <button input type="submit" name="metric_sort_up" value="metric_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span>
+                                                    {% else %} 
+                                                        <button input type="submit" name="metric_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% endif %}
+                                                </th>
+                                                <th>Values
+                                                    {% if values_sort == 'values_sort_down' %}
+                                                        <button input type="submit" name="values_sort_down" value="values_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif values_sort == 'values_sort_up' %}
+                                                        <button input type="submit" name="values_sort_up" value="values_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span>
+                                                    {% else %} 
+                                                        <button input type="submit" name="values_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% endif %}
+                                                </th>
+                                            </form>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for time in temperature %}
+                                        {% for item in mqtt %}
                                         <tr>
-                                            <td>{{time.0}}</td>
-                                            <td>{{time.1}}</td>
+                                            <td>{{item.0}}</td>
+                                            <td>{{item.1}}</td>
+                                            <td>{{item.2}}</td>
+                                            <td>{{item.3}}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -68,12 +120,12 @@
     <!--Pagination-->
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-        {% if temperature.has_previous %}
+        {% if mqtt.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1" >&laquo;</a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="?page={{ temperature.previous_page_number }}" >Previous</a>
+            <a class="page-link" href="?page={{ mqtt.previous_page_number }}" >Previous</a>
         </li>
         {% else %}
             <li class="page-item disabled">
@@ -84,33 +136,33 @@
             </li>
         {% endif %}
 
-        {% if temperature.number|add:'-4' > 1 %}
-            <li class="page-item"><a class="page-link" href="?page={{ temperature.number|add:'-5' }}">&hellip;</a></li>
+        {% if mqtt.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ mqtt.number|add:'-5' }}">&hellip;</a></li>
         {% endif %}
 
-        {% for i in temperature.paginator.page_range %}
-            {% if temperature.number == i %}
+        {% for i in mqtt.paginator.page_range %}
+            {% if mqtt.number == i %}
                 <li class="page-item active" aria-current="page">
                     <span class="page-link">
                         {{ i }}
                         <span class="sr-only">(current)</span>
                     </span>
                 </li>
-            {% elif i > temperature.number|add:'-5' and i < temperature.number|add:'5' %}
+            {% elif i > mqtt.number|add:'-5' and i < mqtt.number|add:'5' %}
                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
         {% endfor %}
 
-        {% if temperature.paginator.num_pages > temperature.number|add:'4' %}
-            <li class="page-item"><a class="page-link" href="?page={{ temperature.number|add:'5' }}">&hellip;</a></li>
+        {% if mqtt.paginator.num_pages > mqtt.number|add:'4' %}
+            <li class="page-item"><a class="page-link" href="?page={{ mqtt.number|add:'5' }}">&hellip;</a></li>
         {% endif %}
 
-        {% if temperature.has_next %}
+        {% if mqtt.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ temperature.next_page_number }}" >Next</a>
+                <a class="page-link" href="?page={{ mqtt.next_page_number }}" >Next</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ temperature.paginator.num_pages }}" >&raquo;</a>
+                <a class="page-link" href="?page={{ mqtt.paginator.num_pages }}" >&raquo;</a>
             </li>
             
         {% else %}
