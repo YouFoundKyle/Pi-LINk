@@ -11,7 +11,7 @@ import json
 from env_config import *
 from datetime import datetime
 import pickle
-
+import nmap3
 
 def check_new_lease(path):
     """
@@ -22,27 +22,33 @@ def check_new_lease(path):
 
     :return: the filepath of the JSON output
     """
+    print("Examining new lease entries...")
+
     with open(path, 'rb') as f:
         lease_list = pickle.load(f)
 
     if not lease_list:
+        print("ERROR: No Lease File Found")
         return ""
 
     lease_data = process_lease_data(lease_list)
-    portscan_results = scan(lease_data["IP Address"])
-    scan_data = process_portscan(portscan_results, lease_data["IP Address"])
-    file_contents = {"Analysis Date": datetime.now().strftime("%I_%M_%S"),
-                     "Device Info": lease_data, "Port Usage": scan_data}
+    print(lease_data)
+    json_contents = []
+    for lease in lease_data:
+        portscan_results = scan(lease["IP Address"])
+        scan_data = process_portscan(portscan_results, lease["IP Address"])
+        contents = {"Analysis Date": datetime.now().strftime("%I_%M_%S"),
+                        "Device Info": lease, "Port Usage": scan_data}
+        json_contents.append(contents)
     filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
     with open(filename, "a") as fi:
-        json_data = json.dumps(file_contents)
+        json_data = json.dumps(json_contents)
         fi.write(json_data)
 
-    return filename
+    return filename, json_contents
 
 
 def scan(ip_addr):
-    import nmap3
     nmap = nmap3.NmapHostDiscovery()
     results = nmap.nmap_portscan_only(ip_addr)
     return results
@@ -61,18 +67,20 @@ def process_portscan(portscan_results, ip_addr):
     return results
 
 
-def process_lease_data(lease_list):
-    new_lease = lease_list[-1]
-    data = {"IP Address": new_lease.ip,
-            "MAC Address": new_lease.ethernet,
-            "Lease State": new_lease.binding_state}
-    host = new_lease.hostname
-    if host:
-        data["Hostname"] = host
-    else:
-        data["Hostname"] = "Not provided."
-    data["Device Vendor"] = find_mac(data["MAC Address"])
-    return data
+def process_lease_data(new_leases):
+    leases = []
+    for l in new_leases:
+        data = {"IP Address": l.ip,
+                "MAC Address": l.ethernet,
+                "Lease State": l.binding_state}
+        host = l.hostname
+        if host:
+            data["Hostname"] = host
+        else:
+            data["Hostname"] = "Unknown"
+        data["Device Vendor"] = find_mac(data["MAC Address"])
+        leases.append(data)
+    return leases
 
 
 def find_mac(mac_addr):
@@ -81,16 +89,16 @@ def find_mac(mac_addr):
     try:
         return mac_data.lookup(mac_addr)
     except KeyError:
-        return "Not found."
+        return "Unknown"
 
 
 def main(path=SERVICE_PATH + NEW_LEASES_FILE):
-    result_path = check_new_lease(path)
+    result_path, new_leases = check_new_lease(path)
     if result_path:
         print("Device analysis successful - results are located in " + result_path)
     else:
         print("Error: device analysis unsuccessful. Ensure a valid lease file was provided.")
-
+    return new_leases
 
 if __name__ == "__main__":
     main()
