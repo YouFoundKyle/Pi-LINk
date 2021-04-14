@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} UI Tables {% endblock %} 
+{% block title %} MQTT Explorer {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -16,12 +16,11 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10">Bootstrap Basic Tables </h5>
+                                <h5 class="m-b-10">MQTT Explorer </h5>
                             </div>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="#!">Bootstrap Table </a></li>
-                                <li class="breadcrumb-item"><a href="#!">Basic Tables </a></li>
+                                <li class="breadcrumb-item"><a href="#!">MQTT Message Explorer </a></li>
                             </ul>
                         </div>
                     </div>
@@ -30,8 +29,30 @@
             <!-- [ breadcrumb ] end -->
             <!-- [ Main Content ] start -->
             <div class="row ">
+                <div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h5>MQTT Message Explorer</h5>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                        <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                    </ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<p>This is an MQTT explorer, it shows messages. What are MQTT messages? Good Question. Its ...
+							</p>
+						</div>
+					</div>
+				</div>
                 <!-- [ basic-table ] start -->
-                <div class="col-md-6 ">
                     <div class="card">
                         <div class="card-header">
                             <h5 >IoT MQTT Messages</h5>
