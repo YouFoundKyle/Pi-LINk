@@ -5,7 +5,8 @@ from django.template import loader
 from django.http import HttpResponse
 from django import template
 import requests
-import json
+import json, os
+
 
 @login_required(login_url="/login/")
 def index(request):
@@ -17,11 +18,14 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
-def overview(request):
+def dev_overview(request):
 
     context = {}
     context['segment'] = 'index'
-
+    if os.path.exists("/etc/pilink/web/lease_DB.json"):
+        with open("/etc/pilink/web/lease_DB.json") as df:
+            dev_data = json.loads(df)
+    context['lease_data'] = dev_data
     html_template = loader.get_template('dev_overview.html')
     return HttpResponse(html_template.render(context, request))
 

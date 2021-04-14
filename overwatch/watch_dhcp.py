@@ -27,26 +27,20 @@ class EventLisenter(LoggingEventHandler):
             old_leases = self.get_old_leases()
             new_leases = []
             for lease in cur_leases.values():
-                if lease not in old_leases:
+                if self.is_new_lease(lease, old_leases, new_leases) :
                     print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease.ethernet))
                     print("{mac} details: {dets}\n".format(mac=lease.ethernet, dets=str(lease)))
                     new_leases.append(lease)
-            if len(new_leases) > 0:
-                print("Dumping {n} new leases...\n".format(n=len(new_leases)))
-                self.dump_new_leases(new_leases)
-                analyze_leases.main()
-                with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
-                    pickle.dump(list(cur_leases.values()), update_old, pickle.HIGHEST_PROTOCOL)
-            else:
+            if len(new_leases) == 0:
                 print("No new leases detected...\n")
                 return
-
             print("Dumping {n} new leases...".format(n=len(new_leases)))
             self.dump_new_leases(new_leases)
             print("Saving old leases to file...")
             with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
-                pickle.dump(cur_leases, update_old, pickle.HIGHEST_PROTOCOL)
-            new_leases = analyze_lease.main()
+                pickle.dump(list(cur_leases.values()), update_old, pickle.HIGHEST_PROTOCOL)
+            # new_leases = analyze_leases.main()
+            analyze_leases.main()
             for lease in new_leases:
                 print(f"Applying Hardening to {lease.ip}...")
                 harden.read_model('standard', lease)

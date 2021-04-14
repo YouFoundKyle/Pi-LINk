@@ -71,7 +71,7 @@ def read_model(model, device):
         device  (lease): lease object of the device
     """
     try: 
-        with open(SERVICE_PATH + "models/" + model) as f:
+        with open(SERVICE_PATH + "models/" + model + ".json") as f:
             data = json.load(f)
             for action in data.keys():
                 if action not in info_keys:
