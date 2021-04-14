@@ -1,0 +1,117 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Device Overview {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Device Dashboard</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="#!">Devices</a></li>
+                                <li class="breadcrumb-item"><a href="#!">{{ ip }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h5>What is this?</h5>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+										<li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<p>"This is a device. Here is a basic description of what it does. Devices r gud. yadayadayadada. "
+							</p>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+            <div class="row">
+                <!-- [ form-element ] start -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Device Components</h5>
+                        </div>
+                        <div class="card-body">
+                            <h5> Network Information {{ type }}</h5>
+                            <hr>
+                            <div class="col-md-6">
+                                <form>
+                                    <div class="form-group row">
+                                        <label for="staticIP" class="col-sm-3 col-form-label">IP Address</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" readonly class="form-control-plaintext" id="staticIP" value= {{ ip }}>
+                                            <small id="ipHelp" class="form-text text-muted">The address that devices use to communicate.</small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticMAC" class="col-sm-3 col-form-label">MAC Address</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" readonly class="form-control-plaintext" id="staticMAC" value= {{ mac }}>
+                                            <small id="macHelp" class="form-text text-muted">The hardcoded address the device uses to communicate.</small>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                 <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="ipSwitch">
+                                    <label class="custom-control-label" for="ipSwitch">Static IP</label>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Ports</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value={{ open_ports }}>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/static/assets/js/pages/chart-apex.js"></script>
+
+{% endblock javascripts %}
