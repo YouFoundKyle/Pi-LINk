@@ -15,3 +15,4 @@
 
  ## Notes:
  Requires nmap be installed on system
+ Requires XTABLES_LIBDIR=/usr/lib/iptables environment variable

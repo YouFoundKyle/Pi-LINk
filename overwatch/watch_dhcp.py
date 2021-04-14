@@ -9,7 +9,7 @@ import pickle
 from isc_dhcp_leases import Lease, IscDhcpLeases
 from env_config import *
 import os.path
-import analyze_lease
+import analyze_leases
 import harden
 
 class EventLisenter(LoggingEventHandler):
@@ -26,7 +26,6 @@ class EventLisenter(LoggingEventHandler):
             cur_leases = self.get_current_leases()
             old_leases = self.get_old_leases()
             new_leases = []
-<<<<<<< HEAD
             for lease in cur_leases.values():
                 if lease not in old_leases:
                     print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease.ethernet))
@@ -39,14 +38,6 @@ class EventLisenter(LoggingEventHandler):
                 with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
                     pickle.dump(list(cur_leases.values()), update_old, pickle.HIGHEST_PROTOCOL)
             else:
-=======
-            for lease in cur_leases:
-                if self.is_new_lease(lease, old_leases, new_leases) :
-                    print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease.ethernet))
-                    print("{mac} details: {dets}\n".format(mac=lease.ethernet, dets=str(lease)))
-                    new_leases.append(lease)
-            if len(new_leases) == 0:
->>>>>>> django
                 print("No new leases detected...\n")
                 return
 

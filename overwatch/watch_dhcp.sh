@@ -1,1 +1,1 @@
-screen -d -m -S "watch_dhcp" python3 /etc/pilink/overwatch/watch_dhcp.py
+XTABLES_LIBDIR=/usr/lib/iptables screen -d -m -S "watch_dhcp" python3 /etc/pilink/overwatch/watch_dhcp.py
