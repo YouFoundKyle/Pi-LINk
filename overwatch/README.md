@@ -10,7 +10,9 @@
 - activate venv
     - `source venv/bin/activate`
 - install packages
-     - `pip3 install -r requirements.txt`
+    - `pip3 install -r requirements.txt`
+- You may need to perform this command to ensure device hardening works: 
+    - `export XTABLES_LIBDIR=/usr/lib/iptables`
  
 
  ## Notes:

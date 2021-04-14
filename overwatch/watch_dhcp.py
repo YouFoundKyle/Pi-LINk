@@ -10,7 +10,7 @@ from isc_dhcp_leases import Lease, IscDhcpLeases
 from env_config import *
 import os.path
 import analyze_leases
-# import harden
+import harden
 
 class EventLisenter(LoggingEventHandler):
 
@@ -40,9 +40,9 @@ class EventLisenter(LoggingEventHandler):
             with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
                 pickle.dump(list(cur_leases.values()), update_old, pickle.HIGHEST_PROTOCOL)
             new_leases = analyze_leases.main()
-            # for lease in new_leases:
-            #     print(f"Applying Hardening to {lease.ip}...")
-            #     harden.read_model('standard', lease)
+            for lease in new_leases:
+                print(f"Applying Hardening to {lease.ip}...")
+                harden.read_model('standard', lease)
                 
 
     def is_new_lease(self, lease, old, new):
