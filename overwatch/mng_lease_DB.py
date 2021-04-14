@@ -19,7 +19,7 @@ def update_leaseDB():
     else:
         with open(source) as lf:
             new_leases = json.load(lf)
-            dest = PILINK_PATH + OVERWATCH_FOLDER + LEASE_DB_PREFIX + ".json"
+            dest = PILINK_PATH + WEB_FOLDER + LEASE_DB_PREFIX + ".json"
             if not os.path.exists(dest):
                 create_leaseDB(new_leases, dest)
             else:

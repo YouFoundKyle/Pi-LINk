@@ -40,12 +40,11 @@ def check_new_lease(path):
         scan_data = process_portscan(portscan_results, lease["IP Address"])
         lease["Port Usage"] = scan_data
         lease["Analysis Date"] = datetime.now().strftime("%H_%M_%S")
-        dev_analysis.append(lease)
+        json_contents.append(lease)
     filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
-    with open(filename, "a") as fi:
+    with open(filename, "w") as fi:
         json_data = json.dumps(json_contents)
         fi.write(json_data)
-
     return filename, json_contents
 
 
