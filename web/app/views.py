@@ -1,8 +1,4 @@
 # -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
@@ -30,9 +26,20 @@ def overview(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
+def device(request):
+    context = {}
+    context['segment'] = 'device'
+    context['ip'] = '10.1.1.4'
+    context[ 'type' ] = 'camera'
+    context[ 'mac' ] = 'aa:bb:cc:dd:ee:ff'
+    context[ 'open_ports' ] = '22,6100,9133'
+    html_template = loader.get_template('device_overview.html')
+    return HttpResponse(html_template.render(context, request))
+
+@login_required(login_url="/login/")
 def dns(request):
     context = {}
-    context['segment'] = 'index'
+    context['segment'] = 'dns'
 
     html_template = loader.get_template('dns_dashboard.html')
     return HttpResponse(html_template.render(context, request))
@@ -43,14 +50,6 @@ def test(request):
     context['segment'] = 'index'
 
     html_template = loader.get_template( 'chart-apex.html' )
-    return HttpResponse(html_template.render(context, request))
-
-@login_required(login_url="/login/")
-def dns_dashboard(request):
-    context = {}
-    context['segment'] = 'dns'
-
-    html_template = loader.get_template( 'dns_dashboard.html' )
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
