@@ -138,3 +138,6 @@ mosquitto.db
 prometheus.yml
 services/mqtt2prometheus/config.yaml
 .vscode/
+new_leases.pkl
+old_leases.pk1
+lease_info.json
