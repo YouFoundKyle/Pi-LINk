@@ -30,7 +30,7 @@ def create_leaseDB(new_leases, dest):
     with open(dest, "w") as df:
         db = {}
         for lease in new_leases:
-            mac = lease.pop("MAC Address")
+            mac = lease.pop("MAC")
             db[mac] = lease
         db_json = json.dumps(db)
         df.write(db_json)
@@ -41,7 +41,7 @@ def modify_leaseDB(new_leases, dest):
     with open(dest, "r+") as df:
         data = json.load(df)
         for lease in new_leases:
-            mac = lease.pop("MAC Address")
+            mac = lease.pop("MAC")
             data.update({mac:lease})
             print("Updated device info for MAC Address: " + mac)
         db_json = json.dumps(data)

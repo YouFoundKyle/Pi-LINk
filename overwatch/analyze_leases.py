@@ -36,10 +36,10 @@ def check_new_lease(path):
     print(lease_data)
     json_contents = []
     for lease in lease_data:
-        portscan_results = scan(lease["IP Address"])
-        scan_data = process_portscan(portscan_results, lease["IP Address"])
-        lease["Port Usage"] = scan_data
-        lease["Analysis Date"] = datetime.now().strftime("%H_%M_%S")
+        portscan_results = scan(lease["IP"])
+        scan_data = process_portscan(portscan_results, lease["IP"])
+        lease["port_usage"] = scan_data
+        lease["date"] = datetime.now().strftime("%H_%M_%S")
         json_contents.append(lease)
     filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
     with open(filename, "w") as fi:
@@ -58,10 +58,10 @@ def process_portscan(portscan_results, ip_addr):
     ports = portscan_results[ip_addr]["ports"]
     results = []
     for port in ports:
-        port_dict = {"Port ID": port["portid"],
-                     "Protocol": port["protocol"],
-                     "State": port["state"],
-                     "Service": port["service"]["name"]}
+        port_dict = {"port_id": port["portid"],
+                     "protocol": port["protocol"],
+                     "port_state": port["state"],
+                     "service": port["service"]["name"]}
         results.append(port_dict)
     return results
 
@@ -69,15 +69,15 @@ def process_portscan(portscan_results, ip_addr):
 def process_lease_data(new_leases):
     leases = []
     for l in new_leases:
-        data = {"IP Address": l.ip,
-                "MAC Address": l.ethernet,
-                "Lease State": l.binding_state}
+        data = {"IP": l.ip,
+                "MAC": l.ethernet,
+                "lease_state": l.binding_state}
         host = l.hostname
         if host:
-            data["Hostname"] = host
+            data["hostname"] = host
         else:
-            data["Hostname"] = "Unknown"
-        data["Device Vendor"] = find_mac(data["MAC Address"])
+            data["hostname"] = "Unknown"
+        data["vendor"] = find_mac(data["MAC"])
         leases.append(data)
     return leases
 
