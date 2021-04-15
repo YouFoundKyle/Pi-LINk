@@ -12,3 +12,6 @@
 - install packages
      - `pip3 install -r requirements.txt`
  
+
+ ## Notes:
+ Requires nmap be installed on system

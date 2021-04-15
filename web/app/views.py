@@ -1,8 +1,12 @@
 # -*- encoding: utf-8 -*-
+<<<<<<< HEAD
 """
 Copyright (c) 2019 - present AppSeed.us
 """
 from datetime import datetime, timedelta
+=======
+from datetime import datetime
+>>>>>>> dedb66d0c8213241fa7ff40b2d9589911e364f33
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -68,14 +72,21 @@ def explorer(request):
     context = {}
     context['segment'] = 'explorer'
     
+<<<<<<< HEAD
     if 'trip_qstart' in request.POST:
         explorer_context['test'] = 'trip_qstart'
 
     msg_json = requests.get('http://192.168.1.152:9090/api/v1/query_range?query=received_messages&start=1618172204&end=1618191179&step=20s').json()
+=======
+    # msg_json = requests.get('http://192.168.1.123:9090/api/v1/query_range?query=received_messages&start=1618172204&end=1618191179&step=20s').json()
+    watt = requests.get('http://192.168.1.123:9090/api/v1/query_range?query=watts&start=1618172204&end=1618191179&step=20s').json()
+    temp = requests.get('http://192.168.1.123:9090/api/v1/query_range?query=temperature&start=1618172204&end=1618191179&step=20s').json()
+    wattTemp = watt['data']['result'] + temp['data']['result']
+>>>>>>> dedb66d0c8213241fa7ff40b2d9589911e364f33
     mqtt_list = []
-    for i in range(len(msg_json['data']['result'])):
-        msg_values = dict(msg_json['data']['result'][i]['values'])
-        topic = msg_json['data']['result'][i]['metric']['topic']
+    for i in range(len(wattTemp)):
+        msg_values = dict(wattTemp[i]['values'])
+        topic = wattTemp[i]['metric']['topic']
         msg_values = [(datetime.utcfromtimestamp(key).strftime('%Y-%m-%d %H:%M:%S'), topic, topic.rsplit("/", 1)[1], int(value)) for key, value in msg_values.items()]
         mqtt_list += msg_values
     
