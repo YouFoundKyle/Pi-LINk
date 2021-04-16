@@ -58,12 +58,12 @@
                             {% csrf_token %}
                             {{ form.as_p }}
                         <div class="card-header">
-                            <h5 >IoT MQTT Messages {{ test }}</h5>
-                            {{ date_form.date_field }}
+                            <h5 >IoT MQTT Messages</h5>
                             <label for="qstart">Start date:</label>
-                            <input type="date" id="qstart" name="trip_qstart" value= "{{ yesterday }}" min="2018-01-01" max="{{ today }}">
+                            <input type="date" id="qstart" name="trip_qstart" value= "{{ qstart }}" min="2018-01-01" max="{{ qend }}">
                             <label for="qend">End date:</label>
-                            <input type="date" id="qend" name="trip_qend" value= "{{ today }}" min="2018-01-01" max="{{ tomorrow }}">
+                            <input type="date" id="qend" name="trip_qend" value= "{{ qend }}" min="2018-01-01" max="{{ tomorrow }}">
+                            <button>Submit</button>
                         </div>
                         </form>
                         <div class="card-body table-border-style">

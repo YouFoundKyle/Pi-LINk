@@ -1,12 +1,8 @@
 # -*- encoding: utf-8 -*-
-<<<<<<< HEAD
 """
 Copyright (c) 2019 - present AppSeed.us
 """
 from datetime import datetime, timedelta
-=======
-from datetime import datetime
->>>>>>> dedb66d0c8213241fa7ff40b2d9589911e364f33
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -63,7 +59,7 @@ yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
 today = datetime.today().strftime("%Y-%m-%d")
 tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
- 'values_sort': None, 'yesterday': yesterday, 'today': today, 'tomorrow': tomorrow, 'test': test, 'date_form': None}
+ 'values_sort': None, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today}
 global last_sort
 last_sort = None
 
@@ -72,17 +68,9 @@ def explorer(request):
     context = {}
     context['segment'] = 'explorer'
     
-<<<<<<< HEAD
-    if 'trip_qstart' in request.POST:
-        explorer_context['test'] = 'trip_qstart'
-
-    msg_json = requests.get('http://192.168.1.152:9090/api/v1/query_range?query=received_messages&start=1618172204&end=1618191179&step=20s').json()
-=======
-    # msg_json = requests.get('http://192.168.1.123:9090/api/v1/query_range?query=received_messages&start=1618172204&end=1618191179&step=20s').json()
-    watt = requests.get('http://192.168.1.123:9090/api/v1/query_range?query=watts&start=1618172204&end=1618191179&step=20s').json()
-    temp = requests.get('http://192.168.1.123:9090/api/v1/query_range?query=temperature&start=1618172204&end=1618191179&step=20s').json()
+    watt = requests.get('http://192.168.1.152:9090/api/v1/query_range?query=watts&start=1618172204&end=1618191179&step=20s').json()
+    temp = requests.get('http://192.168.1.152:9090/api/v1/query_range?query=temperature&start=1618172204&end=1618191179&step=20s').json()
     wattTemp = watt['data']['result'] + temp['data']['result']
->>>>>>> dedb66d0c8213241fa7ff40b2d9589911e364f33
     mqtt_list = []
     for i in range(len(wattTemp)):
         msg_values = dict(wattTemp[i]['values'])
@@ -147,6 +135,11 @@ def explorer(request):
         mqtt_list.sort(key=lambda x: x[3])
         last_sort = mqtt_list
 
+    if 'trip_qstart' in request.POST:
+        explorer_context['qstart'] = request.POST.getlist('trip_qstart')[0]
+    if 'trip_qend' in request.POST:
+        explorer_context['qend'] = request.POST.getlist('trip_qend')[0]
+
     if last_sort == None:
         last_sort = mqtt_list
 
@@ -159,11 +152,9 @@ def explorer(request):
     context['topic_sort'] = explorer_context['topic_sort'] 
     context['metric_sort'] = explorer_context['metric_sort'] 
     context['values_sort'] = explorer_context['values_sort']
-    context['yesterday'] = explorer_context['yesterday']
-    context['today'] = explorer_context['today']
     context['tomorrow'] = explorer_context['tomorrow']
-    context['test'] = explorer_context['test']
-    context['date_form'] = explorer_context['date_form']
+    context['qstart'] = explorer_context['qstart']
+    context['qend'] = explorer_context['qend']
     
     html_template = loader.get_template('explorer.html')
     return HttpResponse(html_template.render(context, request))
