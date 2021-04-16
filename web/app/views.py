@@ -59,7 +59,7 @@ yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
 today = datetime.today().strftime("%Y-%m-%d")
 tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
- 'values_sort': None, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today}
+ 'values_sort': None, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, "test": None}
 global last_sort
 last_sort = None
 
@@ -67,9 +67,24 @@ def explorer(request):
     global last_sort
     context = {}
     context['segment'] = 'explorer'
-    
-    watt = requests.get('http://192.168.1.152:9090/api/v1/query_range?query=watts&start=1618172204&end=1618191179&step=20s').json()
-    temp = requests.get('http://192.168.1.152:9090/api/v1/query_range?query=temperature&start=1618172204&end=1618191179&step=20s').json()
+
+    # Formatting API url
+    wattPre = 'http://192.168.1.152:9090/api/v1/query_range?query=watts'
+    tempPre = 'http://192.168.1.152:9090/api/v1/query_range?query=temperature'
+
+    startDT = datetime.strptime(explorer_context['qstart'], '%Y-%m-%d')
+    endDT = datetime.strptime(explorer_context['qend'], '%Y-%m-%d')
+    start_utc = str(int(startDT.timestamp()))
+    end_utc = str(int(endDT.timestamp()))
+    # We need to use suffix to have the API actually change
+    suffix = '&start=' + start_utc + '&end=' + end_utc + '&step=20s'
+    # Right now I'm using this hardcoded one because our test data is so weird
+    suffix_test = '&start=' + '1618172204' + '&end=' + '1618191179' + '&step=20s'
+    # I was using this to test the formatting to make sure it was correct, we dont need anymore
+    explorer_context['test'] = wattPre + suffix
+
+    watt = requests.get(wattPre + suffix_test).json()
+    temp = requests.get(tempPre + suffix_test).json()
     wattTemp = watt['data']['result'] + temp['data']['result']
     mqtt_list = []
     for i in range(len(wattTemp)):
@@ -155,6 +170,7 @@ def explorer(request):
     context['tomorrow'] = explorer_context['tomorrow']
     context['qstart'] = explorer_context['qstart']
     context['qend'] = explorer_context['qend']
+    context['test'] = explorer_context['test']
     
     html_template = loader.get_template('explorer.html')
     return HttpResponse(html_template.render(context, request))
