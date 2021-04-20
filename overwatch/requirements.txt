@@ -3,3 +3,4 @@ isc_dhcp_leases==0.9.1
 mac_vendor_lookup==0.1.11
 watchdog==2.0.2
 python-iptables==1.0.0
+requests==2.25.1
