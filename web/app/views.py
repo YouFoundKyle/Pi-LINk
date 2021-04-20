@@ -18,15 +18,26 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
-def dev_overview(request):
+def net_overview(request):
 
     context = {}
     context['segment'] = 'index'
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
-            dev_data = json.loads(df)
+            dev_data = json.load(df)
     context['lease_data'] = dev_data
-    html_template = loader.get_template('dev_overview.html')
+    port_dicts = []
+    port_count = {}
+    for key, val in dev_data.items():
+        ports = val["port_usage"]
+        port_dicts.extend(ports)
+    for port in port_dicts:
+        if port["port_id"] in port_count.keys():
+            port_count[port["port_id"]] += 1
+        else:
+            port_count[port["port_id"]] = 1
+    context['port_info'] = port_count
+    html_template = loader.get_template('network_overview.html')
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")

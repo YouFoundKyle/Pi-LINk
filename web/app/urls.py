@@ -13,9 +13,10 @@ urlpatterns = [
 
     path('test', views.test, name='test'),
 
-    path('overview', views.dev_overview, name='dev_overview'),
+    path('overview', views.net_overview, name='network_overview'),
 
     path('dns', views.dns, name='dns'),
+    
     path('device', views.device, name='device'),
 
     # Matches any html file
