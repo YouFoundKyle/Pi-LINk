@@ -8,3 +8,7 @@ OLD_LEASES_FILE='old_leases.pk1'
 ANALYZED_LEASES_PREFIX='lease_info'
 LEASE_DB_PREFIX='lease_DB'
 
+## Risk Levels
+LOW_RISK=1
+MED_RISK=2
+HIGH_RISK=3

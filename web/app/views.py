@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django import template
 import requests
 import json, os
-
+from .functionality.port_types import get_port_info
 
 @login_required(login_url="/login/")
 def index(request):
@@ -47,7 +47,12 @@ def device(request):
     context['ip'] = '10.1.1.4'
     context[ 'type' ] = 'camera'
     context[ 'mac' ] = 'aa:bb:cc:dd:ee:ff'
-    context[ 'open_ports' ] = '22,6100,9133'
+    context[ 'open_ports' ] = [ '22','6100','7103']
+    context[ 'port_info' ] = {}
+    
+    for port in context['open_ports']:
+        context[ 'port_info' ][port]  = get_port_info(port)
+    
     html_template = loader.get_template('device_overview.html')
     return HttpResponse(html_template.render(context, request))
 

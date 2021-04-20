@@ -94,7 +94,57 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-default">Ports</span>
                                 </div>
-                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value={{ open_ports }}>
+                                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value= "{% for p in open_ports %} {{ p }} {% endfor %}"">
+                            </div>
+                            <div class="col-md-6">
+                                    <div class="card-header">
+                                        <h5>Open Ports</h5>
+                                        <span class="d-block m-t-5">List of open ports and their <code> risk </code> </code> factor </span>
+                                    </div>
+                                    <div class=" table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-dark">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Port</th>
+                                                        <th>Risk</th>
+                                                        <th>Service</th>
+                                                        <th>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for port, info in port_info.items %}
+                                                    {% if info.risk == 1 %}
+                                                        <tr class="bg-success">
+                                                    {% elif info.risk == 2 %}
+                                                        <tr class="bg-warning">
+                                                    {% elif info.risk == 3 %}
+                                                        <tr class="bg-danger">
+                                                    {% else %}
+                                                        <tr class="bg-primary">
+                                                    {% endif %}
+                                                        <td>{{ port }}</td>
+
+
+                                                    {% if info.risk == 1 %}
+                                                        <td> LOW </td>
+                                                    {% elif info.risk == 2 %}
+                                                        <td> MODERATE </td>
+                                                    {% elif info.risk == 3 %}
+                                                        <td> HIGH </td>
+                                                    {% else %}
+                                                        <td> N/A </td>
+                                                    {% endif %}
+
+                                                        <td>{{ info.service }}</td>
+                                                        <td> {{ info.comment }}</td>
+                                                    </tr>
+                                                      {% endfor %}
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                             </div>
                             </form>
                         </div>
