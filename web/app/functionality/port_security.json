@@ -1,0 +1,39 @@
+{
+    "ports":  {
+        "20": {
+            "risk": 2,
+            "comment": "",
+            "service": "ftp"
+        },
+        "21": {
+            "risk": 2,
+            "comment": "",
+            "service": "ftp"
+        },
+        "22" : {
+            "risk": 2, 
+            "comment": "Used for secure remote connections",
+            "service": "ssh"
+        },
+        "23": {
+            "risk": 3,
+            "comment": "",
+            "service": "telnet"
+        },
+        "80": {
+            "risk": 3,
+            "comment": "",
+            "service": "HTTP"
+        },
+        "443": {
+            "risk": 3,
+            "comment": "",
+            "service": "HTTPS"
+        },
+        "6668": {
+            "risk": 3,
+            "comment": "",
+            "service": "Internet Relay Chat"
+        }
+    }
+}
