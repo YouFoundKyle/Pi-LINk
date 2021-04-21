@@ -9,7 +9,7 @@ from mac_vendor_lookup import MacLookup
 import sys
 import json
 from env_config import *
-from datetime import datetime
+from datetime import date
 import pickle
 import nmap3
 
@@ -39,7 +39,7 @@ def check_new_lease(path):
         portscan_results = scan(lease["IP"])
         scan_data = process_portscan(portscan_results, lease["IP"])
         lease["port_usage"] = scan_data
-        lease["date"] = datetime.now().strftime("%H_%M_%S")
+        lease["date_added"] = date.today().strftime("%m/%d/%y")
         json_contents.append(lease)
     filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
     with open(filename, "w") as fi:

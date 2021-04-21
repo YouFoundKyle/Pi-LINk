@@ -2,6 +2,7 @@
 import os
 import json
 from env_config import *
+from datetime import date
 """
 This module collects data on new leases from "lease_info.json" and 
 updates the "leaseDB.json" file, which contains current and
@@ -29,12 +30,14 @@ def update_leaseDB():
 def create_leaseDB(new_leases, dest):
     with open(dest, "w") as df:
         db = {}
+        print("Created new leaseDB.json file in " + dest)
         for lease in new_leases:
             mac = lease.pop("MAC")
+            lease["last_updated"] = date.today().strftime("%m/%d/%y")
             db[mac] = lease
+            print("Saved device info for MAC Address: " + mac + " in " + dest)
         db_json = json.dumps(db)
         df.write(db_json)
-        print("Created new leaseDB.json file in " + dest)
 
 
 def modify_leaseDB(new_leases, dest):
@@ -42,8 +45,11 @@ def modify_leaseDB(new_leases, dest):
         data = json.load(df)
         for lease in new_leases:
             mac = lease.pop("MAC")
-            data.update({mac:lease})
-            print("Updated device info for MAC Address: " + mac)
+            if mac in data.keys():
+                data[mac].update(lease)
+            else:
+                data.update(lease)
+            print("Updated device info for MAC Address: " + mac + " in " + dest)
         db_json = json.dumps(data)
         df.seek(0)
         df.write(db_json)
