@@ -59,7 +59,7 @@ yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
 today = datetime.today().strftime("%Y-%m-%d")
 tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
- 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, "test": None}
+ 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': ''}
 global last_sort
 last_sort = None
 
@@ -68,95 +68,93 @@ def explorer(request):
     context = {}
     context['segment'] = 'explorer'
 
-    # Formatting API url
-    wattPre = 'http://192.168.1.152:9090/api/v1/query_range?query=watts'
-    tempPre = 'http://192.168.1.152:9090/api/v1/query_range?query=temperature'
+    if 'trip_qstart' in request.POST:
+        explorer_context['qstart'] = request.POST.getlist('trip_qstart')[0]
+        explorer_context['qend'] = request.POST.getlist('trip_qend')[0]
 
-    startDT = datetime.strptime(explorer_context['qstart'], '%Y-%m-%d')
-    endDT = datetime.strptime(explorer_context['qend'], '%Y-%m-%d')
-    start_utc = str(int(startDT.timestamp()))
-    end_utc = str(int(endDT.timestamp()))
-    # We need to use suffix to have the API actually change
-    suffix = '&start=' + start_utc + '&end=' + end_utc + '&step=60s'
-    # Right now I'm using this hardcoded one because our test data is so weird
-    suffix_test = '&start=' + '1618172204' + '&end=' + '1618191179' + '&step=60s'
-    # I was using this to test the formatting to make sure it was correct, we dont need anymore
-    explorer_context['test'] = wattPre + suffix
+    try:
+        # Formatting API url
+        wattPre = 'http://192.168.1.123:9090/api/v1/query_range?query=watts'
+        tempPre = 'http://192.168.1.123:9090/api/v1/query_range?query=temperature'
 
-    watt = requests.get(wattPre + suffix).json()
-    temp = requests.get(tempPre + suffix).json()
-    wattTemp = watt['data']['result'] + temp['data']['result']
-    mqtt_list = []
-    for i in range(len(wattTemp)):
-        msg_values = dict(wattTemp[i]['values'])
-        topic = wattTemp[i]['metric']['topic']
-        msg_values = [(datetime.utcfromtimestamp(key).strftime('%Y-%m-%d %H:%M:%S'), topic, topic.rsplit("/", 1)[1], int(value)) for key, value in msg_values.items()]
-        mqtt_list += msg_values
+        startDT = datetime.strptime(explorer_context['qstart'], '%Y-%m-%d')
+        endDT = datetime.strptime(explorer_context['qend'], '%Y-%m-%d')
+        start_utc = str(int(startDT.timestamp()))
+        end_utc = str(int(endDT.timestamp()))
+        suffix = '&start=' + start_utc + '&end=' + end_utc + '&step=60s'
+
+        watt = requests.get(wattPre + suffix).json()
+        temp = requests.get(tempPre + suffix).json()
+        wattTemp = watt['data']['result'] + temp['data']['result']
+        mqtt_list = []
+        explorer_context['error'] = ''
+        for i in range(len(wattTemp)):
+            msg_values = dict(wattTemp[i]['values'])
+            topic = wattTemp[i]['metric']['topic']
+            msg_values = [(datetime.utcfromtimestamp(key).strftime('%Y-%m-%d %H:%M:%S'), topic, topic.rsplit("/", 1)[1], int(value)) for key, value in msg_values.items()]
+            mqtt_list += msg_values
+    except:
+        explorer_context['error'] = 'Please try a another range of dates!'
     
+    if (last_sort == None or 'trip_qstart' in request.POST) and explorer_context['error'] == '':
+        explorer_context['time_sort'] = 'time_sort_down'
+        explorer_context['topic_sort'] = None
+        explorer_context['metric_sort'] = None
+        explorer_context['values_sort'] = None
+        last_sort = sorted(mqtt_list)
+
     if 'time_sort_down' in request.POST:
         explorer_context['time_sort'] = 'time_sort_up'
         explorer_context['topic_sort'] = None
         explorer_context['metric_sort'] = None
         explorer_context['values_sort'] = None
-        mqtt_list.sort(reverse=True)
-        last_sort = mqtt_list
+        last_sort.sort(reverse=True)
     elif 'time_sort_up' in request.POST:
         explorer_context['time_sort'] = 'time_sort_down'
         explorer_context['topic_sort'] = None
         explorer_context['metric_sort'] = None
         explorer_context['values_sort'] = None
-        mqtt_list.sort()
-        last_sort = mqtt_list
+        last_sort.sort()
     elif 'topic_sort_down' in request.POST:
         explorer_context['topic_sort'] = 'topic_sort_up'
         explorer_context['time_sort'] = None
         explorer_context['metric_sort'] = None
         explorer_context['values_sort'] = None
-        mqtt_list.sort(key=lambda x: x[1], reverse=True)
-        last_sort = mqtt_list
+        last_sort.sort(key=lambda x: x[1], reverse=True)
     elif 'topic_sort_up' in request.POST:
         explorer_context['topic_sort'] = 'topic_sort_down'
         explorer_context['time_sort'] = None
         explorer_context['metric_sort'] = None
         explorer_context['values_sort'] = None
-        mqtt_list.sort(key=lambda x: x[1])
-        last_sort = mqtt_list
+        last_sort.sort(key=lambda x: x[1])
     elif 'metric_sort_down' in request.POST:
         explorer_context['metric_sort'] = 'metric_sort_up'
         explorer_context['time_sort'] = None
         explorer_context['topic_sort'] = None
         explorer_context['values_sort'] = None
-        mqtt_list.sort(key=lambda x: x[2], reverse=True)
-        last_sort = mqtt_list
+        last_sort.sort(key=lambda x: x[2], reverse=True)
     elif 'metric_sort_up' in request.POST:
         explorer_context['metric_sort'] = 'metric_sort_down'
         explorer_context['time_sort'] = None
         explorer_context['topic_sort'] = None
         explorer_context['values_sort'] = None
-        mqtt_list.sort(key=lambda x: x[2])
-        last_sort = mqtt_list
+        last_sort.sort(key=lambda x: x[2])
     elif 'values_sort_down' in request.POST:
         explorer_context['values_sort'] = 'values_sort_up'
         explorer_context['time_sort'] = None
         explorer_context['topic_sort'] = None
         explorer_context['metric_sort'] = None
-        mqtt_list.sort(key=lambda x: x[3], reverse=True)
-        last_sort = mqtt_list
+        last_sort.sort(key=lambda x: x[3], reverse=True)
     elif 'values_sort_up' in request.POST:
         explorer_context['values_sort'] = 'values_sort_down'
         explorer_context['time_sort'] = None
         explorer_context['topic_sort'] = None
         explorer_context['metric_sort'] = None
-        mqtt_list.sort(key=lambda x: x[3])
-        last_sort = mqtt_list
-
-    if 'trip_qstart' in request.POST:
-        explorer_context['qstart'] = request.POST.getlist('trip_qstart')[0]
-    if 'trip_qend' in request.POST:
-        explorer_context['qend'] = request.POST.getlist('trip_qend')[0]
-
-    if last_sort == None:
-        last_sort = mqtt_list
+        last_sort.sort(key=lambda x: x[3])
+    elif 'search' in request.POST:
+        search = request.POST.getlist('search')[0]
+        filtered = filter(lambda x: search in x[1], last_sort)
+        last_sort = list(filtered)
 
     paginator = Paginator(tuple(last_sort), 25)
     page_number = request.GET.get('page')
@@ -171,7 +169,7 @@ def explorer(request):
     context['tomorrow'] = explorer_context['tomorrow']
     context['qstart'] = explorer_context['qstart']
     context['qend'] = explorer_context['qend']
-    context['test'] = explorer_context['test']
+    context['error'] = explorer_context['error']
     
     html_template = loader.get_template('explorer.html')
     return HttpResponse(html_template.render(context, request))

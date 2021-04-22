@@ -54,18 +54,36 @@
 				</div>
                 <!-- [ basic-table ] start -->
                     <div class="card">
-                        <form class="DateForm" action="" method="POST">
+                        
+                        <div class="card-header">
+                            <form class="DateForm" action="" method="POST">
                             {% csrf_token %}
                             {{ form.as_p }}
-                        <div class="card-header">
-                            <h5 >IoT MQTT Messages {{ test }}</h5>
-                            <label for="qstart">Start date:</label>
-                            <input type="date" id="qstart" name="trip_qstart" value= "{{ qstart }}" min="2018-01-01" max="{{ today }}">
-                            <label for="qend">End date:</label>
-                            <input type="date" id="qend" name="trip_qend" value= "{{ qend }}" min="2018-01-01" max="{{ tomorrow }}">
-                            <button>Submit</button>
-                        </div>
+                            <h5 >IoT MQTT Messages</h5>
+                            <div class="input-group rounded">
+                                <label for="qstart">Start date: </label>
+                                <input type="date" class="form-control rounded" id="qstart" name="trip_qstart" value= "{{ qstart }}" min="2018-01-01" max="{{ today }}">
+                                <label for="qend"> End date: </label>
+                                <input type="date" class="form-control rounded" id="qend" name="trip_qend" value= "{{ qend }}" min="2018-01-01" max="{{ tomorrow }}">
+                                <button class="input-group-text border-0">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            </form>
+                            <p> </p>
+                        <form class="" action="" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="input-group rounded">
+                                <input type="search" class="form-control rounded" placeholder="Search" name="search" aria-label="Search"
+                                  aria-describedby="search-addon" />
+                                <button class="input-group-text border-0" id="search-addon">
+                                  <i class="fas fa-search"></i>
+                                </button>
+                              </div>
+                              <p style="text-align:center"> {{ error }}</p>
                         </form>
+                        </div>
                         <div class="card-body table-border-style">
                             <div class="table-responsive">
                                 <table class="table table-hover">
