@@ -59,7 +59,7 @@ yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
 today = datetime.today().strftime("%Y-%m-%d")
 tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
- 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': ''}
+ 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': None}
 global last_sort
 last_sort = None
 
@@ -87,7 +87,7 @@ def explorer(request):
         temp = requests.get(tempPre + suffix).json()
         wattTemp = watt['data']['result'] + temp['data']['result']
         mqtt_list = []
-        explorer_context['error'] = ''
+        explorer_context['error'] = None
         for i in range(len(wattTemp)):
             msg_values = dict(wattTemp[i]['values'])
             topic = wattTemp[i]['metric']['topic']
@@ -96,7 +96,7 @@ def explorer(request):
     except:
         explorer_context['error'] = 'Please try a another range of dates!'
     
-    if (last_sort == None or 'trip_qstart' in request.POST) and explorer_context['error'] == '':
+    if (last_sort == None or 'trip_qstart' in request.POST) and explorer_context['error'] == None:
         explorer_context['time_sort'] = 'time_sort_down'
         explorer_context['topic_sort'] = None
         explorer_context['metric_sort'] = None
