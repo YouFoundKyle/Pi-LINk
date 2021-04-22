@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('dns', views.dns, name='dns'),
     
-    path('device', views.device, name='device'),
+    path('device/<requested_ip>', views.device, name='device'),
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),

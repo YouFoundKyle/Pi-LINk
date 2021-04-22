@@ -17,17 +17,17 @@
         },
         "23": {
             "risk": 3,
-            "comment": "",
+            "comment": "Used for insecure remote connections",
             "service": "telnet"
         },
         "80": {
             "risk": 3,
-            "comment": "",
+            "comment": "Insecure Web Server",
             "service": "HTTP"
         },
         "443": {
             "risk": 3,
-            "comment": "",
+            "comment": "Secure Web Server",
             "service": "HTTPS"
         },
         "6668": {

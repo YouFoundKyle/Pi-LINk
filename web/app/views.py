@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django import template
 import requests
 import json, os
-from .functionality.port_types import get_port_info
+from .functionality.util import get_port_info, get_device_info
 
 @login_required(login_url="/login/")
 def index(request):
@@ -41,13 +41,20 @@ def net_overview(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
-def device(request):
+def device(request, requested_ip):
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+            return HttpResponseRedirect('/device_overview/')
+
+    device_info = get_device_info(requested_ip)
+
     context = {}
     context['segment'] = 'device'
-    context['ip'] = '10.1.1.4'
+    context['ip'] = requested_ip
     context[ 'type' ] = 'camera'
-    context[ 'mac' ] = 'aa:bb:cc:dd:ee:ff'
-    context[ 'open_ports' ] = [ '22','6100','7103']
+    context[ 'mac' ] = device_info['MAC']
+    context[ 'open_ports' ] = device_info['port_list']
     context[ 'port_info' ] = {}
     
     for port in context['open_ports']:
