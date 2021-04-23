@@ -24,7 +24,7 @@ def index(request):
 def test(request):
 
     context = {}
-    context['segment'] = 'index'
+    context['segment'] = 'test'
 
     html_template = loader.get_template( 'chart-apex.html' )
     return HttpResponse(html_template.render(context, request))

@@ -16,12 +16,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Radial Chart</h5>
+                            <h5 class="m-b-10">MQTT Dashboard</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="#!">Chart</a></li>
-                            <li class="breadcrumb-item"><a href="#!">Radial Chart</a></li>
+                            <li class="breadcrumb-item"><a href="#!">Dashboards</a></li>
+                            <li class="breadcrumb-item"><a href="#!">MQTT Dashboard</a></li>
                         </ul>
                     </div>
                 </div>
@@ -49,8 +49,8 @@
 
             <div class="col-md-6 col-xl-3">
                 <div class="card bg-c-yellow order-card">
-                    <div class="card-body">
-                        <h6 class="text-white">MQTT Sessions</h6>
+                    <div class="card-body" id="topics">
+                        <h6 class="text-white">Topics</h6>
                     </div>
                 </div>
             </div>
@@ -115,17 +115,20 @@
                         <div id="area-chart-2"></div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
+            </div> -->
+
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Bar chart</h5>
+                        <h5>Messages Per Topic</h5>
                     </div>
                     <div class="card-body">
                         <div id="bar-chart-1"></div>
                     </div>
                 </div>
             </div>
+
+            <!--
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
