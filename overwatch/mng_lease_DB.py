@@ -16,7 +16,7 @@ TO DO: Functionality to remove leases that are nonexistent.
 def update_leaseDB():
     source = PILINK_PATH + OVERWATCH_FOLDER + ANALYZED_LEASES_PREFIX + ".json"
     if not os.path.exists(source):
-        print("Nothing to update: lease_info.json does not exist.\n")
+        print("Nothing to update: lease_info.json does not exist.")
     else:
         with open(source) as lf:
             new_leases = json.load(lf)
@@ -34,8 +34,9 @@ def create_leaseDB(new_leases, dest):
         for lease in new_leases:
             mac = lease.pop("MAC")
             lease["last_updated"] = date.today().strftime("%m/%d/%y")
+            lease["firmware"] = "Unknown"
             db[mac] = lease
-            print("Saved device info for MAC Address: " + mac + " in " + dest)
+            print("Saved device info for MAC Address " + mac + " in " + dest)
         db_json = json.dumps(db)
         df.write(db_json)
 
