@@ -1,0 +1,231 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} MQTT Explorer {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <section class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">MQTT Explorer </h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="#!">MQTT Message Explorer </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row ">
+                <div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h5>MQTT Message Explorer</h5>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                        <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                    </ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<p>This is an MQTT explorer, it shows messages. What are MQTT messages? Good Question. Its ...
+							</p>
+						</div>
+					</div>
+				</div>
+                <!-- [ basic-table ] start -->
+                    <div class="card">
+                        
+                        <div class="card-header">
+                            <form class="DateForm" action="" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <h5 >IoT MQTT Messages</h5>
+                            <div class="input-group rounded">
+                                <label for="qstart">Start date: </label>
+                                <input type="date" class="form-control rounded" id="qstart" name="trip_qstart" value= "{{ qstart }}" min="2018-01-01" max="{{ today }}">
+                                <label for="qend"> End date: </label>
+                                <input type="date" class="form-control rounded" id="qend" name="trip_qend" value= "{{ qend }}" min="2018-01-01" max="{{ tomorrow }}">
+                                <button class="input-group-text border-0">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            </form>
+                            <p> </p>
+                        <form class="" action="" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="input-group rounded">
+                                <input type="search" class="form-control rounded" placeholder="Search" name="search" aria-label="Search"
+                                  aria-describedby="search-addon" />
+                                <button class="input-group-text border-0" id="search-addon">
+                                  <i class="fas fa-search"></i>
+                                </button>
+                              </div>
+                              <p style="text-align:center"> {{ error }}</p>
+                        </form>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <form class="" action="" method="POST">
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                <th>Timestamp
+                                                    {% if time_sort == 'time_sort_down' %}
+                                                        <button input type="submit" name="time_sort_down" value="time_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif time_sort == 'time_sort_up' %}
+                                                        <button input type="submit" name="time_sort_up" value="time_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span> 
+                                                    {% else %}
+                                                        <button input type="submit" name="time_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span>
+                                                    {% endif %}
+                                                </th>
+                                                <th>Topic
+                                                    {% if topic_sort == 'topic_sort_down' %}
+                                                        <button input type="submit" name="topic_sort_down" value="topic_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif topic_sort == 'topic_sort_up' %}
+                                                        <button input type="submit" name="topic_sort_up" value="topic_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span>
+                                                    {% else %} 
+                                                        <button input type="submit" name="topic_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% endif %}
+                                                </th>
+                                                <th>Metric
+                                                    {% if metric_sort == 'metric_sort_down' %}
+                                                        <button input type="submit" name="metric_sort_down" value="metric_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif metric_sort == 'metric_sort_up' %}
+                                                        <button input type="submit" name="metric_sort_up" value="metric_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span>
+                                                    {% else %} 
+                                                        <button input type="submit" name="metric_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% endif %}
+                                                </th>
+                                                <th>Values
+                                                    {% if values_sort == 'values_sort_down' %}
+                                                        <button input type="submit" name="values_sort_down" value="values_sort_down" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% elif values_sort == 'values_sort_up' %}
+                                                        <button input type="submit" name="values_sort_up" value="values_sort_up" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-up"></span>
+                                                    {% else %} 
+                                                        <button input type="submit" name="values_sort_down" value="None" class="btn btn-default btn-sm">
+                                                        <span class="fas fa-sort-down"></span> 
+                                                    {% endif %}
+                                                </th>
+                                            </form>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in mqtt %}
+                                        <tr>
+                                            <td>{{item.0}}</td>
+                                            <td>{{item.1}}</td>
+                                            <td>{{item.2}}</td>
+                                            <td>{{item.3}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ basic-table ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </section>
+    <!-- [ Main Content ] end -->
+    
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+        {% if mqtt.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" >&laquo;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ mqtt.previous_page_number }}" >Previous</a>
+        </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+        {% endif %}
+
+        {% if mqtt.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ mqtt.number|add:'-5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in mqtt.paginator.page_range %}
+            {% if mqtt.number == i %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">
+                        {{ i }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                </li>
+            {% elif i > mqtt.number|add:'-5' and i < mqtt.number|add:'5' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if mqtt.paginator.num_pages > mqtt.number|add:'4' %}
+            <li class="page-item"><a class="page-link" href="?page={{ mqtt.number|add:'5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if mqtt.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mqtt.next_page_number }}" >Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mqtt.paginator.num_pages }}" >&raquo;</a>
+            </li>
+            
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <!--end of Pagination-->
+{% endblock content %}
+
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

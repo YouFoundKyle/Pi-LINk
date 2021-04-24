@@ -81,7 +81,7 @@
                                         {% for key, value in lease_data.items %}
                                         <tr>
                                             <td>{{value.date_added}}</td>
-                                            <td>{{value.IP}}</td>
+                                            <td><a href="/device/{{value.IP}}"> {{value.IP}} </a> </td>
                                             <td>{{key}}</td>
                                             <td>{{value.hostname}}</td>
                                             <td>{{value.vendor}}</td>

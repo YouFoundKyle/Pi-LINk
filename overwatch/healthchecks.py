@@ -47,9 +47,6 @@ def main(path=SERVICE_PATH + NEW_LEASES_FILE):
         current_devices = prev_analysis['Device Info']
     diff = get_analysis_dif(current_devices, lease_check)
 
-    
-
-    
 
 if __name__ == "__main__":
     while True:
