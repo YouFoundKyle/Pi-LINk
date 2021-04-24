@@ -26,8 +26,8 @@ def net_overview(request):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
     context['lease_data'] = dev_data
-    port_dicts = []
     port_count = {}
+    port_dicts = []
     for key, val in dev_data.items():
         ports = val["port_usage"]
         port_dicts.extend(ports)

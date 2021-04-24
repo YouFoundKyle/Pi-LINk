@@ -69,81 +69,24 @@
                                     <thead>
                                         <tr>
                                             <th>Date Added</th>
-                                            <th>Device Type</th>
                                             <th>IP Address</th>
                                             <th>MAC Address</th>
                                             <th>Hostname</th>
                                             <th>Device Vendor</th>
+                                            <th></th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for key, value in lease_data.items %}
                                         <tr>
-                                            <td>{{value.date}}</td>
-                                            <td></td>
+                                            <td>{{value.date_added}}</td>
                                             <td>{{value.IP}}</td>
                                             <td>{{key}}</td>
                                             <td>{{value.hostname}}</td>
                                             <td>{{value.vendor}}</td>
                                         </tr>
                                         {% endfor %}
-                                        <!-- <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Camera</td>
-                                            <td>10.1.1.11</td>
-                                            <td>44:01:bb:7d:b0:23</td>
-                                            <td>Not Provided</td>
-                                            <td>SHENZHEN BILIAN ELECTRONIC CO. LTD</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Air Controller</td>
-                                            <td>10.1.1.15</td>
-                                            <td>20:F4:1B:52:D1:C3</td>
-                                            <td>Not Provided</td>
-                                            <td>SHENZHEN BILIAN ELECTRONIC CO. LTD</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Fridge</td>
-                                            <td>10.1.1.12</td>
-                                            <td>90:83:7A:B2:9D:A5</td>
-                                            <td>Not Provided</td>
-                                            <td>General Electric Water & Process Technologies</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Switch</td>
-                                            <td>10.1.1.13</td>
-                                            <td>20:F4:1B:A8:14:F2</td>
-                                            <td>Not Provided</td>
-                                            <td>SHENZHEN BILIAN ELECTRONIC CO. LTD</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Switch</td>
-                                            <td>10.1.1.14</td>
-                                            <td>20:F4:1B:11:A4:3C</td>
-                                            <td>Not Provided</td>
-                                            <td>SHENZHEN BILIAN ELECTRONIC CO. LTD</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Plug</td>
-                                            <td>10.1.1.14</td>
-                                            <td>44:33:4C:A5:18:B1</td>
-                                            <td>Not Provided</td>
-                                            <td>SHENZHEN BILIAN ELECTRONIC CO. LTD</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4/9/2021</td>
-                                            <td>Motion Sensor</td>
-                                            <td>10.1.1.15</td>
-                                            <td>28:F3:66:A5:FD:45</td>
-                                            <td>Not Provided</td>
-                                            <td>Unknown</td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
@@ -167,38 +110,25 @@
                     <div class="card">
                         <div class="card-header">
                             <h5>Manage Updates</h5>
-                            <!-- <span class="d-block m-t-5">use class <code>table</code> inside table element</span> -->
                         </div>
                         <div class="card-body table-border-style">
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>IP Address</th>
-                                            <th>Firmware</th>
+                                            <th>Date Added</th>
+                                            <th>MAC Address</th>
                                             <th>Last Updated</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for key, value in lease_data.items %}
                                         <tr>
-                                            <td>1</td>
-                                            <td>10.1.1.11</td>
-                                            <td>Unknown</td>
-                                            <td>4/9/2021</td>
+                                            <td>{{value.date_added}}</td>
+                                            <td>{{key}}</td>
+                                            <td>{{value.last_updated}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>10.1.1.12</td>
-                                            <td>Unknown</td>
-                                            <td>4/9/2021</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>10.1.1.13</td>
-                                            <td>Unknown</td>
-                                            <td>4/9/2021</td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
