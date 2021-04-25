@@ -34,8 +34,8 @@ def test(request):
     user_ip = get_client_ip(request)
     user_ip = str(user_ip)
 
-    r = requests.get('http://10.0.0.67:9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s')
-    data = json.dumps(r.json())
+    #r = requests.get('http://10.0.0.67:9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s')
+    #data = json.dumps(r.json())
 
     context = {'ip' : user_ip}
     context['segment'] = 'test'

@@ -83,9 +83,10 @@ $(document).ready(function () {
                 }
             );
             function getTime(dateText) {
+                var ip = document.getElementById('ip_address').textContent;
                 var startTime = new Date(dateText).getTime() / 1000;
                 var endTime = 1618335953;
-                var url = "http://10.0.0.67:9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=20s";
+                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=120s";
                 console.log(url);
 
                 $.getJSON(url, function (response) {
