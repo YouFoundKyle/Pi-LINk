@@ -20,10 +20,24 @@ def index(request):
     html_template = loader.get_template( 'index.html' )
     return HttpResponse(html_template.render(context, request))
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    else:
+        ip = request.META.get('HTTP_HOST').split(':')[0].strip()
+    return ip
+
 @login_required(login_url="/login/")
 def test(request):
 
-    context = {}
+    user_ip = get_client_ip(request)
+    user_ip = str(user_ip)
+
+    r = requests.get('http://10.0.0.67:9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s')
+    data = json.dumps(r.json())
+
+    context = {'ip' : user_ip}
     context['segment'] = 'test'
 
     html_template = loader.get_template( 'chart-apex.html' )

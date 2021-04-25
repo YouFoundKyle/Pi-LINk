@@ -1,5 +1,5 @@
 'use strict';
-$(document).ready(function() {
+jQuery(document).ready(function ($) {
 
     function getMessages(response) {
         var count = 0;
@@ -12,7 +12,7 @@ $(document).ready(function() {
     function getBytes(response) {
         const size = new TextEncoder().encode(JSON.stringify(response)).length
         const kiloBytes = size / 1024;
-        const megaBytes = kiloBytes / 1024;        
+        const megaBytes = kiloBytes / 1024;
         return kiloBytes;
     }
 
@@ -29,16 +29,15 @@ $(document).ready(function() {
 
 
     var url = "http://10.0.0.67:9090/api/v1/query_range?query=received_messages&start=1618190822&end=1618350476&step=20s";
-    $.getJSON(url, function(response) {
-        getMessages(response);
+    $.getJSON(url, function (response) {
         $("#test").append(getMessages(response));
     });
 
-    $.getJSON(url, function(response) {
+    $.getJSON(url, function (response) {
         $("#bytes").append(getBytes(response) + " kB");
     });
 
-    $.getJSON(url, function(response) {
+    $.getJSON(url, function (response) {
         $("#topics").append(getTopics(response) + " topics");
     });
 });
