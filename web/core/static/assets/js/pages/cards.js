@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
 
     var url = "http://10.0.0.67:9090/api/v1/query_range?query=received_messages&start=1618190822&end=1618350476&step=20s";
     $.getJSON(url, function (response) {
-        $("#test").append(getMessages(response));
+        $("#messages").append(getMessages(response));
     });
 
     $.getJSON(url, function (response) {

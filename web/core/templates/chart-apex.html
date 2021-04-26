@@ -6,7 +6,6 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
 {% endblock stylesheets %}
 
 {% block content %}
@@ -38,7 +37,7 @@
             <!-- [ variant-chart ] start -->
             <div class="col-md-6 col-xl-3">
                 <div class="card bg-c-blue order-card">
-                    <div class="card-body" id="test">
+                    <div class="card-body" id="messages">
                         <h6 class="text-white">Total Messages Received</h6>
                     </div>
                 </div>
@@ -103,6 +102,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>Fridge Temperature Chart</h5>
+                        <input type="text" id="datepicker4">
                     </div>
                     <div class="card-body">
                         <div id="line-chart-2"></div>
