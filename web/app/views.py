@@ -19,6 +19,14 @@ def index(request):
     html_template = loader.get_template( 'index.html' )
     return HttpResponse(html_template.render(context, request))
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    else:
+        ip = request.META.get('HTTP_HOST').split(':')[0].strip()
+    return ip
+
 @login_required(login_url="/login/")
 def net_overview(request):
 
@@ -77,6 +85,15 @@ def dns(request):
     context['segment'] = 'dns'
 
     html_template = loader.get_template('dns_dashboard.html')
+def mqtt_overview(request):
+
+    user_ip = get_client_ip(request)
+    user_ip = str(user_ip)
+
+    context = {'ip' : user_ip}
+    context['segment'] = 'mqtt_overview'
+
+    html_template = loader.get_template( 'overview.html' )
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
@@ -108,7 +125,7 @@ yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
 today = datetime.today().strftime("%Y-%m-%d")
 tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
- 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': ''}
+ 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': None}
 global last_sort
 last_sort = None
 
@@ -136,7 +153,7 @@ def explorer(request):
         temp = requests.get(tempPre + suffix).json()
         wattTemp = watt['data']['result'] + temp['data']['result']
         mqtt_list = []
-        explorer_context['error'] = ''
+        explorer_context['error'] = None
         for i in range(len(wattTemp)):
             msg_values = dict(wattTemp[i]['values'])
             topic = wattTemp[i]['metric']['topic']
@@ -145,7 +162,7 @@ def explorer(request):
     except:
         explorer_context['error'] = 'Please try a another range of dates!'
     
-    if (last_sort == None or 'trip_qstart' in request.POST) and explorer_context['error'] == '':
+    if (last_sort == None or 'trip_qstart' in request.POST) and explorer_context['error'] == None:
         explorer_context['time_sort'] = 'time_sort_down'
         explorer_context['topic_sort'] = None
         explorer_context['metric_sort'] = None

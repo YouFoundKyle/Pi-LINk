@@ -1,30 +1,49 @@
 'use strict';
 $(document).ready(function () {
     setTimeout(function () {
-        //Air Controller Temperature Line Chart
-        $(function () {
-            var ip = document.getElementById('ip_address').textContent;
-            var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s";
-            $.getJSON(url, function (response) {
+        var ip = document.getElementById('ip_address').textContent;
 
-                function getACTemp(response) {
-                    var AC = [];
-                    for (var j = 0; j < response['data']['result'].length; j++) {
-                        var topic = response['data']['result'][j]['metric']['topic'];
-                        if (topic == "iot/air_controller/temp") {
-                            for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                var pair = [];
-                                var timestamp = response['data']['result'][j]['values'][i][0];
-                                var temperature = response['data']['result'][j]['values'][i][1];
-                                pair.push(timestamp);
-                                pair.push(temperature);
-                                AC.push(pair);
-                            }
+        function getTemp(response, device) {
+            var temp = [];
+            for (var j = 0; j < response['data']['result'].length; j++) {
+                var topic = response['data']['result'][j]['metric']['topic'];
+                if (topic.includes(device) && topic.includes("temp")) {
+                    for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
+                        var pair = [];
+                        var timestamp = response['data']['result'][j]['values'][i][0];
+                        var temperature = response['data']['result'][j]['values'][i][1];
+                        pair.push(timestamp);
+                        pair.push(temperature);
+                        temp.push(pair);
+                    }
+                }
+            }
+            return temp;
+        }
+
+        function fill_device(response, device) {
+            var device_data = [];
+            for (var j = 0; j < response['data']['result'].length; j++) {
+                var topic = response['data']['result'][j]['metric']['topic'];
+                if (topic.includes(device) && (topic.includes("status") || topic.includes("energy"))) {
+                    for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
+                        var data_point = response['data']['result'][j]['values'][i];
+                        if (typeof data_point != 'undefined') {
+                            device_data.push(response['data']['result'][j]['values'][i]);
                         }
                     }
-                    return AC;
                 }
+            }
+            if (device.includes("switch")) {
+                device_data.push([1618335953, 151]);
+            }
+            return device_data;
+        }
 
+        //Air Controller Temperature Line Chart
+        $(function () {
+            var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s";
+            $.getJSON(url, function (response) {
                 var options = {
                     series: [],
                     chart: {
@@ -54,14 +73,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         type: 'datetime',
+                        categories: [],
                         tickPlacement: 'on',
                         labels: {
-                            rotate: -45,
+                            trim: false,
+                            rotate: 0,
                             rotateAlways: true,
-                            formatter: function (value, timestamp) {
-                                return new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ')
+                            formatter: function (timestamp) {
+                                var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
+                                return date;
                             },
                         },
+                        offsetX: 50,
                     }
                 };
 
@@ -69,7 +92,7 @@ $(document).ready(function () {
                 chart.render();
                 chart.updateSeries([{
                     name: 'Temperature',
-                    data: getACTemp(response),
+                    data: getTemp(response, "air_controller"),
                 }])
             });
 
@@ -83,32 +106,11 @@ $(document).ready(function () {
                 }
             );
             function getTime(dateText) {
-                var ip = document.getElementById('ip_address').textContent;
                 var startTime = new Date(dateText).getTime() / 1000;
                 var endTime = startTime + 21600;
                 var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=480s";
-                console.log(url);
 
                 $.getJSON(url, function (response) {
-
-                    function getACTemp(response) {
-                        var AC = [];
-                        for (var j = 0; j < response['data']['result'].length; j++) {
-                            var topic = response['data']['result'][j]['metric']['topic'];
-                            if (topic == "iot/air_controller/temp") {
-                                for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                    var pair = [];
-                                    var timestamp = response['data']['result'][j]['values'][i][0];
-                                    var temperature = response['data']['result'][j]['values'][i][1];
-                                    pair.push(timestamp);
-                                    pair.push(temperature);
-                                    AC.push(pair);
-                                }
-                            }
-                        }
-                        return AC;
-                    }
-
                     var options = {
                         series: [],
                         chart: {
@@ -138,14 +140,18 @@ $(document).ready(function () {
                         },
                         xaxis: {
                             type: 'datetime',
+                            categories: [],
                             tickPlacement: 'on',
                             labels: {
-                                rotate: -45,
+                                trim: false,
+                                rotate: 0,
                                 rotateAlways: true,
-                                formatter: function (value, timestamp) {
-                                    return new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ')
+                                formatter: function (timestamp) {
+                                    var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
+                                    return date;
                                 },
                             },
+                            offsetX: 50,
                         }
                     };
 
@@ -153,7 +159,7 @@ $(document).ready(function () {
                     chart.render();
                     chart.updateSeries([{
                         name: 'Temperature',
-                        data: getACTemp(response),
+                        data: getTemp(response, "air_controller"),
                     }])
                 });
             }
@@ -161,28 +167,9 @@ $(document).ready(function () {
 
         //Fridge Temperature Line Chart
         $(function () {
-            
-            var ip = document.getElementById('ip_address').textContent;
+
             var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s";
             $.getJSON(url, function (response) {
-
-                function getFridgeTemp(response) {
-                    var fridge = [];
-                    for (var j = 0; j < response['data']['result'].length; j++) {
-                        var topic = response['data']['result'][j]['metric']['topic'];
-                        if (topic == "iot/fridge/temp") {
-                            for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                var pair = [];
-                                var timestamp = response['data']['result'][j]['values'][i][0];
-                                var temperature = response['data']['result'][j]['values'][i][1];
-                                pair.push(timestamp);
-                                pair.push(temperature);
-                                fridge.push(pair);
-                            }
-                        }
-                    }
-                    return fridge;
-                }
 
                 var options = {
                     series: [],
@@ -214,14 +201,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         type: 'datetime',
+                        categories: [],
                         tickPlacement: 'on',
                         labels: {
-                            rotate: -45,
+                            trim: false,
+                            rotate: 0,
                             rotateAlways: true,
-                            formatter: function (value, timestamp) {
-                                return new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ')
+                            formatter: function (timestamp) {
+                                var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
+                                return date;
                             },
                         },
+                        offsetX: 50,
                     }
                 };
 
@@ -230,7 +221,7 @@ $(document).ready(function () {
 
                 chart.updateSeries([{
                     name: 'Temperature',
-                    data: getFridgeTemp(response)
+                    data: getTemp(response, "fridge")
                 }])
             });
 
@@ -243,31 +234,11 @@ $(document).ready(function () {
                 }
             );
             function getTime(dateText) {
-                var ip = document.getElementById('ip_address').textContent;
                 var startTime = new Date(dateText).getTime() / 1000;
-                var endTime = 1618335953;
-                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=120s";
-                console.log(url);
+                var endTime = startTime + 7200;
+                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=20s";
 
                 $.getJSON(url, function (response) {
-
-                    function getFridgeTemp(response) {
-                        var fridge = [];
-                        for (var j = 0; j < response['data']['result'].length; j++) {
-                            var topic = response['data']['result'][j]['metric']['topic'];
-                            if (topic == "iot/fridge/temp") {
-                                for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                    var pair = [];
-                                    var timestamp = response['data']['result'][j]['values'][i][0];
-                                    var temperature = response['data']['result'][j]['values'][i][1];
-                                    pair.push(timestamp);
-                                    pair.push(temperature);
-                                    fridge.push(pair);
-                                }
-                            }
-                        }
-                        return fridge;
-                    }
 
                     var options = {
                         series: [],
@@ -299,14 +270,18 @@ $(document).ready(function () {
                         },
                         xaxis: {
                             type: 'datetime',
+                            categories: [],
                             tickPlacement: 'on',
                             labels: {
-                                rotate: -45,
+                                trim: false,
+                                rotate: 0,
                                 rotateAlways: true,
-                                formatter: function (value, timestamp) {
-                                    return new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ')
+                                formatter: function (timestamp) {
+                                    var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
+                                    return date;
                                 },
                             },
+                            offsetX: 50,
                         }
                     };
 
@@ -314,7 +289,7 @@ $(document).ready(function () {
                     chart.render();
                     chart.updateSeries([{
                         name: 'Temperature',
-                        data: getFridgeTemp(response),
+                        data: getTemp(response, "fridge")
                     }])
                 });
             }
@@ -322,65 +297,8 @@ $(document).ready(function () {
 
         //Energy Line Chart
         $(function () {
-            var ip = document.getElementById('ip_address').textContent;
             var url = 'http://' + ip + ':9090/api/v1/query_range?query=watts&start=1618335123&end=1618335953&step=20s';
             $.getJSON(url, function (response) {
-                function fill_fridge(response) {
-                    var fridge = [];
-                    for (var j = 0; j < response['data']['result'].length; j++) {
-                        var topic = response['data']['result'][j]['metric']['topic'];
-                        if (topic == "iot/fridge/energy") {
-                            for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                var pair = [];
-                                var timestamp = response['data']['result'][j]['values'][i][0];
-                                var temperature = response['data']['result'][j]['values'][i][1];
-                                pair.push(timestamp);
-                                pair.push(temperature);
-                                fridge.push(pair);
-                            }
-                        }
-                    }
-                    return fridge;
-                }
-
-                function fill_switch_1(response) {
-                    var switch_1 = [];
-                    for (var j = 0; j < response['data']['result'].length; j++) {
-                        var topic = response['data']['result'][j]['metric']['topic'];
-                        if (topic == "iot/switch_2/status") {
-                            for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                var pair = [];
-                                var timestamp = response['data']['result'][j]['values'][i][0];
-                                var temperature = response['data']['result'][j]['values'][i][1];
-                                pair.push(timestamp);
-                                pair.push(temperature);
-                                switch_1.push(pair);
-                            }
-                        }
-                    }
-                    switch_1.push([1618335953, 151]);
-                    return switch_1;
-                }
-
-                function fill_switch_2(response) {
-                    var switch_2 = [];
-                    for (var j = 0; j < response['data']['result'].length; j++) {
-                        var topic = response['data']['result'][j]['metric']['topic'];
-                        if (topic == "iot/switch_2/status") {
-                            for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                var pair = [];
-                                var timestamp = response['data']['result'][j]['values'][i][0];
-                                var temperature = response['data']['result'][j]['values'][i][1];
-                                pair.push(timestamp);
-                                pair.push(temperature);
-                                switch_2.push(pair);
-                            }
-                        }
-                    }
-                    switch_2.push([1618335953, 151]);
-                    return switch_2;
-                }
-
                 var options = {
                     chart: {
                         height: 300,
@@ -406,15 +324,15 @@ $(document).ready(function () {
                     },
                     series: [{
                         name: "Fridge Energy",
-                        data: fill_fridge(response)
+                        data: fill_device(response, "fridge")
                     },
                     {
                         name: "Switch 1 Energy",
-                        data: fill_switch_1(response)
+                        data: fill_device(response, "switch_1")
                     },
                     {
                         name: "Switch 2 Energy",
-                        data: fill_switch_2(response)
+                        data: fill_device(response, "switch_2")
                     }
                     ],
                     title: {
@@ -429,14 +347,18 @@ $(document).ready(function () {
                     },
                     xaxis: {
                         type: 'datetime',
+                        categories: [],
                         tickPlacement: 'on',
                         labels: {
-                            rotate: -45,
+                            trim: false,
+                            rotate: 0,
                             rotateAlways: true,
-                            formatter: function (value, timestamp) {
-                                return new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ')
+                            formatter: function (timestamp) {
+                                var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
+                                return date;
                             },
                         },
+                        offsetX: 50,
                     },
                     tooltip: {
                         y: [{
@@ -479,72 +401,15 @@ $(document).ready(function () {
                 }
             );
             function getTime(dateText) {
-                var ip = document.getElementById('ip_address').textContent;
                 var startTime = new Date(dateText).getTime() / 1000;
                 var endTime = startTime + 50000;
                 var url = "http://" + ip + ":9090/api/v1/query_range?query=watts&start=" + startTime + "&end=" + endTime + "&step=120s";
 
                 $.getJSON(url, function (response) {
-                    function fill_fridge(response) {
-                        var fridge = [];
-                        for (var j = 0; j < response['data']['result'].length; j++) {
-                            var topic = response['data']['result'][j]['metric']['topic'];
-                            if (topic == "iot/fridge/energy") {
-                                for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                    var pair = [];
-                                    var timestamp = response['data']['result'][j]['values'][i][0];
-                                    var temperature = response['data']['result'][j]['values'][i][1];
-                                    pair.push(timestamp);
-                                    pair.push(temperature);
-                                    fridge.push(pair);
-                                }
-                            }
-                        }
-                        return fridge;
-                    }
-
-                    function fill_switch_1(response) {
-                        var switch_1 = [];
-                        for (var j = 0; j < response['data']['result'].length; j++) {
-                            var topic = response['data']['result'][j]['metric']['topic'];
-                            if (topic == "iot/switch_2/status") {
-                                for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                    var pair = [];
-                                    var timestamp = response['data']['result'][j]['values'][i][0];
-                                    var temperature = response['data']['result'][j]['values'][i][1];
-                                    pair.push(timestamp);
-                                    pair.push(temperature);
-                                    switch_1.push(pair);
-                                }
-                            }
-                        }
-                        switch_1.push([1618335953, 151]);
-                        return switch_1;
-                    }
-
-                    function fill_switch_2(response) {
-                        var switch_2 = [];
-                        for (var j = 0; j < response['data']['result'].length; j++) {
-                            var topic = response['data']['result'][j]['metric']['topic'];
-                            if (topic == "iot/switch_2/status") {
-                                for (var i = 0; i < response['data']['result'][0]['values'].length; i++) {
-                                    var pair = [];
-                                    var timestamp = response['data']['result'][j]['values'][i][0];
-                                    var temperature = response['data']['result'][j]['values'][i][1];
-                                    pair.push(timestamp);
-                                    pair.push(temperature);
-                                    switch_2.push(pair);
-                                }
-                            }
-                        }
-                        switch_2.push([1618335953, 151]);
-                        return switch_2;
-                    }
-
                     function fill_chart(response) {
-                        fill_fridge(response);
-                        fill_switch_1(response);
-                        fill_switch_2(response);
+                        fill_device(response, "fridge");
+                        fill_device(response, "switch_1");
+                        fill_device(response, "switch_2");
                     }
 
                     var options = {
@@ -572,15 +437,16 @@ $(document).ready(function () {
                         },
                         series: [{
                             name: "Fridge Energy",
-                            data: fill_fridge(response)
+                            data: fill_device(response, "fridge")
+
                         },
                         {
                             name: "Switch 1 Energy",
-                            data: fill_switch_1(response)
+                            data: fill_device(response, "switch_1")
                         },
                         {
                             name: "Switch 2 Energy",
-                            data: fill_switch_2(response)
+                            data: fill_device(response, "switch_2")
                         }
                         ],
                         title: {
@@ -595,14 +461,18 @@ $(document).ready(function () {
                         },
                         xaxis: {
                             type: 'datetime',
+                            categories: [],
                             tickPlacement: 'on',
                             labels: {
-                                rotate: -45,
+                                trim: false,
+                                rotate: 0,
                                 rotateAlways: true,
-                                formatter: function (value, timestamp) {
-                                    return new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ')
+                                formatter: function (timestamp) {
+                                    var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
+                                    return date;
                                 },
                             },
+                            offsetX: 50,
                         },
                         tooltip: {
                             y: [{
@@ -645,7 +515,6 @@ $(document).ready(function () {
 
         //Bar Chart
         $(function () {
-            var ip = document.getElementById('ip_address').textContent;
             var url = "http://" + ip + ":9090/api/v1/query_range?query=received_messages&start=1618190822&end=1618350476&step=20s";
             $.getJSON(url, function (response) {
                 function getTopics(response) {
@@ -728,83 +597,5 @@ $(document).ready(function () {
             });
         });
 
-        //Status Pie Chart
-        $(function () {
-            var ip = document.getElementById('ip_address').textContent;
-            var url = "http://" + ip + ":9090/api/v1/query_range?query=received_messages&start=1618164093&end=1618345294&step=20s";
-            $.getJSON(url, function (response) {
-                function fill_labels(response) {
-                    var labels = [];
-                    for (var i = 0; i < response['data']['result'].length; i++) {
-                        var status = response['data']['result'][i]['metric']['status'];
-                        if (!(labels.includes(status))) {
-                            labels.push(status);
-                        }
-                    }
-                    return labels;
-                }
-
-                function fill_series(response) {
-                    var series = [];
-                    var storeError = 0;
-                    var success = 0;
-                    for (var i = 0; i < response['data']['result'].length; i++) {
-                        var status = response['data']['result'][i]['metric']['status'];
-                        if (status == 'storeError') {
-                            storeError++;
-                        }
-                        else {
-                            success++;
-                        }
-                    }
-                    series.push(storeError);
-                    series.push(success);
-                    return series;
-                }
-
-                var options = {
-                    chart: {
-                        height: 320,
-                        type: 'pie',
-                    },
-
-                    labels: fill_labels(response),
-                    series: fill_series(response),
-                    colors: ["#4099ff", "#0e9e4a"],
-
-                    legend: {
-                        show: true,
-                        position: 'bottom',
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            shade: 'light',
-                            inverseColors: true,
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        dropShadow: {
-                            enabled: false,
-                        }
-                    },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }]
-                }
-
-                var chart = new ApexCharts(
-                    document.querySelector("#pie-chart-1"),
-                    options
-                );
-                chart.render();
-            });
-        });
     }, 700);
 });

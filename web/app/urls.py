@@ -13,7 +13,7 @@ urlpatterns = [
     # The home page
     path('', views.index, name='home'),
 
-    path('test', views.test, name='test'),
+    path('mqtt_overview', views.mqtt_overview, name='mqtt_overview'),
 
     path('overview', views.net_overview, name='network_overview'),
 
