@@ -41,6 +41,6 @@ def dump_device_info(ip, device_info):
         lease_db = json.load(ldb)
         for lease in lease_db.keys():
             if lease == lease_db['staticMAC']:
-                
+                lease_db['']
                 return lease
     return {"IP":ip,"MAC":"NOT FOUND", "lease_state":"NOT FOUND", "hostname":"NOT FOUND", "vendor":"NOT FOUND","port_usage":[],"date":"NOT FOUND", "unknown": None}

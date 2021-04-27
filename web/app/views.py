@@ -85,6 +85,8 @@ def dns(request):
     context['segment'] = 'dns'
 
     html_template = loader.get_template('dns_dashboard.html')
+    return HttpResponse(html_template.render(context, request))
+
 def mqtt_overview(request):
 
     user_ip = get_client_ip(request)
