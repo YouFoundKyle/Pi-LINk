@@ -13,7 +13,7 @@ urlpatterns = [
     # The home page
     path('', views.index, name='home'),
 
-    path('test', views.test, name='test'),
+    path('mqtt_overview', views.mqtt_overview, name='mqtt_overview'),
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
