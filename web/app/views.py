@@ -29,15 +29,15 @@ def get_client_ip(request):
     return ip
 
 @login_required(login_url="/login/")
-def dashboard(request):
+def mqtt_overview(request):
 
     user_ip = get_client_ip(request)
     user_ip = str(user_ip)
 
     context = {'ip' : user_ip}
-    context['segment'] = 'dashboard'
+    context['segment'] = 'mqtt_overview'
 
-    html_template = loader.get_template( 'chart-apex.html' )
+    html_template = loader.get_template( 'overview.html' )
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")

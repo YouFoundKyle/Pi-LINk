@@ -27,8 +27,8 @@ jQuery(document).ready(function ($) {
         return topics.length;
     }
 
-
-    var url = "http://10.0.0.67:9090/api/v1/query_range?query=received_messages&start=1618190822&end=1618350476&step=20s";
+    var ip = document.getElementById('ip_address').textContent;
+    var url = "http://" + ip + ":9090/api/v1/query_range?query=received_messages&start=1618190822&end=1618350476&step=20s";
     $.getJSON(url, function (response) {
         $("#messages").append(getMessages(response));
     });
