@@ -28,8 +28,8 @@ def net_overview(request):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
     context['lease_data'] = dev_data
-    port_count = {}
     port_dicts = []
+    port_count = {}
     for key, val in dev_data.items():
         ports = val["port_usage"]
         port_dicts.extend(ports)
@@ -47,13 +47,19 @@ def device(request, requested_ip):
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
+        devicename = request.Post['formIDname']
+        # Open local json with data
+        # ...
+        db['name'] = devicename
+        with open(smthing) as f:
+            json.dump (f, db)
             return HttpResponseRedirect('/device_overview/')
 
     device_info = get_device_info(requested_ip)
 
     context = {}
-    context['segment'] = 'device'
-    context['ip'] = requested_ip
+    context[ 'segment' ] = 'device'
+    context[ 'ip' ] = requested_ip
     context[ 'type' ] = 'camera'
     context[ 'mac' ] = device_info['MAC']
     context[ 'open_ports' ] = device_info['port_list']
@@ -71,14 +77,6 @@ def dns(request):
     context['segment'] = 'dns'
 
     html_template = loader.get_template('dns_dashboard.html')
-    return HttpResponse(html_template.render(context, request))
-
-@login_required(login_url="/login/")
-def test(request):
-    context = {}
-    context['segment'] = 'index'
-
-    html_template = loader.get_template( 'chart-apex.html' )
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")

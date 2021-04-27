@@ -30,4 +30,17 @@ def get_device_info(ip):
             if lease["IP"] == ip:
                 lease['port_list'] = get_port_list(lease['port_usage'])
                 return lease
-    return {"IP":ip,"MAC":"NOT FOUND", "lease_state":"NOT FOUND", "hostname":"NOT FOUND", "vendor":"NOT FOUND","port_usage":[],"date":"NOT FOUND"}
+    return {"IP":ip,"MAC":"NOT FOUND", "lease_state":"NOT FOUND", "hostname":"NOT FOUND", "vendor":"NOT FOUND","port_usage":[],"date":"NOT FOUND", "unknown": None}
+
+
+def dump_device_info(ip, device_info):
+    """
+    Returns all information saved about a specific device to the lease_info db
+    """
+    with open(ROOT_DIR + "/web/" + "lease_DB.json", "r+") as ldb:
+        lease_db = json.load(ldb)
+        for lease in lease_db.keys():
+            if lease == lease_db['staticMAC']:
+                
+                return lease
+    return {"IP":ip,"MAC":"NOT FOUND", "lease_state":"NOT FOUND", "hostname":"NOT FOUND", "vendor":"NOT FOUND","port_usage":[],"date":"NOT FOUND", "unknown": None}
