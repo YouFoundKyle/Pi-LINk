@@ -30,7 +30,7 @@ def net_overview(request):
         updateInfo = UpdateForm(request.POST)
         if updateInfo.is_valid():
             print(updateInfo.cleaned_data)
-        return HttpResponseRedirect('/network/')
+        return HttpResponseRedirect('/network')
 
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
