@@ -31,9 +31,11 @@ def net_overview(request):
     context['lease_data'] = dev_data
     port_dicts = []
     port_count = {}
+    print(f"DEVDTATA {dev_data}")
     for key, val in dev_data.items():
-        ports = val["port_usage"]
-        port_dicts.extend(ports)
+        print(f"VALYUES: {val}")
+        if val["port_usage"]:
+            port_dicts.extend(val["port_usage"])
     for port in port_dicts:
         if port["port_id"] in port_count.keys():
             port_count[port["port_id"]] += 1

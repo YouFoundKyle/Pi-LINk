@@ -47,10 +47,7 @@ def modify_leaseDB(new_leases, dest):
         data = json.load(df)
         for lease in new_leases:
             mac = lease.pop("MAC")
-            if mac in data.keys():
-                data[mac].update(lease)
-            else:
-                data.update(lease)
+            data[mac].update(lease)
             print("Updated device info for MAC Address: " + mac + " in " + dest)
         db_json = json.dumps(data)
         df.seek(0)
