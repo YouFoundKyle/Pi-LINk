@@ -140,14 +140,18 @@ def pages(request):
 
 
 ## For Explorer
+yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
+today = datetime.today().strftime("%Y-%m-%d")
+tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
+ 'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': None}
+global last_sort
+last_sort = None
 
+@login_required(login_url="/login/")
 def explorer(request):
-    yesterday = (datetime.today() + timedelta(days=-1)).strftime("%Y-%m-%d")
-    today = datetime.today().strftime("%Y-%m-%d")
-    tomorrow = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d")
-    explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
-    'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': None}
-    last_sort = None
+    global last_sort
+    context = {}
     explorer_context['devices'] = get_device_ips()
     
     if 'trip_qstart' in request.POST:
