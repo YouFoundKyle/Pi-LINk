@@ -8,20 +8,17 @@ from app import views
 
 urlpatterns = [
 
+    path('', views.net_overview, name='home'),
+
     path('explorer', views.explorer, name='explorer'),
 
-    # The home page
-    path('', views.index, name='home'),
+    path('mqtt', views.mqtt_overview, name='mqtt_overview'),
 
-    path('mqtt_overview', views.mqtt_overview, name='mqtt_overview'),
-
-    path('overview', views.net_overview, name='network_overview'),
+    path('network', views.net_overview, name='network_overview'),
 
     path('dns', views.dns, name='dns'),
     
     path('device/<requested_ip>', views.device, name='device'),
 
-    # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
-
 ]

@@ -31,7 +31,7 @@
             <!-- [ Main Content ] start -->
             <div class="row">
 				<!-- [ sample-page ] start -->
-				<div class="col-sm-12">
+				<div class="col-md-12">
 					<div class="card">
 
 						<div class="card-header">
@@ -50,14 +50,14 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<p>"This is a device. Here is a basic description of what it does. Devices r gud. yadayadayadada. "
+							<p>"This page allows you to view and edit information about a specific device on your network. This page also provides information about the ports that are open on a device.
 							</p>
 						</div>
 					</div>
 				</div>
             </div>
             <div class="row">
-                <div class="card col-sm-7">
+                <div class="card col-sm-6">
                     <div class="card-header">
                         <h5>Device Components</h5>
                     </div>
@@ -68,31 +68,60 @@
                             <form action="/device/{{ ip }}" method="post">
                                 {% csrf_token %} 
                                 <div class="form-group row">
-                                    <label for="staticIP" class="col-sm-3 col-form-label">IP Address</label>
+                                    <label for="deviceStatus" class="col-sm-3 col-form-label">Device Status</label>
+                                    <div class="col-sm-9 custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="deviceStatus" name="deviceStatus" checked>
+                                        <label class="custom-control-label" for="deviceStatus">Enabled</label>
+                                        <small id="deviceStatus" class="form-text text-muted">Is the Device be allowed on the network</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="hostname" class="col-sm-3 col-form-label">Hostname</label>
                                     <div class="col-sm-9">
-                                        <input type="text" readonly class="form-control-plaintext" id="staticIP" value= {{ ip }}>
+                                        <input type="text" class="form-control" id="hostname" name="hostname" value= "{{ hostname }}">
+                                        <small id="HostnameHelp" class="form-text text-muted">The name the device is known by on the network.</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ip" class="col-sm-3 col-form-label">IP Address</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" readonly class="form-control-plaintext" id="ip" name="ip" value= "{{ ip }}">
                                         <small id="ipHelp" class="form-text text-muted">The address that devices use to communicate.</small>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="staticMAC" class="col-sm-3 col-form-label">MAC Address</label>
+                                    <label for="mac" class="col-sm-3 col-form-label">MAC Address</label>
                                     <div class="col-sm-9">
-                                        <input type="text" readonly class="form-control-plaintext" id="staticMAC" value= {{ mac }}>
+                                        <input type="text" readonly class="form-control-plaintext" id="mac" name="mac" value= "{{ mac }}">
                                         <small id="macHelp" class="form-text text-muted">The hardcoded address the device uses to communicate.</small>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="staticMAC" class="col-sm-3 col-form-label">Static IP</label>
+                                    <label for="vendor" class="col-sm-3 col-form-label">Device Vendor</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="vendor" name="vendor" value="{{ vendor }}">
+                                        <small id="vendorHelp" class="form-text text-muted">The vendor that owns this device's MAC address</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="firmware" class="col-sm-3 col-form-label">Device Firmware</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="firmware" name="firmware" value= "{{ firmware }}">
+                                        <small id="firmware" class="form-text text-muted">The firmware</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ipSwitch" class="col-sm-3 col-form-label">Static IP</label>
                                     <div class="col-sm-9 custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="ipSwitch" checked>
+                                        <input type="checkbox" class="custom-control-input" id="ipSwitch" name="ipSwitch" checked>
                                         <label class="custom-control-label" for="ipSwitch">Enable</label>
                                         <small id="ipSwitch" class="form-text text-muted">Will the IP Address of the device change over time</small>
                                     </div>
                                 </div>
                                 <div class="form-group row col-md-9">
-                                    <label for="staticMAC" class="col-sm-3 col-form-label">Ports</label>
+                                    <label for="ports" class="col-sm-3 col-form-label">Ports</label>
                                     <div class="col-sm-9 custom-control">
-                                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" value= "{% for p in open_ports %} {{ p }} {% endfor %}">
+                                        <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="ports" name="ports"value= "{% for p in open_ports %}{{ p }} {% endfor %}">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn  btn-primary">Update</button>
@@ -100,7 +129,8 @@
                     </div>
                     </div>
                 </div>
-                <div class="card col-md-7">
+                <div class="col col-sm-12">
+                <div class="card col-sm-6">
                     <div class="card-header">
                         <h5>Open Ports</h5>
                         <span class="d-block m-t-5">List of open ports and their <code> risk </code> </code> factor </span>
@@ -156,9 +186,35 @@
                         </table>
                     </div>
                 </div>
+                {% if pendingPorts%}
+                <div class="card col-sm-6">
+                    <div class="card-header">
+                        <h5>Pending Ports</h5>
+                        <span class="d-block m-t-5">Ports that will soon be unblocked </span>
+                    </div>
+                    <div class=" table-border-style table-responsive">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Port</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for port in pendingPorts %}
+                                    <tr class="bg-success">
+                                    <td>           {{ port }}         </td>
+                                    <td> Pending </td>
+                                </tr>
+                                    {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
             </div>
             </div>
-            <!-- [ Main Content ] end -->
+            </div>
         </div>
     </div>
     <!-- [ Main Content ] end -->
