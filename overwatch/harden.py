@@ -16,19 +16,9 @@ def toggle_port(pmap, action, ip):
     """
     try:
         rule = {'protocol': pmap['protocol'], 'target': action, pmap['protocol']: {'dport': pmap['port']}, 'src': ip}
-        iptc.easy.add_rule("filter", "FORWARD", rule)
+        iptc.easy.insert_rule("filter", "FORWARD", rule)
     except Exception as err:
         print(f'Error applying toggle port rule to device... {err}')
-    # TODO: This might be useful so gonna leave this
-    # rule = iptc.Rule()
-    # rule.src = ip
-
-    # match = iptc.Match(rule, "tcp")
-    # match.
-    # rule.add_match(match)
-
-    # target = iptc.Target(rule, "DROP")
-    # rule.target = target
 
 def block_external_access(device):
     """
@@ -41,11 +31,11 @@ def block_external_access(device):
     try:
         rule = iptc.Rule()
         rule.out_interface("etho0")
-        rule.src = device.ip
+        rule.src = device['ip']
         rule.protocol = "tcp"
         iptc.easy.add_rule("filter", "FORWARD", rule)
     except Exception as err:
-        print(f'Error applying blocked external rule to device... {err}')
+        print(f'Error applying blocked external rule to device {device}... Error: {err}')
     
 def execute_action(action, action_data, device):
     """
@@ -60,9 +50,8 @@ def execute_action(action, action_data, device):
         pass
     elif action == 'open_ports':
         for port in action_data:
-            toggle_port(port, 'ACCEPT', device.ip)
-    elif action == 'interent':
-        if not action_data:
+            toggle_port(port, 'ACCEPT', device['ip'])
+    elif action == 'internet':
             block_external_access(device)
     else:
         print("Error: {a} is not a supported hardening action".format(a = action))

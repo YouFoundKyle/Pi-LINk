@@ -21,7 +21,7 @@ class EventLisenter(LoggingEventHandler):
         Args:
             event (object): watchdog event with information about file changes
         """
-        if (event.event_type == 'modified' and event.src_path == '/var/lib/dhcp/dhcpd.leases'):
+        if (event.event_type == 'modified' and event.src_path == LEASES_PATH):
             print("DHCP Lease Change Detected...")
             cur_leases = self.get_current_leases()
             old_leases = self.get_old_leases()
@@ -101,9 +101,9 @@ class EventLisenter(LoggingEventHandler):
                 lease['lease_end'] = parts[0]
                 lease['static_ip'] = True if parts[0] == 0 else False
                 lease['ethernet'] = parts[1]
-                lease['ip'] = parts[1]
-                lease['hostname'] = parts[2] if parts[2] != '*' else ''
-                lease['client_id'] = [part3] if parts[3] != '*' else ''
+                lease['ip'] = parts[2]
+                lease['hostname'] = parts[3] if parts[3] != '*' else ''
+                lease['client_id'] = parts[4] if parts[4] != '*' else ''
                 lease_list.append(lease)
         print(f"All Current Leases: {lease_list}\n" )
         return lease_list
