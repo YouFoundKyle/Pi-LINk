@@ -1,5 +1,6 @@
 'use strict';
 var port_info = JSON.parse(document.getElementById('port-info').textContent);
+var update_info = JSON.parse(document.getElementById('update-info').textContent);
 
 $(document).ready(function() {
     $(function() {
@@ -62,4 +63,44 @@ $(document).ready(function() {
         );
         chart.render();
     });
+    $("#editUpdate").click(function(){
+        //var port_info = JSON.parse(document.getElementById('last-updated').textContent);
+        //var port_info = JSON.parse(document.getElementById('firmware').textContent);
+        $('#trashUpdate').show();
+        $('#saveUpdate').show();
+        $('input').each(function(){
+            var inp = $(this);
+            if (inp.attr('readonly')) {
+             inp.removeAttr('readonly');
+            }
+            $(this).css('border', '1px solid grey')
+            $(this).css('border-radius', '5px')
+        });
+        $(this).hide();
+    });
+    
+    $('#trashUpdate').click(function(){
+        $('input').each(function(){
+            var inp = $(this);
+            inp.attr('value', inp.defaultValue);
+            inp.attr('readonly', 'readonly');
+            $(this).css('border', 'none')     
+        });
+        $(this).hide();
+        $('#saveUpdate').hide();
+        $('#editUpdate').show()
+        document.forms["updateForm"].reset();
+    });
+
+    $('#saveUpdate').click(function(){
+        $('input').each(function(){
+            var inp = $(this);
+            inp.attr('readonly', 'readonly'); 
+            $(this).css('border', 'none')      
+        });
+        $(this).hide();
+        $('#trashUpdate').hide();
+        $('#editUpdate').show()
+    });
+
 });

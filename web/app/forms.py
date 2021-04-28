@@ -9,3 +9,7 @@ class DeviceForm(forms.Form):
     firmware = forms.CharField()
     vendor = forms.CharField()
     deviceStatus = forms.BooleanField()
+
+class UpdateForm(forms.Form):
+    last_updated = forms.CharField()
+    firmware = forms.CharField()

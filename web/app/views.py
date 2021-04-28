@@ -2,18 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
-<<<<<<< HEAD
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-=======
 from django.http import HttpResponse, HttpResponseRedirect
->>>>>>> e268390d1f0a8b3864ed0fddaac32f5be626466c
 from django import template
 import requests
 import json, os
 from datetime import datetime, timedelta
 from .functionality.util import get_port_info, get_device_info, dump_device_info
-from .forms import DeviceForm
+from .forms import DeviceForm, UpdateForm
+
 @login_required(login_url="/login/")
 def index(request):
     context = {}
@@ -25,16 +21,21 @@ def index(request):
 def get_client_ip(request):
     return request.META.get('HTTP_HOST').split(':')[0].strip()
 
-@login_required(login_url="/login/")
-def track_updates(request):
-    return HttpResponseRedirect("/overview/")
+# @login_required(login_url="/login/")
+# def track_updates(request):
+#     return HttpResponseRedirect("/overview/")
 
 @login_required(login_url="/login/")
 def net_overview(request):
-    if request.method == 'POST':
-        return HttpResponseRedirect('/overview/')
     context = {}
-    context['segment'] = 'index'
+    context['segment'] = 'network'
+
+    if request.method == 'POST':
+        updateInfo = UpdateForm(request.POST)
+        if updateInfo.is_valid():
+            print(updateInfo.cleaned_data)
+        return HttpResponseRedirect('/network/')
+
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
