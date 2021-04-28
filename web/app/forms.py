@@ -8,4 +8,5 @@ class DeviceForm(forms.Form):
     ipSwitch = forms.BooleanField()
     firmware = forms.CharField()
     vendor = forms.CharField()
+    deviceType = forms.CharField()
     deviceStatus = forms.BooleanField()

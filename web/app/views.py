@@ -9,17 +9,20 @@ import json, os
 from datetime import datetime, timedelta
 from .functionality.util import get_port_info, get_device_info, dump_device_info
 from .forms import DeviceForm
-@login_required(login_url="/login/")
-def index(request):
-    context = {}
-    context['segment'] = 'index'
-
-    html_template = loader.get_template( 'index.html' )
-    return HttpResponse(html_template.render(context, request))
 
 def get_client_ip(request):
     return request.META.get('HTTP_HOST').split(':')[0].strip()
 
+def get_device_ips():
+    ips = []
+    if os.path.exists("/etc/pilink/web/lease_DB.json"):
+        with open("/etc/pilink/web/lease_DB.json") as df:
+            lease_DB = json.load(df)
+            for mac, info in lease_DB.items():
+                if 'IP' in info.keys():
+                    ips.append(info['IP'])
+    return ips
+            
 @login_required(login_url="/login/")
 def net_overview(request):
 
@@ -31,9 +34,8 @@ def net_overview(request):
     context['lease_data'] = dev_data
     port_dicts = []
     port_count = {}
-    print(f"DEVDTATA {dev_data}")
+    context['devices'] = get_device_ips()
     for key, val in dev_data.items():
-        print(f"VALYUES: {val}")
         if val["port_usage"]:
             port_dicts.extend(val["port_usage"])
     for port in port_dicts:
@@ -47,7 +49,6 @@ def net_overview(request):
 
 @login_required(login_url="/login/")
 def device(request, requested_ip):
-
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         deviceInfo = DeviceForm(request.POST)
@@ -69,9 +70,10 @@ def device(request, requested_ip):
         return HttpResponse(html_template.render({}, request))
         
     context = {}
+    context['devices'] = get_device_ips()
     context[ 'segment' ] = 'device'
     context[ 'ip' ] = requested_ip
-    context[ 'type' ] = 'camera'
+    context[ 'type' ] = device_info['type'] if 'type' in device_info.keys() else "Unknown"
     context[ 'mac' ] = device_info['MAC']
     context[ 'open_ports' ] = device_info['port_list']
     context[ 'deviceStatus' ] = device_info['device_status']
@@ -105,6 +107,7 @@ def mqtt_overview(request):
     user_ip = str(get_client_ip(request))
 
     context = {'ip' : user_ip}
+    context['devices'] = get_device_ips()
     context['segment'] = 'mqtt_overview'
 
     html_template = loader.get_template( 'mqtt.html' )
@@ -113,6 +116,7 @@ def mqtt_overview(request):
 @login_required(login_url="/login/")
 def pages(request):
     context = {}
+    context['devices'] = get_device_ips()
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
@@ -143,7 +147,8 @@ def explorer(request):
     explorer_context = {'time_sort': 'time_sort_down', 'topic_sort': None, 'metric_sort': None,
     'values_sort': None, 'today': today, 'tomorrow': tomorrow, 'qstart': yesterday, "qend": today, 'error': None}
     last_sort = None
-
+    explorer_context['devices'] = get_device_ips()
+    
     if 'trip_qstart' in request.POST:
         explorer_context['qstart'] = request.POST.getlist('trip_qstart')[0]
         explorer_context['qend'] = request.POST.getlist('trip_qend')[0]
