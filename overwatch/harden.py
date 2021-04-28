@@ -14,9 +14,11 @@ def toggle_port(pmap, action, ip):
         action (str): Action to apply to the port: 'ACCEPT' || 'DENY'
         ip (str): The ip address assigned by this lease 
     """
-    rule = {'protocol': pmap['protocol'], 'target': action, pmap['protocol']: {'dport': pmap['port']}, 'src': ip}
-    iptc.easy.add_rule(rule)
-    
+    try:
+        rule = {'protocol': pmap['protocol'], 'target': action, pmap['protocol']: {'dport': pmap['port']}, 'src': ip}
+        iptc.easy.add_rule("filter", "FORWARD", rule)
+    except Exception as err:
+        print(f'Error applying toggle port rule to device... {err}')
     # TODO: This might be useful so gonna leave this
     # rule = iptc.Rule()
     # rule.src = ip
@@ -36,11 +38,14 @@ def block_external_access(device):
         device (dict): lease information of the device
         ip (str): ip of the device
     """
-    rule = iptc.Rule()
-    rule.out_interface("etho0")
-    rule.src = device.ip
-    rule.protocol = "tcp"
-    iptc.easy.add_rule(rule)
+    try:
+        rule = iptc.Rule()
+        rule.out_interface("etho0")
+        rule.src = device.ip
+        rule.protocol = "tcp"
+        iptc.easy.add_rule("filter", "FORWARD", rule)
+    except Exception as err:
+        print(f'Error applying blocked external rule to device... {err}')
     
 def execute_action(action, action_data, device):
     """

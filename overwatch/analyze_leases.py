@@ -51,6 +51,7 @@ def check_new_lease(path):
 def scan(ip_addr):
     nmap = nmap3.NmapHostDiscovery()
     results = nmap.nmap_portscan_only(ip_addr)
+    print(f"nmap results: {results}")
     return results
 
 
@@ -69,10 +70,11 @@ def process_portscan(portscan_results, ip_addr):
 def process_lease_data(new_leases):
     leases = []
     for l in new_leases:
-        data = {"IP": l.ip,
-                "MAC": l.ethernet,
-                "lease_state": l.binding_state}
-        host = l.hostname
+        data = {"IP": l.['ip'],
+                "MAC": l.['ethernet'],
+                "lease_state": l.['binding_state'],
+                "static_ip": l['static_ip']}
+        host = l.['hostname']
         if host:
             data["hostname"] = host
         else:

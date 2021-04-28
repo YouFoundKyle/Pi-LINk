@@ -48,7 +48,7 @@
     
     - name: Copy resolve config file and backup old one
       copy:
-        src:  ../../configs/system/resolv.conf
+        src:  ../../configs/system/resolved.conf
         dest:  /etc/resolv.conf
         owner: root
         group: sys

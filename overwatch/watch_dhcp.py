@@ -26,23 +26,23 @@ class EventLisenter(LoggingEventHandler):
             cur_leases = self.get_current_leases()
             old_leases = self.get_old_leases()
             new_leases = []
-            for lease in cur_leases.values():
+            for lease in cur_leases:
                 if self.is_new_lease(lease, old_leases, new_leases) :
-                    print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease.ethernet))
-                    print("{mac} details: {dets}\n".format(mac=lease.ethernet, dets=str(lease)))
+                    print("New DHCP lease detected for MAC: {mac}\n".format(mac=lease['ethernet']))
+                    print("{mac} details: {dets}\n".format(mac=lease['ethernet'], dets=str(lease)))
                     new_leases.append(lease)
             if len(new_leases) == 0:
                 print("No new leases detected...\n")
                 return
             print("Dumping {n} new leases...".format(n=len(new_leases)))
             self.dump_new_leases(new_leases)
-            print("Saving old leases to file...")
+            print("Saving current dhcp.leases to old_leases file...")
             with open(SERVICE_PATH + OLD_LEASES_FILE, "wb") as update_old:
-                pickle.dump(list(cur_leases.values()), update_old, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(list(cur_leases), update_old, pickle.HIGHEST_PROTOCOL)
             # new_leases = analyze_leases.main()
             analyze_leases.main()
             for lease in new_leases:
-                print(f"Applying Hardening to {lease.ip}...")
+                print(f"Applying Hardening to {lease['ip']}...")
                 harden.read_model('standard', lease)
                 
 
@@ -59,11 +59,14 @@ class EventLisenter(LoggingEventHandler):
             boolean: is a lease new or not
         """
         for old_lease in old:
-            if old_lease.ethernet == lease.ethernet:
+            if old_lease['ethernet'] == lease['ethernet']:
+                print(f"This is an old lease... {lease['ethernet']}")
                 return False
         for new_lease in new:
-            if new_lease.ethernet == lease.ethernet:
+            if new_lease['ethernet'] == lease['ethernet']:
+                print(f"This is an duplicate lease... {lease['ethernet']}")
                 return False
+        print(f"This is an new lease... {lease['ethernet']}")
         return True
 
     def get_old_leases(self):
@@ -76,7 +79,7 @@ class EventLisenter(LoggingEventHandler):
         if os.path.exists(SERVICE_PATH + OLD_LEASES_FILE):
             with open(SERVICE_PATH + OLD_LEASES_FILE, "rb") as f:
                 data = pickle.load(f)
-            print("Old Leases: {oldlease}\n".format(oldlease=data))
+            print(f"Old Leases: {data}\n")
         else:
             data = []
             print("Old Leases: Empty.\n")
@@ -89,12 +92,21 @@ class EventLisenter(LoggingEventHandler):
         Returns:
             list: all current leases
         """
-        leases = IscDhcpLeases(LEASES_PATH)
-        all_leases = leases.get()
-        current_leases = leases.get_current()
-        print("All Leases: {all}\n".format(all=all_leases) )
-        print("Current Leases: {curr}\n".format(curr=current_leases) )
-        return current_leases
+        lease_list = []
+        with open(LEASES_PATH, "r+") as f:
+            lease_lines = f.read().splitlines()
+            for line in lease_lines:
+                lease = {}
+                parts = line.split(" ")
+                lease['lease_end'] = parts[0]
+                lease['static_ip'] = True if parts[0] == 0 else False
+                lease['ethernet'] = parts[1]
+                lease['ip'] = parts[1]
+                lease['hostname'] = parts[2] if parts[2] != '*' else ''
+                lease['client_id'] = [part3] if parts[3] != '*' else ''
+                lease_list.append(lease)
+        print(f"All Current Leases: {lease_list}\n" )
+        return lease_list
     
     def dump_new_leases(self, new_leases):
         """
@@ -104,7 +116,7 @@ class EventLisenter(LoggingEventHandler):
             new_leases (list): list of new leases found during this trigger
         """
         with open(SERVICE_PATH + NEW_LEASES_FILE, 'wb') as output:
-            print("Saving new leases to file...")
+            print("Saving all new leases to new_leases file...")
             pickle.dump(new_leases, output, pickle.HIGHEST_PROTOCOL)
 
 if __name__ == "__main__":
