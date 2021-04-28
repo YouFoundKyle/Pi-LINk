@@ -21,10 +21,6 @@ def index(request):
 def get_client_ip(request):
     return request.META.get('HTTP_HOST').split(':')[0].strip()
 
-# @login_required(login_url="/login/")
-# def track_updates(request):
-#     return HttpResponseRedirect("/overview/")
-
 @login_required(login_url="/login/")
 def net_overview(request):
     context = {}
