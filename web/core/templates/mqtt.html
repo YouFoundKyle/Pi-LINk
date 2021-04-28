@@ -25,7 +25,7 @@
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="#!">Dashboards</a></li>
-                            <li class="breadcrumb-item"><a href="#!">MQTT Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="#!">MQTT Overview Dashboard</a></li>
                         </ul>
                     </div>
                 </div>
@@ -62,22 +62,24 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
+                        <h5>Messages Per Topic</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar-chart-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
                         <h5>Energy Chart</h5>
                         <input type="text" id="datepicker">
                     </div>
                     <div class="card-body">
                         <div id="line-chart-3"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Messages Per Topic</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="bar-chart-1"></div>
                     </div>
                 </div>
             </div>
@@ -111,17 +113,6 @@
             </div>
         </div>
 
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Status</h5>
-                </div>
-                <div class="card-body">
-                    <div id="pie-chart-1" style="width:100%"></div>
-                </div>
-            </div>
-        </div>
         <!-- [ Main Content ] end -->
     </div>
 </div>
@@ -131,7 +122,7 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
-<script src="/static/assets/js/pages/chart-apex.js"></script>
+<script src="/static/assets/js/pages/overview.js"></script>
 <script src="/static/assets/js/pages/cards.js"></script>
 <script id="ip_address" type="application/json">{{ ip }}</script>
 {% endblock javascripts %}
