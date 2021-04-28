@@ -28,6 +28,7 @@ def net_overview(request):
 
     context = {}
     context['segment'] = 'index'
+    dev_data = {}
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
