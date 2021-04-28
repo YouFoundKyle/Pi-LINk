@@ -1,0 +1,147 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+<!-- INCLUDING JQUERY-->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}	
+    <!-- [ Main Content ] start -->
+    <section class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Network Overview</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="#!">Network Overview</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <!-- [ breadcrumb ] end -->
+
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <!-- [ info-blurb ] start -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Network Overview</h5>
+                            <div class="card-header-right">
+                                <div class="btn-group card-option">
+                                    <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="feather icon-more-horizontal"></i>
+                                    </button>
+                                    <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                        <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                        <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>This is the Network Overview page. Here, you can find information on what devices exist within your network as well as metrics on port usage. Scroll down to manage device updates.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ info-blurb ] end -->
+            </div>
+            <div class="row">
+                <!-- [ stiped-table ] start -->
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Network Devices</h5>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table id='dev_table' class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Date Added</th>
+                                            <th>IP Address</th>
+                                            <th>MAC Address</th>
+                                            <th>Hostname</th>
+                                            <th>Device Vendor</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for key, value in lease_data.items %}
+                                        <tr>
+                                            <td>{{value.date_added}}</td>
+                                            <td><a href="/device/{{value.IP}}"> {{value.IP}} </a> </td>
+                                            <td>{{key}}</td>
+                                            <td>{{value.hostname}}</td>
+                                            <td>{{value.vendor}}</td>
+                                            <td style="color: green">ENABLED</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ stiped-table ] end -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Port Overview</h5>
+                            {{ port_info|json_script:"port-info" }}
+                        </div>
+                        <div class="card-body">
+                            <div id="port-graph"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ basic-table ] start -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Manage Updates</h5>
+                            <button class="btn  btn-secondary" type="button" style="float: right"><i class='fas fa-edit'></i></button>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date Added</th>
+                                            <th>MAC Address</th>
+                                            <th>Last Updated</th>
+                                            <th>Firmware</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for key, value in lease_data.items %}
+                                        <tr>
+                                            <td>{{value.date_added}}</td>
+                                            <td>{{key}}</td>
+                                            <td>{{value.last_updated}}</td>
+                                            <tD>{{value.firmware}}</tD>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/static/assets/js/pages/net_overview.js"></script>
+{% endblock javascripts %}

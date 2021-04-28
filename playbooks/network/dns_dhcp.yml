@@ -46,7 +46,7 @@
         mode: '0644'
         backup: yes
     
-  - name: Copy resolve config file and backup old one
+    - name: Copy resolve config file and backup old one
       copy:
         src:  ../../configs/system/resolv.conf
         dest:  /etc/resolv.conf
