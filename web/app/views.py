@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django import template
 import requests
 import json, os
@@ -20,8 +21,13 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
-def net_overview(request):
+def track_updates(request):
+    return HttpResponseRedirect("/overview/")
 
+@login_required(login_url="/login/")
+def net_overview(request):
+    if request.method == 'POST':
+        return HttpResponseRedirect('/overview/')
     context = {}
     context['segment'] = 'index'
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
@@ -30,15 +36,18 @@ def net_overview(request):
     context['lease_data'] = dev_data
     port_count = {}
     port_dicts = []
+    updates = {}
     for key, val in dev_data.items():
         ports = val["port_usage"]
         port_dicts.extend(ports)
+        updates[key] = {"firmware":val["firmware"], "last_updated":val["last_updated"]}
     for port in port_dicts:
         if port["port_id"] in port_count.keys():
             port_count[port["port_id"]] += 1
         else:
             port_count[port["port_id"]] = 1
     context['port_info'] = port_count
+    context['update_info'] = updates
     html_template = loader.get_template('network_overview.html')
     return HttpResponse(html_template.render(context, request))
 
