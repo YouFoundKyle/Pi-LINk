@@ -19,7 +19,7 @@ $(document).ready(function () {
                 }
             }
             return temp;
-        }
+        } 
 
         function fill_device(response, device) {
             var device_data = [];
