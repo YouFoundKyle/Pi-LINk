@@ -33,11 +33,10 @@ def check_new_lease(path):
 
     # lease_data is a list
     lease_data = process_lease_data(lease_list)
-    print(lease_data)
     json_contents = []
     for lease in lease_data:
         portscan_results = scan(lease["IP"])
-        if not portscan_results :
+        if lease["IP"] in portscan_results.keys() :
             scan_data = process_portscan(portscan_results, lease["IP"])
             lease["port_usage"] = scan_data
         else:
@@ -55,8 +54,8 @@ def check_new_lease(path):
 
 def scan(ip_addr):
     try:
-        nmap = nmap3.NmapHostDiscovery()
-        results = nmap.nmap_portscan_only(ip_addr)
+        nmap = nmap3.Nmap()
+        results = nmap.nmap_os_detection(ip_addr)
         print(f"nmap results: {results}")
         return results
     except Exception as err:

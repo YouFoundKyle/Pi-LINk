@@ -1,8 +1,9 @@
 import analyze_leases
 from env_config import *
 import pickle
-import datetime
+from datetime import datetime
 import time
+import json
 
 def check_leases(path):
     """
@@ -33,19 +34,17 @@ def check_leases(path):
         json_contents.append(lease)
     return json_contents
 
-def get_analysis_dif (current, checked):
-    missing_in_current_but_in_checked = checked.keys() - current
-    devices_with_changes = [device for device in current if device not in checked]
-
+def get_analysis_dif (expected_leases, scanned_leases):
+    devices_with_changes = [device for device in expected_leases if device not in scanned_leases]
+    print(devices_with_changes)
 
 def main(path=SERVICE_PATH + NEW_LEASES_FILE):
-    lease_check = check_leases(path)
+    scanned_leases = check_leases(path)
     analysis_path = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
-    current_devices = []
+    expected_leases = []
     with open(analysis_path, 'rb') as f:
-        prev_analysis = pickle.load(f)
-        current_devices = prev_analysis['Device Info']
-    diff = get_analysis_dif(current_devices, lease_check)
+        expected_leases = json.load(f)
+    diff = get_analysis_dif(expected_leases, scanned_leases)
 
 
 if __name__ == "__main__":
