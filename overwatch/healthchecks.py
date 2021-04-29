@@ -6,7 +6,7 @@ import time
 import json
 
 def get_warning(ip):
-    return {"ip": ip , "timestamp": date.today().strftime("%m/%d/%y"), "message": f"Changes have been made to {ip}, it should be checked"}
+    return {"ip": ip , "timestamp": date.today().strftime("%m/%d/%y"), "message": f"Changes have been made to {ip}. Please check the device page."}
 
 def post_changes(ips):
     """

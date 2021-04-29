@@ -111,7 +111,7 @@ $(document).ready(function() {
         $('#editUpdate').show()
     });
 
-    $('#cancelAlert').click(function() {
+    $('button').click(function() {
         $(this).closest("tr").remove();
     });
 
