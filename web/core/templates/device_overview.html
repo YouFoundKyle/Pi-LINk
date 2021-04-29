@@ -74,7 +74,11 @@
                                 <div class="form-group row">
                                     <label for="deviceStatus" class="col-sm-3 col-form-label">Device Status</label>
                                     <div class="col-sm-9 custom-control custom-switch">
+                                        {% if deviceStatus == "Enabled" %}
                                         <input type="checkbox" class="custom-control-input" id="deviceStatus" name="deviceStatus" checked>
+                                        {% elif deviceStatus == "Disabled" %}
+                                        <input type="checkbox" class="custom-control-input" id="deviceStatus" name="deviceStatus">
+                                        {% endif %}
                                         <label class="custom-control-label" for="deviceStatus">Enabled</label>
                                         <small id="deviceStatus" class="form-text text-muted">Is the Device be allowed on the network</small>
                                     </div>
@@ -132,7 +136,7 @@
                                     <label for="ipSwitch" class="col-sm-3 col-form-label">Static IP</label>
                                     <div class="col-sm-9 custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="ipSwitch" name="ipSwitch" checked>
-                                        <label class="custom-control-label" for="ipSwitch">Enable</label>
+                                        <label class="custom-control-label" for="ipSwitch">Enabled</label>
                                         <small id="ipSwitch" class="form-text text-muted">Will the IP Address of the device change over time</small>
                                     </div>
                                 </div>
@@ -246,7 +250,7 @@
 {% block javascripts %}
 
     <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
-    <script src="/static/assets/js/pages/chart-apex.js"></script>
+    <!-- <script src="/static/assets/js/pages/chart-apex.js"></script> -->
     <script src="/static/assets/js/pages/dev_overview.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

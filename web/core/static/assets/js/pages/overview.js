@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         //Air Controller Temperature Line Chart
         $(function () {
-            var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=480s";
+            var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s";
 
             $.getJSON(url, function (response) {
                 var options = {
@@ -110,7 +110,7 @@ $(document).ready(function () {
                 endDate = endDate.format('YYYY-MM-DD HH:MM');
                 startDate = Date.parse(startDate) / 1000;
                 endDate = Date.parse(endDate) / 1000;
-                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startDate + "&end=" + endDate + "&step=20s";
+                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startDate + "&end=" + endDate + "&step=480s";
 
                 $.getJSON(url, function (response) {
                     var options = {
@@ -167,7 +167,6 @@ $(document).ready(function () {
                 });
             });
         });
-
 
         //Fridge Temperature Line Chart
         $(function () {

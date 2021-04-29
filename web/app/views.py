@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django import template
 import requests
 import json, os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from .functionality.util import get_port_info, get_device_info, dump_device_info, dump_update_info
 from .forms import DeviceForm, UpdateForm
 
@@ -27,6 +27,7 @@ def get_device_ips():
 def net_overview(request):
     context = {}
     context['segment'] = 'network'
+
     # if request.method == 'POST':
     #     updateInfo = UpdateForm(request.POST)
     #     if updateInfo.is_valid():
@@ -36,33 +37,40 @@ def net_overview(request):
     #         print("invalid")
     #         print(updateInfo.cleaned_data)
     #     return HttpResponseRedirect('/network')
+
+    if os.path.exists("/etc/pilink/web/alerts.json"):
+        with open("/etc/pilink/web/alerts.json") as df:
+            alerts = json.load(df)
+
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
-        context['lease_data'] = dev_data
-        port_dicts = []
-        updates = {}
-        port_count = {}
-        context['devices'] = get_device_ips()
-        for key, val in dev_data.items():
-            if val["port_usage"]:
-                port_dicts.extend(val["port_usage"])
-            updates[key] = {"firmware":val["firmware"], "last_updated":val["last_updated"]}
-        for port in port_dicts:
-            if port["port_id"] in port_count.keys():
-                port_count[port["port_id"]] += 1
-            else:
-                port_count[port["port_id"]] = 1
-        context['port_info'] = port_count
-        context['update_info'] = updates
+            context['lease_data'] = dev_data
+            port_dicts = []
+            updates = {}
+            port_count = {}
+            context['devices'] = get_device_ips()
+            today = date.today().strftime("%m/%d/%y")
+            d_cmp = datetime.strptime(today, "%m/%d/%y")
 
-        if os.path.exists("/etc/pilink/web/alerts.json"):
-            with open("/etc/pilink/web/alerts.json") as df:
-                alerts = json.load(df)
-        context['alerts'] = alerts
-        
-        html_template = loader.get_template('network_overview.html')
-        return HttpResponse(html_template.render(context, request))
+            for key, val in dev_data.items():
+                if val["port_usage"]:
+                    port_dicts.extend(val["port_usage"])
+                updates[key] = {"firmware":val["firmware"], "last_updated":val["last_updated"]}
+                lu = datetime.strptime(val["last_updated"], "%m/%d/%y")
+                diff = d_cmp - lu
+                if diff.days > 31:
+                    alerts.append({"timestamp": today, "ip": val["IP"], "message": "Reminder: Check for device updates."}) 
+            for port in port_dicts:
+                if port["port_id"] in port_count.keys():
+                    port_count[port["port_id"]] += 1
+                else:
+                    port_count[port["port_id"]] = 1
+            context['port_info'] = port_count
+            context['update_info'] = updates
+            context['alerts'] = alerts
+            html_template = loader.get_template('network_overview.html')
+            return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
 def device(request, requested_ip):
@@ -72,6 +80,9 @@ def device(request, requested_ip):
         if deviceInfo.is_valid():
             print(deviceInfo.cleaned_data)
             dump_device_info(deviceInfo.cleaned_data)
+        else:
+            print("invalid")
+            print(deviceInfo.cleaned_data)
         return HttpResponseRedirect(f'/device/{requested_ip}')
 
     device_info = get_device_info(requested_ip)
