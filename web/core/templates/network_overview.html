@@ -1,11 +1,12 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} UI Tables {% endblock %} 
+{% block title %} Network Overview {% endblock %} 
 <!-- INCLUDING JQUERY-->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+{% endblock stylesheets %}
 
 {% block content %}	
     <!-- [ Main Content ] start -->
@@ -84,7 +85,7 @@
                                             <td>{{key}}</td>
                                             <td>{{value.hostname}}</td>
                                             <td>{{value.vendor}}</td>
-                                            <td style="color: green">ENABLED</td>
+                                            <td style="color: green">{{value.device_status|upper}}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -94,10 +95,52 @@
                     </div>
                 </div>
                 <!-- [ stiped-table ] end -->
+                <!-- [ basic-table ] start -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <form class="updateForm" id="updateForm" action="/network" method="post">
+                            {% csrf_token %}
+                            <div class="card-header">
+                                <h5>Manage Updates</h5>
+                                {{ update_info|json_script:"update-info" }}
+                                <div class="btn-group" style="float: right">
+                                    <button id="editUpdate" class="btn  btn-primary btn-sm mr-1" type="button" style="float: right"><i class='fas fa-edit'></i></button>
+                                    <button id="trashUpdate" class="btn  btn-secondary btn-sm mr-1" type="button" style="display: none"><i class='far fa-trash-alt'></i></button>
+                                    <button id="saveUpdate" class="btn  btn-primary btn-sm mr-1" type="submit" style="display: none"><i class='fa fa-check '></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body table-border-style">
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+                                <div class="table-responsive">
+                                    <table id= "updateForm" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>MAC Address</th>
+                                                <th>Last Updated</th>
+                                                <th>Firmware</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                                            {% for key, value in lease_data.items %}
+                                            <tr>
+                                                <td><input id="mac" class="form-control-plaintext" type="text" value="{{key}}" readonly></td>
+                                                <td><input id="last_update" class="form-control" style='width:11ch;' type="text" value="{{value.last_updated}}" readonly></td>
+                                                <td><input id="firmware" class="form-control" style='width:15ch;' type="text" value="{{value.firmware}}" readonly></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Port Overview</h5>
+                            <h5>Open Ports</h5>
                             {{ port_info|json_script:"port-info" }}
                         </div>
                         <div class="card-body">
@@ -105,39 +148,41 @@
                         </div>
                     </div>
                 </div>
-                <!-- [ basic-table ] start -->
-                <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h5>Manage Updates</h5>
-                            <button class="btn  btn-secondary" type="button" style="float: right"><i class='fas fa-edit'></i></button>
-                        </div>
-                        <div class="card-body table-border-style">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date Added</th>
-                                            <th>MAC Address</th>
-                                            <th>Last Updated</th>
-                                            <th>Firmware</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for key, value in lease_data.items %}
-                                        <tr>
-                                            <td>{{value.date_added}}</td>
-                                            <td>{{key}}</td>
-                                            <td>{{value.last_updated}}</td>
-                                            <tD>{{value.firmware}}</tD>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                        <form class="updateForm" id="updateForm" action="/network" method="post">
+                            {% csrf_token %}
+                            <div class="card-header">
+                                <h5>Manage Alerts</h5>
                             </div>
-                        </div>
+                            <div class="card-body table-border-style">
+                                <div class="table-responsive">
+                                    <table id= "alertForm" class="table table-dark">
+                                        <thead>
+                                            <tr>
+                                                <th>Timestamp</th>
+                                                <th>IP</th>
+                                                <th>Alert</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for alert in alerts %}
+                                            <tr class="bg-success">
+                                                <td>{{alert.timestamp}}</td>
+                                                <td>{{alert.ip}}</td>
+                                                <td>{{alert.message}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
                 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

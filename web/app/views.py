@@ -8,7 +8,7 @@ import requests
 import json, os
 from datetime import datetime, timedelta
 from .functionality.util import get_port_info, get_device_info, dump_device_info
-from .forms import DeviceForm
+from .forms import DeviceForm, UpdateForm
 
 def get_client_ip(request):
     return request.META.get('HTTP_HOST').split(':')[0].strip()
@@ -25,26 +25,41 @@ def get_device_ips():
             
 @login_required(login_url="/login/")
 def net_overview(request):
-
     context = {}
-    context['segment'] = 'index'
-    dev_data = {}
+    context['segment'] = 'network'
+
+    if request.method == 'POST':
+        updateInfo = UpdateForm(request.POST)
+        if updateInfo.is_valid():
+            print(updateInfo.cleaned_data)
+            dump_update_info(updateInfo.cleaned_data)
+        return HttpResponseRedirect('/network')
+
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
     context['lease_data'] = dev_data
     port_dicts = []
+    updates = {}
     port_count = {}
     context['devices'] = get_device_ips()
     for key, val in dev_data.items():
-        if val["port_usage"]:
-            port_dicts.extend(val["port_usage"])
+        ports = val["port_usage"]
+        port_dicts.extend(ports)
+        updates[key] = {"firmware":val["firmware"], "last_updated":val["last_updated"]}
     for port in port_dicts:
         if port["port_id"] in port_count.keys():
             port_count[port["port_id"]] += 1
         else:
             port_count[port["port_id"]] = 1
     context['port_info'] = port_count
+    context['update_info'] = updates
+
+    if os.path.exists("/etc/pilink/web/alerts.json"):
+        with open("/etc/pilink/web/alerts.json") as df:
+            alerts = json.load(df)
+    context['alerts'] = alerts
+    
     html_template = loader.get_template('network_overview.html')
     return HttpResponse(html_template.render(context, request))
 

@@ -40,6 +40,16 @@ def get_device_info(ip):
                 return lease
     return {"IP":ip,"MAC":"NOT FOUND", "lease_state":"NOT FOUND", "hostname":"NOT FOUND", "vendor":"NOT FOUND","port_usage":[],"date":"NOT FOUND", "unknown": None}
 
+def dump_update_info(update_info):
+    print("TEST", file=sys.stderr)
+    with open(ROOT_DIR + "/web/" + "lease_DB.json", "r+") as db:
+        lease_db = json.load(db)
+        mac = update_info['mac']
+        if mac in lease_db.keys():
+            new_date = update_info['last_update']
+            lease_db[mac]["last_updated"] = new_date
+    with open(ROOT_DIR + "/web/" + "lease_DB.json", "w+") as db:
+        json.dump(lease_db, db)
 
 def dump_device_info(device_info):
     """
@@ -70,12 +80,12 @@ def dump_device_info(device_info):
                        print(f"pending port {port}")
                        retrieved_device['pend_p'].append(port)
 
-                retrieved_device['last_updated'] = datetime.date.today().strftime("%m/%d/%y")
                 retrieved_device['firmware'] = device_info['firmware']
                 retrieved_device['device_status'] = DeviceStatus.ENABLED.value if device_info['deviceStatus'] else DeviceStatus.DISABLED.value
                 retrieved_device['vendor'] = device_info['vendor']
                 retrieved_device['hostname'] = device_info['hostname']
                 print(retrieved_device)
+                lease_db[lease] = retrieved_device
                 updated_leases = lease_db
                 break
         
