@@ -125,9 +125,9 @@
                                             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                                             {% for key, value in lease_data.items %}
                                             <tr>
-                                                <td><input id="mac" class="form-control-plaintext" type="text" value="{{key}}" readonly></td>
-                                                <td><input id="last_update" class="form-control" style='width:11ch;' type="text" value="{{value.last_updated}}" readonly></td>
-                                                <td><input id="firmware" class="form-control" style='width:15ch;' type="text" value="{{value.firmware}}" readonly></td>
+                                                <td><input name="mac" id="mac" class="form-control-plaintext" type="text" value="{{key}}" readonly></td>
+                                                <td><input name="last_update" id="last_update" class="form-control" style='width:11ch;' type="text" value="{{value.last_updated}}" readonly></td>
+                                                <td><input name="firmware" id="firmware" class="form-control" style='width:15ch;' type="text" value="{{value.firmware}}" readonly></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

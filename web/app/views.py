@@ -7,7 +7,7 @@ from django import template
 import requests
 import json, os
 from datetime import datetime, timedelta
-from .functionality.util import get_port_info, get_device_info, dump_device_info
+from .functionality.util import get_port_info, get_device_info, dump_device_info, dump_update_info
 from .forms import DeviceForm, UpdateForm
 
 def get_client_ip(request):
@@ -33,6 +33,8 @@ def net_overview(request):
         if updateInfo.is_valid():
             print(updateInfo.cleaned_data)
             dump_update_info(updateInfo.cleaned_data)
+        else:
+            print(updateInfo.errors)
         return HttpResponseRedirect('/network')
 
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
@@ -71,12 +73,6 @@ def device(request, requested_ip):
         if deviceInfo.is_valid():
             print(deviceInfo.cleaned_data)
             dump_device_info(deviceInfo.cleaned_data)
-        # devicename = request.Post['formIDname']
-        # # Open local json with data
-        # # ...
-        # db['name'] = devicename
-        # with open(smthing) as f:
-        #     json.dump (f, db)
         return HttpResponseRedirect(f'/device/{requested_ip}')
 
     device_info = get_device_info(requested_ip)
