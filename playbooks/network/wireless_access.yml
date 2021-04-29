@@ -10,7 +10,6 @@
       package:
         name: ['hostapd', 'net-tools']
         state: present
-        update_cache: yes
 
     - name: Disable Wireless Access Service
       service:

@@ -1,0 +1,20 @@
+{
+    "mac_prefixes": [ "*" ],
+    "os": "",
+    "static_ip" : true,
+    "open_ports": [
+        {
+            "port": "7103",
+            "protocol": "tcp"
+        },
+        {
+            "port": "6668",
+            "protocol": "tcp"
+        },
+        {
+            "port": "23",
+            "protocol": "tcp"
+        }
+    ],
+    "internet": true
+}
