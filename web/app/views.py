@@ -80,6 +80,9 @@ def device(request, requested_ip):
         if deviceInfo.is_valid():
             print(deviceInfo.cleaned_data)
             dump_device_info(deviceInfo.cleaned_data)
+        else:
+            print("invalid")
+            print(deviceInfo.cleaned_data)
         return HttpResponseRedirect(f'/device/{requested_ip}')
 
     device_info = get_device_info(requested_ip)

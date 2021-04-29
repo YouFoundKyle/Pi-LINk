@@ -118,7 +118,11 @@
                                             <td>{{key}}</td>
                                             <td>{{value.hostname}}</td>
                                             <td>{{value.vendor}}</td>
+                                            {% if value.device_status == "Enabled" %}
                                             <td style="color: green">{{value.device_status|upper}}</td>
+                                            {% elif value.device_status == "Disabled" %}
+                                            <td style="color: red">{{value.device_status|upper}}</td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     </tbody>
