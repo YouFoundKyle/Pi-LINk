@@ -19,7 +19,7 @@ $(document).ready(function () {
                 }
             }
             return temp;
-        } 
+        }
 
         function fill_device(response, device) {
             var device_data = [];
@@ -42,7 +42,8 @@ $(document).ready(function () {
 
         //Air Controller Temperature Line Chart
         $(function () {
-            var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=20s";
+            var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=1618332873&end=1618335953&step=480s";
+
             $.getJSON(url, function (response) {
                 var options = {
                     series: [],
@@ -97,18 +98,19 @@ $(document).ready(function () {
             });
 
             $.noConflict();
-            $('#datepicker3').datepicker(
-                {
-                    onSelect: function () {
-                        var currentDate = $("#datepicker3").datepicker("getDate");
-                        getTime(currentDate);
-                    }
+            $('input[name="datetime_ac"]').daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A'
                 }
-            );
-            function getTime(dateText) {
-                var startTime = new Date(dateText).getTime() / 1000;
-                var endTime = startTime + 21600;
-                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=480s";
+            }, function getDates(startDate, endDate) {
+                startDate = startDate.format('YYYY-MM-DD HH:MM');
+                endDate = endDate.format('YYYY-MM-DD HH:MM');
+                startDate = Date.parse(startDate) / 1000;
+                endDate = Date.parse(endDate) / 1000;
+                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startDate + "&end=" + endDate + "&step=20s";
 
                 $.getJSON(url, function (response) {
                     var options = {
@@ -147,6 +149,7 @@ $(document).ready(function () {
                                 rotate: 0,
                                 rotateAlways: true,
                                 formatter: function (timestamp) {
+                                    timestamp = timestamp - 14400;
                                     var date = new Date(timestamp * 1000).toISOString().slice(0, 19).replace('T', ' ');
                                     return date;
                                 },
@@ -162,8 +165,9 @@ $(document).ready(function () {
                         data: getTemp(response, "air_controller"),
                     }])
                 });
-            }
+            });
         });
+
 
         //Fridge Temperature Line Chart
         $(function () {
@@ -225,18 +229,19 @@ $(document).ready(function () {
                 }])
             });
 
-            $('#datepicker4').datepicker(
-                {
-                    onSelect: function () {
-                        var currentDate = $("#datepicker4").datepicker("getDate");
-                        getTime(currentDate);
-                    }
+            $('input[name="datetime_fridge"]').daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A'
                 }
-            );
-            function getTime(dateText) {
-                var startTime = new Date(dateText).getTime() / 1000;
-                var endTime = startTime + 7200;
-                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startTime + "&end=" + endTime + "&step=20s";
+            }, function getDates(startDate, endDate) {
+                startDate = startDate.format('YYYY-MM-DD HH:MM');
+                endDate = endDate.format('YYYY-MM-DD HH:MM');
+                startDate = Date.parse(startDate) / 1000;
+                endDate = Date.parse(endDate) / 1000;
+                var url = "http://" + ip + ":9090/api/v1/query_range?query=temperature&start=" + startDate + "&end=" + endDate + "&step=480s";
 
                 $.getJSON(url, function (response) {
 
@@ -292,7 +297,7 @@ $(document).ready(function () {
                         data: getTemp(response, "fridge")
                     }])
                 });
-            }
+            });
         });
 
         //Energy Line Chart
@@ -392,18 +397,19 @@ $(document).ready(function () {
                 chart.render();
             });
 
-            $('#datepicker').datepicker(
-                {
-                    onSelect: function () {
-                        var currentDate = $("#datepicker").datepicker("getDate");
-                        getTime(currentDate);
-                    }
+            $('input[name="datetime_energy"]').daterangepicker({
+                timePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A'
                 }
-            );
-            function getTime(dateText) {
-                var startTime = new Date(dateText).getTime() / 1000;
-                var endTime = startTime + 50000;
-                var url = "http://" + ip + ":9090/api/v1/query_range?query=watts&start=" + startTime + "&end=" + endTime + "&step=120s";
+            }, function getDates(startDate, endDate) {
+                startDate = startDate.format('YYYY-MM-DD HH:MM');
+                endDate = endDate.format('YYYY-MM-DD HH:MM');
+                startDate = Date.parse(startDate) / 1000;
+                endDate = Date.parse(endDate) / 1000;
+                var url = "http://" + ip + ":9090/api/v1/query_range?query=watts&start=" + startDate + "&end=" + endDate + "&step=480s";
 
                 $.getJSON(url, function (response) {
                     function fill_chart(response) {
@@ -510,7 +516,7 @@ $(document).ready(function () {
                         data: fill_chart(response),
                     }])
                 });
-            }
+            });
         });
 
         //Bar Chart

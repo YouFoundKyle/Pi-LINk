@@ -23,7 +23,7 @@
                             <h5 class="m-b-10">MQTT Dashboard</h5>
                         </div>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="network"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="#!">Dashboards</a></li>
                             <li class="breadcrumb-item"><a href="#!">MQTT Overview Dashboard</a></li>
                         </ul>
@@ -33,38 +33,6 @@
         </div>
         <!-- [ breadcrumb ] end -->
         <!-- [ Main Content ] start -->
-        <div class="card">
-            <div class="col-sm-12">
-                <div class="card-header">
-                    <h5>What is this?</h5>
-                    <div class="card-header-right">
-                        <div class="btn-group card-option">
-                            <button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="feather icon-more-horizontal"></i>
-                            </button>
-                            <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                <li class="dropdown-item full-card"><a href="#!"><span><i
-                                                class="feather icon-maximize"></i> maximize</span><span
-                                            style="display:none"><i class="feather icon-minimize"></i>
-                                            Restore</span></a></li>
-                                <li class="dropdown-item minimize-card"><a href="#!"><span><i
-                                                class="feather icon-minus"></i> collapse</span><span
-                                            style="display:none"><i class="feather icon-plus"></i> expand</span></a>
-                                </li>
-                                <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i>
-                                        remove</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>"This is the MQTT Overview Dashboard. On this page, you will find metrics about your devices and the histories of what your devices have been doing. 
-                        You can see how much traffic your devices have been sending, and you can select dates for certain graphs to see data from a specific date. "</p>
-                </div>
-            </div>
-        </div>
-
         <div class="row">
             <!-- [ variant-chart ] start -->
             <div class="col-md-6 col-xl-3">
@@ -108,7 +76,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>Energy Chart</h5>
-                        <input type="text" id="datepicker">
+                        <input type="text" name="datetime_energy" />
                     </div>
                     <div class="card-body">
                         <div id="line-chart-3"></div>
@@ -122,7 +90,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>Air Controller Temperature Chart</h5>
-                        <input type="text" id="datepicker3">
+                        <input type="text" name="datetime_ac" />
                     </div>
                     <div class="card-body">
                         <div id="line-chart-1"></div>
@@ -136,7 +104,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>Fridge Temperature Chart</h5>
-                        <input type="text" id="datepicker4">
+                        <input type="text" name="datetime_fridge" />
                     </div>
                     <div class="card-body">
                         <div id="line-chart-2"></div>
