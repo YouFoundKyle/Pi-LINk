@@ -126,7 +126,7 @@
                                             {% for key, value in lease_data.items %}
                                             <tr>
                                                 <td><input id="mac" class="form-control-plaintext" type="text" value="{{key}}" readonly></td>
-                                                <td><input id="last_update" class="form-control" style='width:10ch;' type="text" value="{{value.last_updated}}" readonly></td>
+                                                <td><input id="last_update" class="form-control" style='width:11ch;' type="text" value="{{value.last_updated}}" readonly></td>
                                                 <td><input id="firmware" class="form-control" style='width:15ch;' type="text" value="{{value.firmware}}" readonly></td>
                                             </tr>
                                             {% endfor %}
@@ -148,7 +148,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
                     <div class="card">
                         <form class="updateForm" id="updateForm" action="/network" method="post">
                             {% csrf_token %}
@@ -157,20 +159,22 @@
                             </div>
                             <div class="card-body table-border-style">
                                 <div class="table-responsive">
-                                    <table id= "alertForm" class="table table-dark">
+                                    <table id= "alertForm" class="table table-border-style">
                                         <thead>
                                             <tr>
-                                                <th>IP</th>
                                                 <th>Timestamp</th>
+                                                <th>IP</th>
                                                 <th>Alert</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for alert in alerts %}
-                                            <tr class="bg-success">
-                                                <td>{{alert.ip}}</td>
+                                            <tr>
                                                 <td>{{alert.timestamp}}</td>
+                                                <td>{{alert.ip}}</td>
                                                 <td>{{alert.message}}</td>
+                                                <td><button id="cancelAlert" class="btn btn-sm btn-danger" style="float: right" type="submit"><i class='fa fa-times-circle'></i></button></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
