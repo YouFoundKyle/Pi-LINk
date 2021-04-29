@@ -11,5 +11,6 @@ class DeviceForm(forms.Form):
     deviceStatus = forms.BooleanField()
 
 class UpdateForm(forms.Form):
-    last_updated = forms.CharField()
+    mac = forms.CharField()
+    last_update = forms.CharField()
     firmware = forms.CharField()

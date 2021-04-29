@@ -1,18 +1,11 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} UI Tables {% endblock %} 
+{% block title %} Network Overview {% endblock %} 
 <!-- INCLUDING JQUERY-->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-<!-- <style type="text/css">
-    input[type="text"] { 
-        border: 1px;
-    }
-    /* other style definitions go here */
-
-</style> -->
 {% endblock stylesheets %}
 
 {% block content %}	
@@ -102,21 +95,10 @@
                     </div>
                 </div>
                 <!-- [ stiped-table ] end -->
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Open Ports</h5>
-                            {{ port_info|json_script:"port-info" }}
-                        </div>
-                        <div class="card-body">
-                            <div id="port-graph"></div>
-                        </div>
-                    </div>
-                </div>
                 <!-- [ basic-table ] start -->
                 <div class="col-md-6">
                     <div class="card">
-                        <form id="updateForm" action="/network/" method="post">
+                        <form class="updateForm" id="updateForm" action="/network" method="post">
                             {% csrf_token %}
                             <div class="card-header">
                                 <h5>Manage Updates</h5>
@@ -139,11 +121,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                                             {% for key, value in lease_data.items %}
                                             <tr>
-                                                <td>{{key}}</td>
-                                                <td><input id="last_update" class="form-control" style='width:10ch; border-style: none;' type="text" value="{{value.last_updated}}" readonly></td>
-                                                <td><input id="firmware" class="form-control" style='width:20ch; border-style: none;' type="text" value="{{value.firmware}}" readonly></td>
+                                                <td><input id="mac" class="form-control-plaintext" type="text" value="{{key}}" readonly></td>
+                                                <td><input id="last_update" class="form-control" style='width:10ch;' type="text" value="{{value.last_updated}}" readonly></td>
+                                                <td><input id="firmware" class="form-control" style='width:15ch;' type="text" value="{{value.firmware}}" readonly></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -153,6 +137,50 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Open Ports</h5>
+                            {{ port_info|json_script:"port-info" }}
+                        </div>
+                        <div class="card-body">
+                            <div id="port-graph"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <form class="updateForm" id="updateForm" action="/network" method="post">
+                            {% csrf_token %}
+                            <div class="card-header">
+                                <h5>Manage Alerts</h5>
+                            </div>
+                            <div class="card-body table-border-style">
+                                <div class="table-responsive">
+                                    <table id= "alertForm" class="table table-dark">
+                                        <thead>
+                                            <tr>
+                                                <th>IP</th>
+                                                <th>Timestamp</th>
+                                                <th>Alert</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for alert in alerts %}
+                                            <tr class="bg-success">
+                                                <td>{{alert.ip}}</td>
+                                                <td>{{alert.timestamp}}</td>
+                                                <td>{{alert.message}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
                 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

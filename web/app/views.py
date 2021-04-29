@@ -30,6 +30,7 @@ def net_overview(request):
         updateInfo = UpdateForm(request.POST)
         if updateInfo.is_valid():
             print(updateInfo.cleaned_data)
+            dump_update_info(updateInfo.cleaned_data)
         return HttpResponseRedirect('/network')
 
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
@@ -50,6 +51,12 @@ def net_overview(request):
             port_count[port["port_id"]] = 1
     context['port_info'] = port_count
     context['update_info'] = updates
+
+    if os.path.exists("/etc/pilink/web/alerts.json"):
+        with open("/etc/pilink/web/alerts.json") as df:
+            alerts = json.load(df)
+    context['alerts'] = alerts
+    
     html_template = loader.get_template('network_overview.html')
     return HttpResponse(html_template.render(context, request))
 

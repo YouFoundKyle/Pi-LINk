@@ -73,18 +73,23 @@ $(document).ready(function() {
             if (inp.attr('readonly')) {
              inp.removeAttr('readonly');
             }
-            $(this).css('border', '1px solid grey')
-            $(this).css('border-radius', '5px')
         });
         $(this).hide();
+        // $('#last_update').datepicker(
+        //     {
+        //         onSelect: function () {
+        //             var currentDate = $("#last_update").datepicker("getDate");
+        //             getTime(currentDate);
+        //         }
+        //     }
+        // );
     });
     
     $('#trashUpdate').click(function(){
         $('input').each(function(){
             var inp = $(this);
             inp.attr('value', inp.defaultValue);
-            inp.attr('readonly', 'readonly');
-            $(this).css('border', 'none')     
+            inp.attr('readonly', 'readonly');     
         });
         $(this).hide();
         $('#saveUpdate').hide();
@@ -95,8 +100,7 @@ $(document).ready(function() {
     $('#saveUpdate').click(function(){
         $('input').each(function(){
             var inp = $(this);
-            inp.attr('readonly', 'readonly'); 
-            $(this).css('border', 'none')      
+            inp.attr('readonly', 'readonly');   
         });
         $(this).hide();
         $('#trashUpdate').hide();
