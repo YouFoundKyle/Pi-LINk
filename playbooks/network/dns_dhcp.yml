@@ -9,7 +9,6 @@
       package:
         name: ['dnsmasq', 'isc-dhcp-server']
         state: present
-        update_cache: yes
 
     - name: Disable Existing DNS and make sure dnsmasq is off
       service:
@@ -76,7 +75,6 @@
       package:
         name: ['systemd-resolved']
         state: absent
-        update_cache: yes
 
     - name: Enable dnsmasq and hostapd
       systemd:
