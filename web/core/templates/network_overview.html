@@ -58,6 +58,39 @@
                 <!-- [ info-blurb ] end -->
             </div>
             <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Manage Alerts</h5>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table id= "alertForm" class="table table-border-style">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>IP Address</th>
+                                            <th>Message</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for alert in alerts %}
+                                        <tr>
+                                            <td>{{alert.timestamp}}</td>
+                                            <td><a href="/device/{{alert.ip}}">{{alert.ip}}</a></td>
+                                            <td>{{alert.message}}</td>
+                                            <td><button id="cancelAlert" class="btn btn-sm btn-danger" style="float: right" type="submit"><i class='fa fa-times-circle'></i></button></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <!-- [ stiped-table ] start -->
                 <div class="col-xl-12">
                     <div class="card">
@@ -149,40 +182,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Manage Alerts</h5>
-                        </div>
-                        <div class="card-body table-border-style">
-                            <div class="table-responsive">
-                                <table id= "alertForm" class="table table-border-style">
-                                    <thead>
-                                        <tr>
-                                            <th>Timestamp</th>
-                                            <th>IP Address</th>
-                                            <th>Message</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for alert in alerts %}
-                                        <tr>
-                                            <td>{{alert.timestamp}}</td>
-                                            <td>{{alert.ip}}</td>
-                                            <td>{{alert.message}}</td>
-                                            <td><button id="cancelAlert" class="btn btn-sm btn-danger" style="float: right" type="submit"><i class='fa fa-times-circle'></i></button></td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endblock content %}
+            {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
