@@ -27,41 +27,42 @@ def get_device_ips():
 def net_overview(request):
     context = {}
     context['segment'] = 'network'
-
-    if request.method == 'POST':
-        updateInfo = UpdateForm(request.POST)
-        if updateInfo.is_valid():
-            print(updateInfo.cleaned_data)
-            dump_update_info(updateInfo.cleaned_data)
-        return HttpResponseRedirect('/network')
-
+    # if request.method == 'POST':
+    #     updateInfo = UpdateForm(request.POST)
+    #     if updateInfo.is_valid():
+    #         print(updateInfo.cleaned_data)
+    #         dump_update_info(updateInfo.cleaned_data)
+    #     else:
+    #         print("invalid")
+    #         print(updateInfo.cleaned_data)
+    #     return HttpResponseRedirect('/network')
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
             dev_data = json.load(df)
-    context['lease_data'] = dev_data
-    port_dicts = []
-    updates = {}
-    port_count = {}
-    context['devices'] = get_device_ips()
-    for key, val in dev_data.items():
-        if val["port_usage"]:
-            port_dicts.extend(val["port_usage"])
-        updates[key] = {"firmware":val["firmware"], "last_updated":val["last_updated"]}
-    for port in port_dicts:
-        if port["port_id"] in port_count.keys():
-            port_count[port["port_id"]] += 1
-        else:
-            port_count[port["port_id"]] = 1
-    context['port_info'] = port_count
-    context['update_info'] = updates
+        context['lease_data'] = dev_data
+        port_dicts = []
+        updates = {}
+        port_count = {}
+        context['devices'] = get_device_ips()
+        for key, val in dev_data.items():
+            if val["port_usage"]:
+                port_dicts.extend(val["port_usage"])
+            updates[key] = {"firmware":val["firmware"], "last_updated":val["last_updated"]}
+        for port in port_dicts:
+            if port["port_id"] in port_count.keys():
+                port_count[port["port_id"]] += 1
+            else:
+                port_count[port["port_id"]] = 1
+        context['port_info'] = port_count
+        context['update_info'] = updates
 
-    if os.path.exists("/etc/pilink/web/alerts.json"):
-        with open("/etc/pilink/web/alerts.json") as df:
-            alerts = json.load(df)
-    context['alerts'] = alerts
-    
-    html_template = loader.get_template('network_overview.html')
-    return HttpResponse(html_template.render(context, request))
+        if os.path.exists("/etc/pilink/web/alerts.json"):
+            with open("/etc/pilink/web/alerts.json") as df:
+                alerts = json.load(df)
+        context['alerts'] = alerts
+        
+        html_template = loader.get_template('network_overview.html')
+        return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
 def device(request, requested_ip):

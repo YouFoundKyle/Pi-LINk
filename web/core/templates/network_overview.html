@@ -81,7 +81,7 @@
                                         {% for key, value in lease_data.items %}
                                         <tr>
                                             <td>{{value.date_added}}</td>
-                                            <td><a href="/device/{{value.IP}}"> {{value.IP}} </a> </td>
+                                            <td><a href="/device/{{value.IP}}"> {{value.IP}} </a></td>
                                             <td>{{key}}</td>
                                             <td>{{value.hostname}}</td>
                                             <td>{{value.vendor}}</td>
@@ -103,11 +103,11 @@
                             <div class="card-header">
                                 <h5>Manage Updates</h5>
                                 {{ update_info|json_script:"update-info" }}
-                                <div class="btn-group" style="float: right">
+                                <!-- <div class="btn-group" style="float: right">
                                     <button id="editUpdate" class="btn  btn-primary btn-sm mr-1" type="button" style="float: right"><i class='fas fa-edit'></i></button>
                                     <button id="trashUpdate" class="btn  btn-secondary btn-sm mr-1" type="button" style="display: none"><i class='far fa-trash-alt'></i></button>
                                     <button id="saveUpdate" class="btn  btn-primary btn-sm mr-1" type="submit" style="display: none"><i class='fa fa-check '></i></button>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="card-body table-border-style">
                                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
@@ -125,9 +125,9 @@
                                             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                                             {% for key, value in lease_data.items %}
                                             <tr>
-                                                <td><input name="mac" id="mac" class="form-control-plaintext" type="text" value="{{key}}" readonly></td>
-                                                <td><input name="last_update" id="last_update" class="form-control" style='width:11ch;' type="text" value="{{value.last_updated}}" readonly></td>
-                                                <td><input name="firmware" id="firmware" class="form-control" style='width:15ch;' type="text" value="{{value.firmware}}" readonly></td>
+                                                <td><a href="/device/{{value.IP}}"> {{key}}</a></td>
+                                                <td>{{value.last_updated}}</td>
+                                                <td>{{value.firmware}}</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -152,36 +152,33 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
-                        <form class="updateForm" id="updateForm" action="/network" method="post">
-                            {% csrf_token %}
-                            <div class="card-header">
-                                <h5>Manage Alerts</h5>
+                        <div class="card-header">
+                            <h5>Manage Alerts</h5>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table id= "alertForm" class="table table-border-style">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>IP Address</th>
+                                            <th>Message</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for alert in alerts %}
+                                        <tr>
+                                            <td>{{alert.timestamp}}</td>
+                                            <td>{{alert.ip}}</td>
+                                            <td>{{alert.message}}</td>
+                                            <td><button id="cancelAlert" class="btn btn-sm btn-danger" style="float: right" type="submit"><i class='fa fa-times-circle'></i></button></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="card-body table-border-style">
-                                <div class="table-responsive">
-                                    <table id= "alertForm" class="table table-border-style">
-                                        <thead>
-                                            <tr>
-                                                <th>Timestamp</th>
-                                                <th>IP</th>
-                                                <th>Alert</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for alert in alerts %}
-                                            <tr>
-                                                <td>{{alert.timestamp}}</td>
-                                                <td>{{alert.ip}}</td>
-                                                <td>{{alert.message}}</td>
-                                                <td><button id="cancelAlert" class="btn btn-sm btn-danger" style="float: right" type="submit"><i class='fa fa-times-circle'></i></button></td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -75,16 +75,20 @@ $(document).ready(function() {
             }
         });
         $(this).hide();
-        // $('#last_update').datepicker(
-        //     {
-        //         onSelect: function () {
-        //             var currentDate = $("#last_update").datepicker("getDate");
-        //             getTime(currentDate);
-        //         }
-        //     }
-        // );
     });
     
+    // $('#cancelAlert').click(function() {
+    //     var row_vals = {};
+    //     var $row = $(this).closest("tr");    // Find the row
+    //     var $tds = $row.find("td");
+    //     $.each($tds, function() {
+    //         row_vals.push($(this).text())
+    //     });
+    //     $.post("/network", row_vals, function(data, status){
+    //         console.log('${data} and status is ${status}')
+    //     });
+    // });
+
     $('#trashUpdate').click(function(){
         $('input').each(function(){
             var inp = $(this);

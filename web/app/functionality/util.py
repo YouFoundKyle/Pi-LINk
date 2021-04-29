@@ -41,15 +41,17 @@ def get_device_info(ip):
     return {"IP":ip,"MAC":"NOT FOUND", "lease_state":"NOT FOUND", "hostname":"NOT FOUND", "vendor":"NOT FOUND","port_usage":[],"date":"NOT FOUND", "unknown": None}
 
 def dump_update_info(update_info):
-    print("TEST", file=sys.stderr)
     with open(ROOT_DIR + "/web/" + "lease_DB.json", "r+") as db:
         lease_db = json.load(db)
         mac = update_info['mac']
         if mac in lease_db.keys():
+            print("mac is in db")
             new_date = update_info['last_update']
             lease_db[mac]["last_updated"] = new_date
+            print(lease_db[mac])
     with open(ROOT_DIR + "/web/" + "lease_DB.json", "w+") as db:
         json.dump(lease_db, db)
+    print("exiting")
 
 def dump_device_info(device_info):
     """
@@ -87,6 +89,7 @@ def dump_device_info(device_info):
                 retrieved_device['device_status'] = DeviceStatus.ENABLED.value if device_info['deviceStatus'] else DeviceStatus.DISABLED.value
                 retrieved_device['vendor'] = device_info['vendor']
                 retrieved_device['hostname'] = device_info['hostname']
+                retrieved_device['last_updated'] = device_info['last_updated']
                 print(retrieved_device)
                 lease_db[lease] = retrieved_device
                 updated_leases = lease_db
