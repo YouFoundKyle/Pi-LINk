@@ -10,6 +10,7 @@ class DeviceForm(forms.Form):
     vendor = forms.CharField(required=False)
     deviceType = forms.CharField(required=False)
     deviceStatus = forms.BooleanField()
+    last_updated = forms.CharField(required=False)
 
 class UpdateForm(forms.Form):
     mac = forms.CharField()

@@ -1,10 +1,13 @@
 {% extends "layouts/base.html" %}
 
 {% block title %} Device Overview {% endblock %} 
-
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
-
+{% block stylesheets %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link type="text/css" rel="stylesheet" src="css/jquery-ui.min.css">
+<link type="text/css" rel="stylesheet" src="css/jquery-ui.structure.min.css">
+<link type="text/css" rel="stylesheet" src="css/jquery-ui.theme.min.css">
+{% endblock stylesheets %}
 {% block content %}	
 
     <!-- [ Main Content ] start -->
@@ -109,6 +112,13 @@
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="firmware" name="firmware" value= "{{ firmware }}">
                                         <small id="firmware" class="form-text text-muted">The last known firmware on this device</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="last_updated" class="col-sm-3 col-form-label">Date Last Updated</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="last_updated" name="last_updated" value= "{{ last_updated }}">
+                                        <small id="last_updated_label" class="form-text text-muted">The date that this device's firmware was last updated.</small>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -234,5 +244,9 @@
 
     <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
     <script src="/static/assets/js/pages/chart-apex.js"></script>
+    <script src="/static/assets/js/pages/dev_overview.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
 
 {% endblock javascripts %}
