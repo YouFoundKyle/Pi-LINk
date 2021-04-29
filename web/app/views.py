@@ -33,8 +33,6 @@ def net_overview(request):
         if updateInfo.is_valid():
             print(updateInfo.cleaned_data)
             dump_update_info(updateInfo.cleaned_data)
-        else:
-            print(updateInfo.errors)
         return HttpResponseRedirect('/network')
 
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
