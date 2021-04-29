@@ -159,20 +159,22 @@
                             </div>
                             <div class="card-body table-border-style">
                                 <div class="table-responsive">
-                                    <table id= "alertForm" class="table table-dark">
+                                    <table id= "alertForm" class="table table-border-style">
                                         <thead>
                                             <tr>
                                                 <th>Timestamp</th>
                                                 <th>IP</th>
                                                 <th>Alert</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for alert in alerts %}
-                                            <tr class="bg-success">
+                                            <tr>
                                                 <td>{{alert.timestamp}}</td>
                                                 <td>{{alert.ip}}</td>
                                                 <td>{{alert.message}}</td>
+                                                <td><button id="cancelAlert" class="btn btn-sm btn-danger" style="float: right" type="submit"><i class='fa fa-times-circle'></i></button></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
