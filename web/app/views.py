@@ -8,7 +8,7 @@ import requests
 import json, os
 from datetime import datetime, timedelta
 from .functionality.util import get_port_info, get_device_info, dump_device_info
-from .forms import DeviceForm
+from .forms import DeviceForm, UpdateForm
 
 def get_client_ip(request):
     return request.META.get('HTTP_HOST').split(':')[0].strip()
