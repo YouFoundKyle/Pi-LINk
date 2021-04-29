@@ -9,7 +9,6 @@
       package:
         name: ['dnsmasq', 'isc-dhcp-server']
         state: present
-        update_cache: yes
 
     - name: Disable Existing DNS and make sure dnsmasq is off
       service:
@@ -46,9 +45,9 @@
         mode: '0644'
         backup: yes
     
-  - name: Copy resolve config file and backup old one
+    - name: Copy resolve config file and backup old one
       copy:
-        src:  ../../configs/system/resolv.conf
+        src:  ../../configs/system/resolved.conf
         dest:  /etc/resolv.conf
         owner: root
         group: sys
@@ -76,7 +75,6 @@
       package:
         name: ['systemd-resolved']
         state: absent
-        update_cache: yes
 
     - name: Enable dnsmasq and hostapd
       systemd:

@@ -9,7 +9,6 @@
       package:
         name: ['{{ item }}']
         state: present
-        update_cache: yes
       with_items:
           - 'apt-transport-https'
           - 'ca-certificates'
@@ -25,7 +24,6 @@
       package:
         name: ['python-configparser']
         state: absent
-        update_cache: yes
     
     - name: Add Docker-CE GPG Key
       apt_key:
@@ -41,7 +39,6 @@
       package:
         name: ['docker-ce', 'docker-ce-cli', 'containerd.io']
         state: present
-        update_cache: yes
 
     - name: Install docker-compose
       shell: pip3 -v install docker-compose

@@ -1,0 +1,44 @@
+
+	<!-- [ navigation menu ] start -->
+	<nav class="pcoded-navbar menupos-fixed menu-light ">
+		<div class="navbar-wrapper  ">
+			<div class="navbar-content scroll-div " >
+				<ul class="nav pcoded-inner-navbar ">
+					<li class="nav-item pcoded-menu-caption">
+						<label>Network</label>
+					</li>
+					<li class="nav-item">
+					    <a href="/network" class="nav-link ">
+                            <span class="pcoded-micon">
+							<i class="feather icon-home"></i></span><span class="pcoded-mtext">Network Overview</span></a>
+					</li>
+					<li class="nav-item pcoded-hasmenu">
+						<a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Devices</span></a>
+						<ul class="pcoded-submenu">
+							{% for ip in devices %}
+								<li><a href="/device/{{ip}}">{{ip}}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="nav-item pcoded-menu-caption">
+						<label>MQTT</label>
+					</li>
+					<li class="nav-item">
+						<a href="/mqtt" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span>
+						<span class="pcoded-mtext">MQTT Overview</span>
+						</a>
+					</li>
+					<li class="nav-item"><a href="/explorer" class="nav-link "><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span class="pcoded-mtext">Traffic Explorer</span></a></li>
+
+					<li class="nav-item pcoded-menu-caption">
+						<label>Account</label>
+					</li>
+					<li class="nav-item">
+					    <a href="{% url 'logout' %}" 
+						   class="nav-link "><span class="pcoded-micon">
+						   <i class="feather icon-log-out"></i></span><span class="pcoded-mtext">Logout</span></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
