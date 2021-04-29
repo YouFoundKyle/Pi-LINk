@@ -216,13 +216,16 @@
                                 <tr>
                                     <th>Port</th>
                                     <th>Status</th>
+                                    <th>State</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for port in pendingPorts %}
+                                {% for p in pendingPorts %}
                                     <tr class="bg-success">
-                                    <td>           {{ port }}         </td>
+                                    <td>           {{ p.port }}         </td>
                                     <td> Pending </td>
+                                    <td>           {{ p.state }}         </td>
+
                                 </tr>
                                     {% endfor %}
                             </tbody>

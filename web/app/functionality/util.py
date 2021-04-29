@@ -70,9 +70,12 @@ def dump_device_info(device_info):
                     if port['port_id'] not in selected_ports:
                         print(f"remove port {port['port_id']} not in {selected_ports}")
                         used_ports.remove(port)
+                        if 'pend_p' not in retrieved_device.keys():
+                            retrieved_device['pend_p'] = []
+                            retrieved_device['pend_p'].append({'port': port, 'state': 'close'})
                     else:
                         print(f"keep port {port['port_id']}")
-                    selected_ports.remove(port['port_id'])
+                        selected_ports.remove(port['port_id'])
                 
                 # Add Requested Ports
                 if selected_ports:
@@ -80,7 +83,7 @@ def dump_device_info(device_info):
                         retrieved_device['pend_p'] = []
                     for port in selected_ports:
                        print(f"pending port {port}")
-                       retrieved_device['pend_p'].append(port)
+                       retrieved_device['pend_p'].append({'port': port, 'state': 'open'})
 
                 retrieved_device['firmware'] = device_info['firmware']
                 retrieved_device['device_status'] = DeviceStatus.ENABLED.value if device_info['deviceStatus'] else DeviceStatus.DISABLED.value
