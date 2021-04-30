@@ -18,6 +18,9 @@
           - 'dnsmasq'
           - 'isc-dhcp-server'
 
+    - name: Disable dnsmasq
+      shell: systemctl stop dnsmasq 
+
     - name: Copy dhcpd config file and backup old one
       copy:
         src:  ../../configs/system/dhcpd.conf
@@ -96,4 +99,4 @@
       shell: systemctl mask systemd-resolved 
 
     - name: Enable dnsmasq
-      shell: systemctl restart dnsmasq 
+      shell: systemctl start dnsmasq 
