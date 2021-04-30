@@ -11,13 +11,6 @@ scrape_configs:
     static_configs:
       - targets: ['prometheus:9090']
   
-  - job_name: "ha"
-    scrape_interval: 60s
-    metrics_path: /api/prometheus
-    scheme: http
-    bearer_token: 'ADD_TOKEN_HERE'
-    static_configs:
-      - targets: ['ADD_PI_IP_HERE:8123']
   - job_name: "dnsmasq_exporter"
     metrics_path: /metrics
     scheme: http
@@ -29,9 +22,3 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets: ['ADD_PI_IP_HERE:9641']
-
-  - job_name: "iptables"
-    metrics_path: /metrics
-    scheme: http
-    static_configs:
-      - targets: ['ADD_PI_IP_HERE:5432']

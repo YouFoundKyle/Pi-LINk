@@ -1,0 +1,1 @@
+screen -d -m -S "pilink_portal" python3 /etc/pilink/web/manage.py runserver 0.0.0.0:8080

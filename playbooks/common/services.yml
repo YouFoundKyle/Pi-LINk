@@ -1,0 +1,81 @@
+- hosts: localhost
+  connection: local 
+  become: yes
+  become_method: sudo
+  any_errors_fatal: true
+
+  tasks: 
+    
+    - name: Get Host IP Addr
+      shell: ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
+      register: host_ip
+
+    - name: Add Host IP to mqtt exporter
+      replace:
+        path:  ../../services/mqtt2prometheus/example-config.yaml
+        regexp: 'ADD_PI_IP_HERE'
+        replace: '{{ host_ip.stdout }}'
+
+    - name: Add Host IP to Prometheus 
+      replace:
+        path:  ../../services/prometheus/example-prometheus.yml
+        regexp: 'ADD_PI_IP_HERE'
+        replace: '{{ host_ip.stdout }}'
+
+    - name: Copy mqtt2prometheus config
+      copy:
+        src:  ../../services/mqtt2prometheus/example-config.yaml
+        dest: ../../services/mqtt2prometheus/config.yaml
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+    
+    - name: Copy prometheus config
+      copy:
+        src:  ../../services/prometheus/example-prometheus.yml
+        dest: ../../services/prometheus/prometheus.yml
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+    
+    - name: Create custom_components directory for HomeAssistant
+      file:
+        path: /etc/pilink/configs/homeassistant/custom_components
+        state: directory
+    
+    - name: Clone local_tuya HomeAssistant component
+      shell: git clone https://github.com/rospogrigio/localtuya.git /tmp/localtuya
+    
+    - name: Copy local_tuya HomeAssistant component
+      copy:
+        src:  /tmp/localtuya/custom_components/localtuya
+        dest: /etc/pilink/configs/homeassistant/custom_components/
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
+
+    - name: Install Overwatch packages
+      shell: pip install -r /etc/pilink/overwatch/requirements.txt
+
+    - name: Install PI-LINk Portal packages
+      shell: pip install -r /etc/pilink/web/requirements.txt
+
+    - name: Start Overwatch DHCP listening
+      script:
+        cmd: ../../overwatch/watch_dhcp.sh
+
+    - name: Start HomeAssistant
+      shell: docker-compose -f /etc/pilink/services/home_assistant/docker-compose.yml up --remove-orphans -d
+
+    - name: Start Prometheus
+      shell: docker-compose -f /etc/pilink/services/prometheus/docker-compose.yml up --remove-orphans -d
+
+    - name: Start MQTT Exporter
+      shell: docker run -v "/etc/pilink/services/mqtt2prometheus/config.yaml:/config.yaml" -d --restart unless-stopped -p  9641:9641 ghcr.io/hikhvar/mqtt2prometheus:latest 
+
+    - name: Run PI-LINk Portal
+      script:
+        cmd: ../../web/run_portal.sh

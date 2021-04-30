@@ -8,8 +8,6 @@ This module collects data on new leases from "lease_info.json" and
 updates the "leaseDB.json" file, which contains current and
 up to date information about active leases to display on the
 "device overview" dashboard.
-
-TO DO: Functionality to remove leases that are nonexistent.
 """
 
 # leaseDB.json is a dictionary where keys are MAC addresses
@@ -57,8 +55,6 @@ def modify_leaseDB(new_leases, dest):
 
 def main():
     update_leaseDB()
-    # TO DO: update_lease_hist()
-
 
 if __name__ == "__main__":
     main()

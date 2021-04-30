@@ -1,7 +1,6 @@
 version: '3.7'
 services:
-# TODO: Expose Devices /dev/tty*
-#       Enable optimizations
+
   homeassistant:
       container_name: homeassistant
       restart: unless-stopped
