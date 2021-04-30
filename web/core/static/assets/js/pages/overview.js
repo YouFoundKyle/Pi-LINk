@@ -100,10 +100,9 @@ $(document).ready(function () {
             $.noConflict();
             $('input[name="datetime_ac"]').daterangepicker({
                 timePicker: true,
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                autoUpdateInput: false,
                 locale: {
-                    format: 'M/DD hh:mm A'
+                    cancelLabel: 'Clear'
                 }
             }, function getDates(startDate, endDate) {
                 startDate = startDate.format('YYYY-MM-DD HH:MM');
@@ -230,10 +229,9 @@ $(document).ready(function () {
 
             $('input[name="datetime_fridge"]').daterangepicker({
                 timePicker: true,
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                autoUpdateInput: false,
                 locale: {
-                    format: 'M/DD hh:mm A'
+                    cancelLabel: 'Clear'
                 }
             }, function getDates(startDate, endDate) {
                 startDate = startDate.format('YYYY-MM-DD HH:MM');
@@ -398,10 +396,9 @@ $(document).ready(function () {
 
             $('input[name="datetime_energy"]').daterangepicker({
                 timePicker: true,
-                startDate: moment().startOf('hour'),
-                endDate: moment().startOf('hour').add(32, 'hour'),
+                autoUpdateInput: false,
                 locale: {
-                    format: 'M/DD hh:mm A'
+                    cancelLabel: 'Clear'
                 }
             }, function getDates(startDate, endDate) {
                 startDate = startDate.format('YYYY-MM-DD HH:MM');
