@@ -30,9 +30,14 @@ class EventLisenter(LoggingEventHandler):
                             ip = lease["IP"]
                             harden.toggle_port(port, 'ACCEPT', ip)
                     # pass in device dict with lowercase 'ip' as key so harden can read
-                    ip = lease.pop("IP")
-                    lease["ip"] = ip
-                    harden.read_model(lease, True)
+                    if lease["device_status"] == "Enabled":
+                        ip = lease.pop("IP")
+                        lease["ip"] = ip
+                        harden.read_model(lease, True)
+                    else:
+                        ip = lease.pop("IP")
+                        lease["ip"] = ip
+                        harden.read_model(lease)
 
 
 if __name__ == "__main__":
