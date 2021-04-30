@@ -35,7 +35,7 @@ def create_leaseDB(new_leases, dest):
             mac = lease.pop("MAC")
             lease["last_updated"] = date.today().strftime("%m/%d/%y")
             lease["firmware"] = "Unknown"
-            lease["device_status"] = "Enabled"
+            # lease["device_status"] = "Enabled"
             db[mac] = lease
             print("Saved device info for MAC Address " + mac + " in " + dest)
         db_json = json.dumps(db)
@@ -57,8 +57,6 @@ def modify_leaseDB(new_leases, dest):
 
 def main():
     update_leaseDB()
-    # TO DO: update_lease_hist()
-
 
 if __name__ == "__main__":
     main()

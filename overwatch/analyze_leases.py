@@ -34,6 +34,7 @@ def check_new_lease(path):
     # lease_data is a list
     lease_data = process_lease_data(lease_list)
     json_contents = []
+
     for lease in lease_data:
         portscan_results = scan(lease["IP"])
         if lease["IP"] in portscan_results.keys() :
@@ -42,9 +43,9 @@ def check_new_lease(path):
         else:
             lease['lease_state'] = 'inactive'
             lease["port_usage"] = []
-
         lease["date_added"] = date.today().strftime("%m/%d/%y")
         json_contents.append(lease)
+
     filename = SERVICE_PATH + ANALYZED_LEASES_PREFIX + ".json"
     with open(filename, "w") as fi:
         json_data = json.dumps(json_contents)
@@ -81,7 +82,8 @@ def process_lease_data(new_leases):
         data = {"IP": l['ip'],
                 "MAC": l['ethernet'],
                 "lease_state": 'active',
-                "static_ip": l['static_ip']}
+                "static_ip": l['static_ip'],
+                "device_status": l['device_status']}
         host = l['hostname']
         if host:
             data["hostname"] = host

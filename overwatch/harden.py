@@ -68,20 +68,28 @@ def execute_action(action, action_data, device):
     else:
         print("Error: {a} is not a supported hardening action".format(a = action))
 
-def read_model(device):
+def read_model(device, enable=False):
     """
-    Read information from a model to decide what rules should be applied
+    Read information from a model to decide what rules should be applied.
+    If "true" is passed in along with "device," then rules specific to the
+    device are applied to allow some access. Otherwise, standard rules are 
+    applied to block all access.
 
     Args:
         model   (str):  name of preexisting 
         device  (lease): lease object of the device
     """
     try: 
-        d_type = get_device_type(lease)
+        if enable:
+            d_type = get_device_type(lease)
+        else:
+            d_type = 'standard'
         with open(SERVICE_PATH + "models/" + d_type + ".json") as f:
             data = json.load(f)
             for action in data.keys():
                 if action not in info_keys:
                     execute_action(action, data[action], device)
+                    return True
     except Exception as err:
         print(f'Error applying hardening rules to device... {err}')
+        return False
