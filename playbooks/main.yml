@@ -10,6 +10,8 @@
         name: '*'
         state: latest
         update_cache: yes
+    - name: Make sure dpk is configured
+      shell: dpkg --configure -a
 
 - name: Create Users
   import_playbook: ./common/users.yml

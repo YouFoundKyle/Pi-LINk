@@ -2,17 +2,15 @@
   connection: local 
   become: yes
   become_method: sudo
-  any_errors_fatal: true
 
   tasks: 
     - name: Create HA User
       user:
         name: "ha"
         comment: "Home Assistant"
-        createhome: yes # TODO: make no once dev is done
+        createhome: yes 
         system: yes
         shell: /bin/bash
-        # shell: "/sbin/nologin" TODO: Change it back once perms get nicer
     
     - name: Add ha to docker group
       user:

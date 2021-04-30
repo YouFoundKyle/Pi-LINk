@@ -1,13 +1,10 @@
 # Playbook for configuring UFW firewall
 # Documentation: https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
 
-#TODO: In UFW after.rules source is 192.168.1.0/24. Will need to be changed
-
 - hosts: localhost
   connection: local 
   become: yes
   become_method: sudo
-  any_errors_fatal: true
 
   tasks: 
     - name: Set Firewall Logging

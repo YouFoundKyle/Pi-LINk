@@ -18,6 +18,9 @@
           - 'dnsmasq'
           - 'isc-dhcp-server'
 
+    - name: Disable dnsmasq
+      shell: systemctl stop dnsmasq 
+
     - name: Copy dhcpd config file and backup old one
       copy:
         src:  ../../configs/system/dhcpd.conf
@@ -76,17 +79,24 @@
         name: ['systemd-resolved']
         state: absent
 
-    - name: Enable dnsmasq and hostapd
-      systemd:
-        name: "{{ item }}"
-        enabled: true
-        masked: 
-      with_items:
-          - 'dnsmasq'
-
     - name: Disable Existing DNS and make sure dnsmasq is off
       service:
         name: "{{ item }}"
         enabled: false
       with_items:
           - 'systemd-resolved'
+
+    - name: Force unmask systemd-resolved
+      shell: systemctl unmask systemd-resolved 
+
+    - name: Force stop systemd-resolved
+      shell: systemctl stop systemd-resolved 
+
+    - name: Force disable systemd-resolved
+      shell: systemctl disable systemd-resolved 
+    
+    - name: Force mask systemd-resolved
+      shell: systemctl mask systemd-resolved 
+
+    - name: Enable dnsmasq
+      shell: systemctl start dnsmasq 
