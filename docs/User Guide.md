@@ -18,8 +18,4 @@
   1. To access the Pi-LINk Portal, go to your Raspberry Pi’s IP address and ```port 8080``` in a web browser.
   For example, if your Pi’s IP is ```192.1.1.1``` just type ```192.1.1.1:8080``` into the url bar.
   2. Create your account if you have not already.
-  3. Start exploring your network and data! Here are the basic descriptions of each default dashboard:
-      1. todo 
-      2. todo
-      3. todo
-      4. todo
+  3. Start exploring your network and data!
