@@ -75,6 +75,12 @@
     - name: Start MQTT Exporter
       shell: docker run -v "/etc/pilink/services/mqtt2prometheus/config.yaml:/config.yaml" -d --restart unless-stopped -p  9641:9641 ghcr.io/hikhvar/mqtt2prometheus:latest 
 
+    - name: Setup Django Part 1
+      shell: python3 /etc/pilink/web/manage.py makemigrations 
+
+    - name: Setup Django Part 2
+      shell: python3 /etc/pilink/web/manage.py migrate
+
     - name: Run PI-LINk Portal
       script:
         cmd: ../../web/run_portal.sh
