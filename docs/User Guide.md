@@ -12,7 +12,7 @@
   For example, if your Pi’s IP is ```192.1.1.1``` just type ```192.1.1.1:8123``` into the url bar.  
   2. Create your local Home Assistant account when prompted by the onboarding screen.
   3. Go to Settings -> Integrations -> Local Tuya
-  4. Follow the directions it gives you for linking a device.
+  4. Follow the directions from [this guide](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md) to setup your devices.
 
 ### Using the Pi-LINk Web Portal
   1. To access the Pi-LINk Portal, go to your Raspberry Pi’s IP address and ```port 8080``` in a web browser.
