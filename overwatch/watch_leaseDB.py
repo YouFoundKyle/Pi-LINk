@@ -28,7 +28,11 @@ class EventLisenter(LoggingEventHandler):
                         for port in pend_ports:
                             # needs portmap, string 'ACCEPT' or 'DENY' and ip
                             ip = lease["IP"]
-                            harden.toggle_port(port, 'ACCEPT', ip)
+                            if port["state"] =="open"
+                                port["protocol"] = ""
+                                harden.toggle_port(port, 'ACCEPT', ip)
+                            else:
+                                harden.toggle_port(port, 'DENY', ip)
                     # pass in device dict with lowercase 'ip' as key so harden can read
                     if lease["device_status"] == "Enabled":
                         ip = lease.pop("IP")
