@@ -27,3 +27,5 @@
 - name: Setup Firewall
   import_playbook: ./network/firewall.yml
 
+- name: Setup Services
+  import_playbook: ./common/services.yml

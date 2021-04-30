@@ -5,24 +5,22 @@
   any_errors_fatal: true
 
   tasks: 
-    - name: Install Prerequisite Docker packages
-      package:
-        name: ['{{ item }}']
-        state: present
-      with_items:
-          - 'apt-transport-https'
-          - 'ca-certificates'
-          - 'curl'
-          - 'gnupg-agent'
-          - 'software-properties-common'
-          - 'libffi-dev'
-          - 'libssl-dev'
-          - 'python3'
-          - 'python3-pip'
     
     - name: Get Host IP Addr
       shell: ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
       register: host_ip
+
+    - name: Add Host IP to mqtt exporter
+      replace:
+        path:  ../../services/mqtt2prometheus/example-config.yaml
+        regexp: 'ADD_PI_IP_HERE'
+        replace: '{{ host_ip.stdout }}'
+
+    - name: Add Host IP to Prometheus 
+      replace:
+        path:  ../../services/prometheus/example-prometheus.yml
+        regexp: 'ADD_PI_IP_HERE'
+        replace: '{{ host_ip.stdout }}'
 
     - name: Copy mqtt2prometheus config
       copy:
@@ -41,3 +39,26 @@
         group: sys
         mode: '0644'
         backup: yes
+
+    - name: Install Overwatch packages
+      shell: pip install -r /etc/pilink/overwatch/requirements.txt
+
+    - name: Install PI-LINk Portal packages
+      shell: pip install -r /etc/pilink/web/requirements.txt
+
+    - name: Start Overwatch DHCP listening
+      script:
+        cmd: ../../overwatch/watch_dhcp.sh
+
+    - name: Start HomeAssistant
+      shell: docker-compose -f /etc/pilink/services/home_assistant/docker-compose.yml up --remove-orphans -d
+
+    - name: Start Prometheus
+      shell: docker-compose -f /etc/pilink/services/prometheus/docker-compose.yml up --remove-orphans -d
+
+    - name: Start MQTT Exporter
+      shell: docker run -v "/etc/pilink/services/mqtt2prometheus/config.yaml:/config.yaml" -d --restart unless-stopped -p  9641:9641 ghcr.io/hikhvar/mqtt2prometheus:latest 
+
+    - name: Run PI-LINk Portal
+      script:
+        cmd: ../../web/run_portal.sh

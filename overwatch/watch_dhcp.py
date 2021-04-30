@@ -11,6 +11,7 @@ from env_config import *
 import os.path
 import analyze_leases
 import harden
+import mng_lease_DB
 
 class EventLisenter(LoggingEventHandler):
 
@@ -43,6 +44,7 @@ class EventLisenter(LoggingEventHandler):
             for lease in new_leases:
                 print(f"Applying Hardening to {lease['ip']}...")
                 harden.read_model(lease)
+            mng_lease_DB.update_leaseDB()
                 
 
     def is_new_lease(self, lease, old, new):
