@@ -8,7 +8,6 @@
 
 3. Run `install_basic.sh` script.
 
-4. Fill in `./services/mqtt2prometheus/config.yaml` and  `./services/prometheus/prometheus.yml`
 
 ## Wireless Network
 Running a playbook turns the Raspberry Pi 4 into a wireless access point (WAP). The WAP uses 802.11g (2.4Ghz) standard and runs on channel 7 (2.442 Mhz) with more configuration options being located at `/etc/hostapd/hostapd.conf`. 
