@@ -6,7 +6,8 @@
 
 2. Flash the SD card with Ubuntu Server 20.10.
 
-3. Run `install_basic.sh` script.
+3. Run the following command **(make sure you copy the entire command)**:  
+  ```wget -O install_basic.sh https://raw.githubusercontent.com/YouFoundKyle/Pi-LINk/main/bin/install_basic.sh && chmod +x install_basic.sh && sudo bash install_basic.sh```
 
 
 ## Wireless Network
@@ -27,6 +28,6 @@ Password: ThisIsAPi4
 |---|---|---|---|
 |53| DNS  | DNS Server endpoint | N
 |1883| Mosquitto  | MQTT Broker | Y
-|8000| Django  | Django WebUI | Y
+|8080| Django  | Django WebUI | Y
 |8123| HomeAssistant  | HomeAssistant WebUI | Y
 |9090| Prometheus | Prometheus WebUI | Y
