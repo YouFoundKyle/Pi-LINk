@@ -84,16 +84,16 @@
           - 'systemd-resolved'
 
     - name: Force unmask systemd-resolved
-      shell: sudo systemctl unmask systemd-resolved 
+      shell: systemctl unmask systemd-resolved 
 
     - name: Force stop systemd-resolved
-      shell: sudo systemctl stop systemd-resolved 
+      shell: systemctl stop systemd-resolved 
 
     - name: Force disable systemd-resolved
-      shell: sudo systemctl disable systemd-resolved 
+      shell: systemctl disable systemd-resolved 
     
     - name: Force mask systemd-resolved
-      shell: sudo systemctl mask systemd-resolved 
+      shell: systemctl mask systemd-resolved 
 
     - name: Enable dnsmasq
-      shell: sudo systemctl restart dnsmasq 
+      shell: systemctl restart dnsmasq 
