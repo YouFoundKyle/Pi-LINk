@@ -77,7 +77,7 @@ def read_model(device):
         device  (lease): lease object of the device
     """
     try: 
-        d_type = get_device_type(lease)
+        d_type = get_device_type(device)
         with open(SERVICE_PATH + "models/" + d_type + ".json") as f:
             data = json.load(f)
             for action in data.keys():

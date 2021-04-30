@@ -225,13 +225,14 @@
                             </thead>
                             <tbody>
                                 {% for p in pendingPorts %}
+                                {% if p !=  ''%}
                                     <tr class="bg-success">
                                     <td>           {{ p.port }}         </td>
                                     <td> Pending </td>
                                     <td>           {{ p.state }}         </td>
-
                                 </tr>
-                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

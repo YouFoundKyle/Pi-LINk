@@ -3,11 +3,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
-<<<<<<< HEAD
-    
-=======
     user: root
->>>>>>> c31c351ed4d32032f4e8e1bb445621106257b57b
     ports:
       - 9090:9090
     command:
@@ -16,8 +12,4 @@ services:
       - '--storage.tsdb.retention.time=30d'
     volumes:
     - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-<<<<<<< HEAD
     - ./data/:/data
-=======
-    - ./data/:/data
->>>>>>> c31c351ed4d32032f4e8e1bb445621106257b57b
