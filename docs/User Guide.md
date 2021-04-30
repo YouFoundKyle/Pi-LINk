@@ -1,7 +1,7 @@
 # Pi-LINk User Documentation
 ### Initial Setup
   1. SSH into your Raspberry Pi. Ensure you have sudo privileges with the user you are signed in as.
-  2. Run the following command (make sure you copy the entire command):  
+  2. Run the following command **(make sure you copy the entire command)**:  
   ```wget -O install_basic.sh https://raw.githubusercontent.com/YouFoundKyle/Pi-LINk/main/bin/install_basic.sh && chmod +x install_basic.sh && sudo bash install_basic.sh```
   3. Ensure the Ansible playbooks run to completion with no failures. A successful installation would end up looking like this:  
   *Screenshot goes here*
