@@ -41,6 +41,8 @@ def net_overview(request):
     if os.path.exists("/etc/pilink/web/alerts.json"):
         with open("/etc/pilink/web/alerts.json") as df:
             alerts = json.load(df)
+    else:
+        alerts = []
 
     if os.path.exists("/etc/pilink/web/lease_DB.json"):
         with open("/etc/pilink/web/lease_DB.json") as df:
