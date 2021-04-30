@@ -1,6 +1,6 @@
 # Pi-LINk User Documentation
 ### Initial Setup
-  1. Make sure your Raspberry Pi is plugged into Ethernet.
+  1. Make sure your Raspberry Pi is plugged into Ethernet and is running Ubuntu Server. Raspbian is not supported.
   2. SSH into your Raspberry Pi. Ensure you have sudo privileges with the user you are signed in as.
   3. Run the following command **(make sure you copy the entire command)**:  
   ```wget -O install_basic.sh https://raw.githubusercontent.com/YouFoundKyle/Pi-LINk/main/bin/install_basic.sh && chmod +x install_basic.sh && sudo bash install_basic.sh```
