@@ -3,6 +3,7 @@ import os
 import json
 from env_config import *
 from datetime import date
+from shutil import copyfile
 """
 This module collects data on new leases from "lease_info.json" and 
 updates the "leaseDB.json" file, which contains current and
@@ -26,6 +27,17 @@ def update_leaseDB():
             else:
                 modify_leaseDB(new_leases, dest)
 
+def copy_DB():
+    source = LEASE_DB_PATH
+    dest = SERVICE_PATH + "copy_DB.json"
+    if not os.path.exists(source):
+        print("Nothing to update: lease_DB.json does not exist.")
+    else:
+        with open(source, "r") as orig, open(dest, "w") as copy:
+            orig_contents = json.load(orig)
+            copy_contents = json.dumps(orig_contents)
+            copy.write(copy_contents)
+            print("Copied lease_DB.json file to " + dest)
 
 def create_leaseDB(new_leases, dest):
     with open(dest, "w") as df:

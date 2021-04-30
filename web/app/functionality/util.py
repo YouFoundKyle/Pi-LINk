@@ -1,7 +1,7 @@
 import json
 import datetime
 from enum import Enum
-import os
+import os.path
 ROOT_DIR = "/etc/pilink"
 FUNC_PATH = "/web/app/functionality/"
 OVERWATCH_PATH = "/overwatch/"
