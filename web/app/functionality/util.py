@@ -1,6 +1,7 @@
 import json
 import datetime
 from enum import Enum
+import os
 ROOT_DIR = "/etc/pilink"
 FUNC_PATH = "/web/app/functionality/"
 OVERWATCH_PATH = "/overwatch/"
@@ -25,6 +26,17 @@ def get_port_list (port_info):
         if p['port_state'] == "open":
             ports.append(p["port_id"])
     return ports
+
+def get_alerts():
+    if os.path.exists("/etc/pilink/web/alerts.json"):
+        try:
+            with open("/etc/pilink/web/alerts.json") as df:
+                alerts = json.load(df)
+                return alerts
+        except ValueError:
+            return []   
+    else: 
+        return []
 
 def get_device_info(ip):
     """
