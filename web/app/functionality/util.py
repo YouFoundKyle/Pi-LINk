@@ -77,6 +77,7 @@ def dump_device_info(device_info):
                 retrieved_device = lease_db[lease]
                 used_ports = retrieved_device['port_usage']
                 selected_ports = device_info['ports'].split(' ')
+                print(selected_ports)
                 # Remove requested ports
                 for port in used_ports:
                     if port['port_id'] not in selected_ports:
@@ -94,8 +95,9 @@ def dump_device_info(device_info):
                     if 'pend_p' not in retrieved_device.keys():
                         retrieved_device['pend_p'] = []
                     for port in selected_ports:
-                       print(f"pending port {port}")
-                       retrieved_device['pend_p'].append({'port': port, 'state': 'open'})
+                        if len(port) > 0:
+                            print(f"pending port {port}")
+                            retrieved_device['pend_p'].append({'port': port, 'state': 'open'})
 
                 retrieved_device['firmware'] = device_info['firmware']
                 retrieved_device['device_status'] = DeviceStatus.ENABLED.value if device_info['deviceStatus'] else DeviceStatus.DISABLED.value
