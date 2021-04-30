@@ -28,7 +28,7 @@ class EventLisenter(LoggingEventHandler):
                         for port in pend_ports:
                             # needs portmap, string 'ACCEPT' or 'DENY' and ip
                             ip = lease["IP"]
-                            if port["state"] =="open"
+                            if port["state"] == "open"
                                 port["protocol"] = "TCP"
                                 harden.toggle_port(port, 'ACCEPT', ip)
                             else:
