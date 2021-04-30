@@ -5,11 +5,11 @@
   become_method: sudo
 
   tasks:
-  #   - name: Update All packages
-  #     package:
-  #       name: '*'
-  #       state: latest
-  #       update_cache: yes
+    - name: Update All packages
+      package:
+        name: '*'
+        state: latest
+        update_cache: yes
     - name: Make sure dpk is configured
       shell: dpkg --configure -a
 
