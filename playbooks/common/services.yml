@@ -39,6 +39,23 @@
         group: sys
         mode: '0644'
         backup: yes
+    
+    - name: Create custom_components directory for HomeAssistant
+      file:
+        path: /etc/pilink/configs/homeassistant/custom_components
+        state: directory
+    
+    - name: Clone local_tuya HomeAssistant component
+      shell: git clone https://github.com/rospogrigio/localtuya.git /tmp/localtuya
+    
+    - name: Copy local_tuya HomeAssistant component
+      copy:
+        src:  /tmp/localtuya/custom_components/localtuya
+        dest: /etc/pilink/configs/homeassistant/custom_components/
+        owner: root
+        group: sys
+        mode: '0644'
+        backup: yes
 
     - name: Install Overwatch packages
       shell: pip install -r /etc/pilink/overwatch/requirements.txt
