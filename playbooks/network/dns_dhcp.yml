@@ -2,7 +2,6 @@
   connection: local 
   become: yes
   become_method: sudo
-  any_errors_fatal: true
 
   tasks: 
     - name: Install DNS and DHCP packages
@@ -28,34 +27,30 @@
         owner: root
         group: sys
         mode: '0644'
-        backup: yes
 
-    - name: Copy dnsmasq config file and backup old one
+    - name: Copy dnsmasq config file
       copy:
         src:  ../../configs/system/dnsmasq.conf
         dest: /etc/dnsmasq.conf
         owner: root
         group: sys
         mode: '0644'
-        backup: yes
 
-    - name: Copy isc-dhcp config file and backup old one
+    - name: Copy isc-dhcp config file
       copy:
         src:  ../../configs/system/isc-dhcp-server
         dest: /etc/default/isc-dhcp-server
         owner: root
         group: sys
         mode: '0644'
-        backup: yes
     
-    - name: Copy resolve config file and backup old one
+    - name: Copy resolve config file
       copy:
         src:  ../../configs/system/resolved.conf
-        dest:  /etc/resolv.conf
+        dest: /etc/resolv.conf
         owner: root
         group: sys
         mode: '0644'
-        backup: yes
 
     - name: Make sure /var/db folder exists
       file: 
