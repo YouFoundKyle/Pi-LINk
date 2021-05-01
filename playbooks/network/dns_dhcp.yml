@@ -6,7 +6,7 @@
   tasks: 
     - name: Install DNS and DHCP packages
       package:
-        name: ['dnsmasq', 'isc-dhcp-server']
+        name: ['dnsmasq', 'isc-dhcp-server', 'acl']
         state: present
 
     - name: Disable Existing DNS and make sure dnsmasq is off
