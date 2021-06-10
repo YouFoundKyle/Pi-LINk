@@ -1,6 +1,6 @@
 asgiref
 autopep8
-django==2.2.20
+django==2.2.24
 dj-database-url
 gunicorn
 pycodestyle
